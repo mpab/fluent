@@ -1,0 +1,13 @@
+loop implementaiton using sequence
+    - statement lists
+    - program counter
+
+graphics output
+    - 2d plotting
+    - lines
+    - text
+    - graphics buffer
+
+file i/o
+    - opening files 
+    - displaying graphics
