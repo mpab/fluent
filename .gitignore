@@ -49,3 +49,8 @@ sublime_text
 CMakeLists.txt
 Fluent.sublime-workspace
 Fluent.sublime-project
+src/build_date.h
+src/lex.yy.c
+src/y.output
+src/y.tab.c
+src/y.tab.h
