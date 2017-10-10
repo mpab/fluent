@@ -1,0 +1,25 @@
+#!/bin/bash
+if [ ! -z $1 ]; then
+    cd $1
+    echo "building in '$1'..."
+else
+    echo "building in" $PWD"."
+fi
+
+cd src
+yacc -dtv parser.y
+lex lexer.l
+
+echo "const char build_date[] = \"$(date)\";" > build_date.h
+
+cd ..
+rm -rf out
+mkdir out
+cd out
+
+export SRCFILES="../src/main.cpp ../src/var.cpp ../src/y.tab.c ../src/lex.yy.c"
+export CPPFLAGS="-x c++ -Wno-write-strings -Wno-c++11-extensions"
+g++ $CPPFLAGS $SRCFILES -ll -o fluent
+g++ -DDEBUG_LOGGING $CPPFLAGS $SRCFILES -ll -o dfluent
+cp fluent ~/bin/
+cp dfluent ~/bin/
