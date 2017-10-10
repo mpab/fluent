@@ -1,4 +1,6 @@
-loop implementaiton using sequence
+TODO
+------------------------------------------------
+loop implementation using sequence
     - statement lists
     - program counter
 
@@ -11,3 +13,8 @@ graphics output
 file i/o
     - opening files 
     - displaying graphics
+
+DONE
+------------------------------------------------
+2017.10
+basic variable handling (integer, real, string, sequence)
