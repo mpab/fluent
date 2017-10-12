@@ -64,6 +64,9 @@ stmt:
         console::echo($1);
     }
     | T_ID {
+        console::echo_var($1);
+    }
+    | T_STRING {
         console::echo($1);
     }
     | T_ID '=' T_ID {

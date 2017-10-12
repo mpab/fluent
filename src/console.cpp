@@ -22,7 +22,7 @@ namespace console {
 
     template void echo<long>(long v);
     template void echo<double>(double v);
-    //template void echo<char*>(char* v);
+    template void echo<char*>(char* v);
     template <typename T> void echo(T v) {
         if (__file__) {
             return;
@@ -31,7 +31,7 @@ namespace console {
         cout << v << endl;
     }
 
-    void echo(char* k) {
+    void echo_var(char* k) {
         if (__file__) {
             return;
         }

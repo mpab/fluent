@@ -7,7 +7,7 @@
 
 namespace console {
     template <typename T> void echo(T v);
-    void echo(char* k);
+    void echo_var(char* k);
     void list();
     void help();
     void quit();
