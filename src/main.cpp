@@ -43,7 +43,7 @@ int main (int argc, char **argv) {
 void yyerror(const char *s) {
 
     if (0 == strcmp("syntax error, unexpected $end, expecting T_ENDL", s)) {
-        cout << endl << ANSI_COLOR_YELLOW << "WARNING: file must end with a new line" << ANSI_COLOR_RESET << endl;
+        cout << endl << ANSI_COLOR_YELLOW << "WARNING: fluent source file must end with a new line" << ANSI_COLOR_RESET << endl;
     } else {
         cout << endl << ANSI_COLOR_RED << s << ANSI_COLOR_RESET << endl;
     }

@@ -103,10 +103,10 @@ stmt:
         statement::outl($2);
     }
     | T_OUT T_ID {
-        statement::out($2);
+        statement::outv($2);
     }
     | T_OUTL T_ID {
-        statement::outl($2);
+        statement::outvl($2);
     }
 ;
 

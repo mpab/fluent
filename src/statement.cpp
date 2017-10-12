@@ -8,6 +8,10 @@
 
 #include "statement.h"
 
+namespace var {
+    void stream(std::string k);
+}
+
 namespace statement {
 
     using namespace std;
@@ -59,7 +63,7 @@ namespace statement {
     template void outl(double);
     template void outl(char*);
     template <typename T> void outl(T v) {
-        outl(v);
+        out(v);
         cout << endl;
     }
 
@@ -67,7 +71,15 @@ namespace statement {
         cout << endl;
     }
 
-    void execute() {
+    void outv(string k) {
+        var::stream(k);
+    }
 
+    void outvl(string k) {
+        var::stream(k);
+        cout << endl;
+    }
+
+    void execute() {
     }
 }

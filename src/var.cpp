@@ -7,11 +7,11 @@
 #include <typeindex>
 #include <stack>
 #include <unordered_map>
+#include <iostream>
 
 #include "var.h"
 
 namespace var {
-
     using namespace std;
 
     struct IVar {
@@ -45,29 +45,24 @@ namespace var {
         var_map[k] = pv;
     }
 
-    void var_not_defined_error(string n) {
-        cout << "variable: " << n << " not defined" << endl;
+    void var_not_defined_error(ostream& o, string n) {
+        o << "variable: " << n << " not defined" << endl;
     }
 
-    void out(string k) {
+    void stream(string k) {
         auto var = get_var(k);
         if (!var) {
-            var_not_defined_error(k);
+            var_not_defined_error(cerr, k);
             return;
         }
 
         var->stream(cout);
     }
 
-    void outl(string k) {
-        out(k);
-        cout << endl;
-    }
-
     void assign(string k1, string k2) {
         auto var = get_var(k2);
         if (!var) {
-            var_not_defined_error(k2);
+            var_not_defined_error(cerr, k2);
             return;
         }
 

@@ -9,29 +9,34 @@
 #include "console.h"
 
 namespace var {
+    using namespace std;
     void list_vars();
-    void outl(string k);
+    void stream(string k);
 }
 
 extern char *__file__;
 
 namespace console {
-
     using namespace std;
 
     template void echo<long>(long v);
     template void echo<double>(double v);
     //template void echo<char*>(char* v);
     template <typename T> void echo(T v) {
-        if (!__file__) {
-            cout << v << endl;
+        if (__file__) {
+            return;
         }
+
+        cout << v << endl;
     }
 
     void echo(char* k) {
-        if (!__file__) {
-            var::outl(k);
+        if (__file__) {
+            return;
         }
+
+        var::stream(k);
+        cout << endl;
     }
 
     void list() {

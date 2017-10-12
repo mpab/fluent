@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "y.tab.h"
 
-#include "../src/logging.h"
+#include "logging.h"
 
 extern void yyerror(const char *);
 

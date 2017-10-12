@@ -6,17 +6,15 @@
 #define FLUENT_VAR_H
 
 #include <string>
+#include <ostream>
 
 namespace var {   
-    using namespace std;
-    void out(string k);
-    void outl(string k);
-    void assign(string k1, string k2);
-    template <typename T> void create(string k, T v);
-    template <typename T> T value(string k, ostream& err);
+    void assign(std::string k1, std::string k2);
+    template <typename T> void create(std::string k, T v);
+    template <typename T> T value(std::string k, std::ostream& err);
 
     void push_seq(long start, long end);
-    void create_seq(string k);
+    void create_seq(std::string k);
 }
 
 #endif //FLUENT_VAR_H

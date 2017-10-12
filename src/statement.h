@@ -5,8 +5,9 @@
 #ifndef FLUENT_STATEMENT_H
 #define FLUENT_STATEMENT_H
 
-namespace statement {
-    
+#include <string>
+
+namespace statement {  
     template <typename T> T negate(T n);
 
     template <typename T> T add(T n, T m);
@@ -18,6 +19,9 @@ namespace statement {
     template <typename T> void out(T v); 
     template <typename T> void outl(T v);
     void outl();
+
+    void outv(std::string k);
+    void outvl(std::string k);
 
     void execute();
 }
