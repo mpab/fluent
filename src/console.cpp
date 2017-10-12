@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <iostream>
 #include "var.h"
+#include "build_date.h"
 
 #include "console.h"
 
@@ -71,6 +72,12 @@ namespace console {
         }
 
         exit(0);
+    }
+
+    void copyright() {
+        cout << "Fluent v0.0.1, (c) 2017- Michael Alderson-Bythell" << endl;
+        cout << "built: " << build_date << endl;
+        cout << "type ::help if you need it" << endl;
     }
   
 }

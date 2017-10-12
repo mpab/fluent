@@ -11,6 +11,7 @@ namespace console {
     void list();
     void help();
     void quit();
+    void copyright();
 }
 
 #endif //FLUENT_CONSOLE_H
