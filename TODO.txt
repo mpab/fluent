@@ -14,6 +14,9 @@ file i/o
     - opening files 
     - displaying graphics
 
+syntax error messages
+    - inspect error in yyerror and subsitute better text for types - e.g. 'T_STRING'
+
 DONE
 ------------------------------------------------
 2017.10
