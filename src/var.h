@@ -14,7 +14,6 @@ namespace var {
     void assign(string k1, string k2);
     template <typename T> void create(string k, T v);
     template <typename T> T value(string k, ostream& err);
-    void list_vars();
 
     void push_seq(long start, long end);
     void create_seq(string k);

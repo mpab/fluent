@@ -1,37 +1,35 @@
 %{
 #include <iostream>
-#include <math.h>
 using namespace std;
 
 #include "logging.h"
 #include "var.h"
+#include "statement.h"
+#include "console.h"
 
 int yylex(void);
 void yyerror(const char *);
-void man();
-extern char *__file__;
-
 
 %}
 %define parse.error verbose
 
 %union
 {
-    long i;
-    float f;
+    long n;
+    double r;
     char s[100];
 }
 
-%token T_INT T_FLOAT T_ID T_STRING
-%type<i> expi T_INT
-%type<f> expf T_FLOAT
+%token T_INT T_REAL T_ID T_STRING
+%type<n> exp_int T_INT
+%type<r> exp_real T_REAL
 %type<s> T_ID
 %type<s> T_STRING
 
 %token T_ENDL T_EOF
 %token T_ELLIPSIS
 %token T_OUT T_OUTL
-%token T_EXIT T_HELP T_LIST
+%token CONSOLE_QUIT CONSOLE_HELP CONSOLE_LIST
 
 %left '+' '-'
 %left '*' '/'
@@ -47,111 +45,101 @@ program:
 line: T_ENDL
     | stmt T_ENDL {
     }
-    //| seq T_ENDL {
-    //}
-    | T_EXIT T_ENDL {
-        exit(0);
+    | CONSOLE_QUIT T_ENDL {
+        console::quit();
     }
-    | T_HELP T_ENDL {
-        man();
+    | CONSOLE_HELP T_ENDL {
+        console::help();
     }
-    | T_LIST T_ENDL {
-        var::list_vars();
+    | CONSOLE_LIST T_ENDL {
+        console::list();
     }
 ;
 
 stmt:
-    expi {
-        if (!__file__) {
-        cout << $1 << endl;
-        }
+    exp_int {
+        console::echo($1);
     }
-    | expf {
-        if (!__file__) {
-            cout << $1 << endl;
-        }
+    | exp_real {
+        console::echo($1);
     }
     | T_ID {
-        if (!__file__) {
-            var::outl($1);
-        }
+        console::echo($1);
     }
     | T_ID '=' T_ID {
         var::assign($1, $3);
     }
-    | T_ID '=' expi {
+    | T_ID '=' exp_int {
         var::create<long>($1, $3);
     }
-    | T_ID '=' expf {
+    | T_ID '=' exp_real {
         var::create<double>($1, $3);
     }
     | T_ID '=' T_STRING {
         var::create<string>($1, $3);
     }
     | T_ID '=' seq {
-        //cout << "::" << $1 << endl;
         var::create_seq($1);
     }
-    //| '(' T_ID '=' seq ')' '{' stmt '}' {
-    //    cout << ":=" << sym[$2] << endl;
-    //    cout << "::=" << ('a' + $1) << endl;
-    //}
     | T_OUTL {
-        cout << endl;
+        statement::outl();
     }
-    | T_OUT expi {
-        cout << $2;
+    | T_OUT exp_int {
+        statement::out($2);
     }
-    | T_OUTL expi {
-        cout << $2 << endl;
+    | T_OUTL exp_int {
+        statement::outl($2);
     }
-    | T_OUT expf {
-        cout << $2;
+    | T_OUT exp_real {
+        statement::out($2);
     }
-    | T_OUTL expf {
-        cout << $2 << endl;
+    | T_OUTL exp_real {
+        statement::outl($2);
     }
     | T_OUT T_STRING {
-        cout << $2;
+        statement::out($2);
     }
     | T_OUTL T_STRING {
-        cout << $2 << endl;
+        statement::outl($2);
     }
     | T_OUT T_ID {
-        var::out($2);
+        statement::out($2);
     }
     | T_OUTL T_ID {
-        var::outl($2);
+        statement::outl($2);
     }
 ;
 
-expi:
-    T_INT { $$ = $1; }
+exp_int:
+    T_INT {
+        $$ = $1;
+    }
     | T_ID {
         $$ = var::value<long>($1, cout);
     }
-    | expi '+' expi { $$ = $1 + $3; }
-    | expi '-' expi { $$ = $1 - $3; }
-    | expi '*' expi { $$ = $1 * $3; }
-    | expi '/' expi { $$ = $1 / $3; }
-    | '-' expi %prec NEG { $$=-$2; }
-    | expi '^' expi { $$ = pow($1, $3); }
-    | '(' expi ')' { $$ = $2; }
+    | exp_int '+' exp_int { $$ = statement::add($1, $3); }
+    | exp_int '-' exp_int { $$ = statement::subtract($1, $3); }
+    | exp_int '*' exp_int { $$ = statement::multiply($1, $3); }
+    | exp_int '/' exp_int { $$ = statement::divide($1, $3); }
+    | '-' exp_int %prec NEG { $$ = statement::negate($2); }
+    | exp_int '^' exp_int { $$ = statement::power($1, $3); }
+    | '(' exp_int ')' { $$ = $2; }
 ;
 
-expf:
-    T_FLOAT { $$ = $1; }
+exp_real:
+    T_REAL {
+        $$ = $1;
+    }
     | T_ID {
         $$ = var::value<double>($1, cout);
     }
-    | expf '+' expf { $$ = $1 + $3; }
-    | expf '-' expf { $$ = $1 - $3; }
-    | expf '*' expf { $$ = $1 * $3; }
-    | expf '/' expf { $$ = $1 / $3; }
-    | '-' expf %prec NEG { $$=-$2; }
-    | expf '^' expf { $$ = pow($1, $3); }
-    | '(' expf ')' { $$ = $2; }
-;
+    | exp_real '+' exp_real { $$ = statement::add($1, $3); }
+    | exp_real '-' exp_real { $$ = statement::subtract($1, $3); }
+    | exp_real '*' exp_real { $$ = statement::multiply($1, $3); }
+    | exp_real '/' exp_real { $$ = statement::divide($1, $3); }
+    | '-' exp_real %prec NEG { $$ = statement::negate($2); }
+    | exp_real '^' exp_real { $$ = statement::power($1, $3); }
+    | '(' exp_real ')' { $$ = $2; }
 
 //exps:
 //    T_QSTRING { $$ = $1; }

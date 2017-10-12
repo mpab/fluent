@@ -74,22 +74,6 @@ namespace var {
         add_var(k1, var);
     }
 
-    void list_vars() {
-        if (0 == var_map.size()) {
-            cout << "No variables defined." << endl;
-            return;
-        }
-
-        cout << "=============================== VARIABLES =====================================" << endl;
-        for (auto it : var_map) {    
-            auto var = get_var(it.first);
-            cout << it.first << " = ";
-            var->info(cout);
-            cout << " (type: " << var->type.name() << ")" << endl;
-        }
-        cout << "===============================================================================" << endl;
-    }
-
     template void create<long>(string k, long v);
     template void create<double>(string k, double v);
     template void create<string>(string k, string v);
@@ -149,6 +133,22 @@ namespace var {
         auto var = seq_stack.top();
         seq_stack.pop();
         add_var(k, var);
+    }
+
+    void list_vars() {
+        if (0 == var_map.size()) {
+            cout << "No variables defined." << endl;
+            return;
+        }
+
+        cout << "=============================== VARIABLES =====================================" << endl;
+        for (auto it : var_map) {    
+            auto var = get_var(it.first);
+            cout << it.first << " = ";
+            var->info(cout);
+            cout << " (type: " << var->type.name() << ")" << endl;
+        }
+        cout << "===============================================================================" << endl;
     }
 
 }

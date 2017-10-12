@@ -17,7 +17,7 @@ rm -rf out
 mkdir out
 cd out
 
-export SRCFILES="../src/main.cpp ../src/var.cpp ../src/y.tab.c ../src/lex.yy.c"
+export SRCFILES="../src/main.cpp ../src/var.cpp ../src/statement.cpp ../src/console.cpp ../src/y.tab.c ../src/lex.yy.c"
 export CPPFLAGS="-x c++ -Wno-write-strings -Wno-c++11-extensions"
 g++ $CPPFLAGS $SRCFILES -ll -o fluent
 g++ -DDEBUG_LOGGING $CPPFLAGS $SRCFILES -ll -o dfluent

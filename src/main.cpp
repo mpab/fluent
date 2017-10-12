@@ -54,20 +54,3 @@ void yyerror(const char *s) {
     }
 }
 
-void man() {
-    if (__file__) {
-        return;
-    }
-
-    cout << "============================== FLUENT HELP ====================================" << endl;
-    cout << "Variables:     integer, floating point and string variables can be used." << endl;
-    cout << "               valid names start with a letter or underscore (_)." << endl;
-    cout << "Arithmetic:    + / - + ^ operations are supported with numeric types." << endl;
-    cout << "Examples:      You can also check out the samples folder." << endl;
-    cout << "               Press ctrl+d if you want to leave fluent." << endl;
-    cout << ":: commands:" << endl;
-    cout << "               ::q/::quit - exit Fluent." << endl;
-    cout << "               ::h/::help - help." << endl;
-    cout << "               ::l/::list - list all defined variables." << endl;
-    cout << "===============================================================================" << endl;
-}

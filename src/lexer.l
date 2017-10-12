@@ -21,10 +21,10 @@ DQSTRING    \"(\\.|[^"])*\"
 SQSTRING    \'(\\.|[^'])*\'
 
 INT         {DIGIT}+
-FLOAT_1     {DIGIT}+"f"
-FLOAT_2     {DIGIT}+\.?{DIGIT}+"f"?
-BAD_FLOAT_1 {DIGIT}+\.
-BAD_FLOAT_2 \.{DIGIT}+
+REAL_1      {DIGIT}+"f"
+REAL_2      {DIGIT}+\.?{DIGIT}+"f"?
+BAD_REAL_1  {DIGIT}+\.
+BAD_REAL_2  \.{DIGIT}+
 QSTRING     (\"(\\.|[^"])*\"|\'(\\.|[^'])*\')
 
 ID          [_a-zA-Z][_a-zA-Z0-9]*
@@ -82,21 +82,21 @@ BADID       [0-9][_a-zA-Z][_a-zA-Z0-9]
 }
 
 {INT} { // integers
-    yylval.i = atoi(yytext);
-    DP("INT: %ld ", yylval.i);
+    yylval.n = atoi(yytext);
+    DP("INT: %ld ", yylval.n);
     RET(T_INT);
 }
 
-{FLOAT_1} {
-    yylval.f = atof(yytext);
-    DP("FLOAT_1: %f ", yylval.f);
-    RET(T_FLOAT);
+{REAL_1} {
+    yylval.r = atof(yytext);
+    DP("REAL_1: %f ", yylval.r);
+    RET(T_REAL);
 }
 
-{FLOAT_2} {
-    yylval.f = atof(yytext);
-    DP("FLOAT_2: %f ", yylval.f);
-    RET(T_FLOAT);
+{REAL_2} {
+    yylval.r = atof(yytext);
+    DP("REAL_2: %f ", yylval.r);
+    RET(T_REAL);
 }
 
 {QSTRING} { // string
@@ -109,20 +109,20 @@ BADID       [0-9][_a-zA-Z][_a-zA-Z0-9]
     RET(T_STRING);
 }
        
-"::help"    {return T_HELP;}
-"::h"       {return T_HELP;}
-"::quit"    {return T_EXIT;}
-"::q"       {return T_EXIT;}
-"::list"    {return T_LIST;}
-"::l"       {return T_LIST;}
+"::help"    {return CONSOLE_HELP;}
+"::h"       {return CONSOLE_HELP;}
+"::quit"    {return CONSOLE_QUIT;}
+"::q"       {return CONSOLE_QUIT;}
+"::list"    {return CONSOLE_LIST;}
+"::l"       {return CONSOLE_LIST;}
 
-{BAD_FLOAT_1} {
-    DP("BAD_FLOAT_1 ");
+{BAD_REAL_1} {
+    DP("BAD_REAL_1 ");
     yyerror("invalid floating point formatting - expected: 0-9f, 0-9.0-9, 0-9.0-9f");
 }
 
-{BAD_FLOAT_2} {
-    DP("BAD_FLOAT_2 ");
+{BAD_REAL_2} {
+    DP("BAD_REAL_2 ");
     yyerror("invalid floating point formatting - expected: 0-9f, 0-9.0-9, 0-9.0-9f");
 }
 
