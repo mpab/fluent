@@ -26,4 +26,8 @@ See the samples folder.
 On Linux & OS X use the ./build script.
 Windows is not yet tested (and the coloured logging will probably not work).
 
-Build prerequisites: C++11...
+#### Build prerequisites:
+
+C++11...
+
+The build script writes the output executables to ~/bin/fluent and ~/bin/dfluent - so you can comment this out or add these folders.
