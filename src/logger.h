@@ -5,6 +5,7 @@
 #include <iomanip>
 
 #define FMT8 std::left << std::setw(8) << std::setfill(' ')
+#define FMT12 std::left << std::setw(12) << std::setfill(' ')
 #define FMT16 std::left << std::setw(16) << std::setfill(' ')
 
 #define ANSI_COLOR_RED     "\x1b[31m"

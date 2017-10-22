@@ -14,7 +14,7 @@ namespace node {
     using namespace boost;
 
     using Value = variant <long, double, std::string>;
-    enum Type {FUN, SYM, VAR};
+    enum Type {INSTRUCTION, SYMBOL, VARIABLE}; 
 
     struct Node {
         const Type type;
@@ -25,20 +25,20 @@ namespace node {
         Node(const Type type);
     };
 
-      struct Function : Node {
+    struct Instruction : Node {
         int const opcode;
         vector<Node*> operands;
-        Function(int opcode, vector<Node*> operands) : Node(FUN), opcode(opcode), operands(operands) {}
+        Instruction(int opcode, vector<Node*> operands) : Node(INSTRUCTION), opcode(opcode), operands(operands) {}
     };
 
     struct Variable : public Node {
         Value value;
 
-        Variable(long v) : Node(VAR), value(v) {}
-        Variable(double v) : Node(VAR), value(v) {}
-        Variable(string v) : Node(VAR), value(v) {}
-        Variable(const Variable& v) : Node(VAR), value(v.value) {}
-        Variable(const Value* v) : Node(VAR), value(*v) {}
+        Variable(long v) : Node(VARIABLE), value(v) {}
+        Variable(double v) : Node(VARIABLE), value(v) {}
+        Variable(string v) : Node(VARIABLE), value(v) {}
+        Variable(const Variable& v) : Node(VARIABLE), value(v.value) {}
+        Variable(const Value* v) : Node(VARIABLE), value(*v) {}
 
         string chars() const { return get<string>(value); }
         
@@ -51,7 +51,7 @@ namespace node {
 
     struct Symbol : public Node {
         string const name;
-        Symbol(string name) : Node(SYM), name(name) {}
+        Symbol(string name) : Node(SYMBOL), name(name) {}
     };
 
     const char* type_name(Type t);

@@ -2,7 +2,7 @@
 
 #include "opcode_map.cpp"
 
-#include "functions.cpp"
+#include "instructions.cpp"
 
 #include "node.cpp"
 

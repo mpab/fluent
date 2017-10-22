@@ -32,7 +32,7 @@ namespace node {
 
     const char* type_name(Type t) {
         const char* names[] = {
-            "FUN", "SYM", "VAR"
+            "INSTRUCTION", "SYMBOL", "VARIABLE"
         };
         return names[t];
     }
@@ -97,7 +97,7 @@ namespace node {
             apply_visitor(ostream_visitor(o), var->value);
         }
 
-        auto f = dynamic_cast<Function*>(const_cast<Node*>(n));
+        auto f = dynamic_cast<Instruction*>(const_cast<Node*>(n));
         if (f) {
             o << opcode_name(f->opcode) << " ";
         }
@@ -112,9 +112,9 @@ namespace node {
 
     ostream& operator << (ostream& o, const NodeInfo& n) {
         
-        o << FMT16 << (void*)n.n << FMT8 << n.n->type_name() << n.n;
+        o << FMT16 << (void*)n.n << FMT12 << n.n->type_name() << n.n;
         
-        auto i = dynamic_cast<Function*>(const_cast<Node*>(n.n));
+        auto i = dynamic_cast<Instruction*>(const_cast<Node*>(n.n));
         
         if (i) {
             o << "[";

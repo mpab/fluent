@@ -10,7 +10,7 @@ namespace context {
     Node* assign(Node* k, Node* v);
 }
 
-namespace functions {
+namespace opcodes {
     using namespace node;
     using namespace std;
 
@@ -34,9 +34,9 @@ namespace functions {
         return op::conditional(value);
     }
 
-    Node* execute(Function *n) {
+    Node* execute(Instruction *n) {
         
-        logger::debug() << "execute(Function*) " << NodeInfo(n) << endl;
+        logger::debug() << "execute(Instruction*) " << NodeInfo(n) << endl;
 
         switch(n->opcode) {
             case '=':
@@ -82,31 +82,31 @@ namespace functions {
             return execute(n->operands[1]); 
 
             case '>':
-            //logger::info() << "Node* execute(Function *n): '>'" << endl;
+            //logger::info() << "Node* execute(Instruction *n): '>'" << endl;
             return op::gt(context::get_val(n->operands[0]), context::get_val(n->operands[1]));
 
             case T_GE:
-            //logger::info() << "Node* execute(Function *n): '>='" << endl;
+            //logger::info() << "Node* execute(Instruction *n): '>='" << endl;
             return op::ge(context::get_val(n->operands[0]), context::get_val(n->operands[1]));
 
             case '<':
-            //logger::info() << "Node* execute(Function *n): '<'" << endl;
+            //logger::info() << "Node* execute(Instruction *n): '<'" << endl;
             return op::lt(context::get_val(n->operands[0]), context::get_val(n->operands[1]));
 
             case T_LE:
-            //logger::info() << "Node* execute(Function *n): '<='" << endl;
+            //logger::info() << "Node* execute(Instruction *n): '<='" << endl;
             return op::le(context::get_val(n->operands[0]), context::get_val(n->operands[1]));
 
             case T_EQ:
-            //logger::info() << "Node* execute(Function *n): '=='" << endl;
+            //logger::info() << "Node* execute(Instruction *n): '=='" << endl;
             return op::eq(context::get_val(n->operands[0]), context::get_val(n->operands[1]));
 
             case T_NE:
-            //logger::info() << "Node* execute(Function *n): '!='" << endl;
+            //logger::info() << "Node* execute(Instruction *n): '!='" << endl;
             return op::ne(context::get_val(n->operands[0]), context::get_val(n->operands[1]));
 
             case '^':
-            //logger::info() << "Node* execute(Function *n): '^'" << endl;
+            //logger::info() << "Node* execute(Instruction *n): '^'" << endl;
             return op::exp(context::get_val(n->operands[0]), context::get_val(n->operands[1]));
 
             default:
@@ -121,7 +121,7 @@ namespace functions {
     Node* execute(Node* n) {
         logger::debug() << "execute(Node*)" << NodeInfo(n) << endl;
 
-        auto f = dynamic_cast<Function*>(n);
+        auto f = dynamic_cast<Instruction*>(n);
         if (f) {
             return execute(f);
         }

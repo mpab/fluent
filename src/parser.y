@@ -43,7 +43,7 @@ program:
         ;
 
 function:
-          function stmt         { ex($2); }
+          function stmt         { exec($2); }
         | function console      {}
         | /* nullptr */
         ;
@@ -71,7 +71,7 @@ console:
                 context::free_unused_nodes();
         }
         | T_CONSOLE_EXECUTE {
-                context::execute();
+                context::execute_blocks();
         }
         | T_CONSOLE_LOGGING_ON {
                 logger::on();
@@ -82,38 +82,38 @@ console:
         ;
 
 stmt:
-        ';'                                     { $$ = opr(';', 2, 0, 0); }
+        ';'                                     { $$ = addi(';', 2, 0, 0); }
         | expr ';'                              { $$ = $1; }
-        | T_OUT expr ';'                        { $$ = opr(T_OUT, 1, $2); }
-        | T_OUTL expr ';'                       { $$ = opr(T_OUTL, 1, $2); }
-        | T_SYMBOL '=' expr ';'                 { $$ = opr('=', 2, $1, $3); }
-        | T_WHILE '(' expr ')' stmt             { $$ = opr(T_WHILE, 2, $3, $5); }
-        | T_COND '(' expr ')' stmt %prec T_CONDX{ $$ = opr(T_COND, 2, $3, $5); }
-        | T_COND '(' expr ')' stmt T_ELSE stmt  { $$ = opr(T_COND, 3, $3, $5, $7); }
+        | T_OUT expr ';'                        { $$ = addi(T_OUT, 1, $2); }
+        | T_OUTL expr ';'                       { $$ = addi(T_OUTL, 1, $2); }
+        | T_SYMBOL '=' expr ';'                 { $$ = addi('=', 2, $1, $3); }
+        | T_WHILE '(' expr ')' stmt             { $$ = addi(T_WHILE, 2, $3, $5); }
+        | T_COND '(' expr ')' stmt %prec T_CONDX{ $$ = addi(T_COND, 2, $3, $5); }
+        | T_COND '(' expr ')' stmt T_ELSE stmt  { $$ = addi(T_COND, 3, $3, $5, $7); }
         | '{' stmt_list '}'                     { $$ = $2; }
         ;
 
 stmt_list:
           stmt                                  { $$ = $1; }
-        | stmt_list stmt                        { $$ = opr(';', 2, $1, $2); }
+        | stmt_list stmt                        { $$ = addi(';', 2, $1, $2); }
         ;
 
 expr:
           T_STRING                              { $$ = $1; }
         | T_NUMERIC                             { $$ = $1; }   
         | T_SYMBOL                              { $$ = $1; }
-        | '-' expr %prec T_NEG                  { $$ = opr(T_NEG, 1, $2); }
-        | expr '+' expr                         { $$ = opr('+', 2, $1, $3); }
-        | expr '-' expr                         { $$ = opr('-', 2, $1, $3); }
-        | expr '*' expr                         { $$ = opr('*', 2, $1, $3); }
-        | expr '/' expr                         { $$ = opr('/', 2, $1, $3); }
-        | expr '<' expr                         { $$ = opr('<', 2, $1, $3); }
-        | expr '>' expr                         { $$ = opr('>', 2, $1, $3); }
-        | expr T_GE expr                        { $$ = opr(T_GE, 2, $1, $3); }
-        | expr T_LE expr                        { $$ = opr(T_LE, 2, $1, $3); }
-        | expr T_NE expr                        { $$ = opr(T_NE, 2, $1, $3); }
-        | expr T_EQ expr                        { $$ = opr(T_EQ, 2, $1, $3); }
-        | expr '^' expr                         { $$ = opr('^', 2, $1, $3); }
+        | '-' expr %prec T_NEG                  { $$ = addi(T_NEG, 1, $2); }
+        | expr '+' expr                         { $$ = addi('+', 2, $1, $3); }
+        | expr '-' expr                         { $$ = addi('-', 2, $1, $3); }
+        | expr '*' expr                         { $$ = addi('*', 2, $1, $3); }
+        | expr '/' expr                         { $$ = addi('/', 2, $1, $3); }
+        | expr '<' expr                         { $$ = addi('<', 2, $1, $3); }
+        | expr '>' expr                         { $$ = addi('>', 2, $1, $3); }
+        | expr T_GE expr                        { $$ = addi(T_GE, 2, $1, $3); }
+        | expr T_LE expr                        { $$ = addi(T_LE, 2, $1, $3); }
+        | expr T_NE expr                        { $$ = addi(T_NE, 2, $1, $3); }
+        | expr T_EQ expr                        { $$ = addi(T_EQ, 2, $1, $3); }
+        | expr '^' expr                         { $$ = addi('^', 2, $1, $3); }
         | '(' expr ')'                          { $$ = $2; }
         ;
 %%

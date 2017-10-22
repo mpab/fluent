@@ -3,7 +3,7 @@
 #include <vector>
 #include "node.h"
 #include "logger.h"
-#include "functions.h"
+#include "opcodes.h"
 #include "y.tab.h"
 
 // for debugging
@@ -15,9 +15,13 @@ namespace context {
     using namespace std;
     using namespace node;
 
-    Node* this_active_frame = nullptr;
-    Node* active_frame() {
-        return this_active_frame;
+    vector<Node*> blocks;
+    list <const Node*> tracked_nodes;
+    unordered_map<string, Node*> symbols;
+    
+    const Node* this_active_block = nullptr;
+    const Node* active_block() {
+        return this_active_block;
     }
 
     ExecuteMode execute_mode = IMMEDIATE;
@@ -25,32 +29,13 @@ namespace context {
         execute_mode = mode;
     }
 
-    vector<Node*> frames;
-    
-    void execute(Node *n) { 
-
-#       ifdef  DEBUG_BUILD
-        logger::info() << "void execute: " << NodeInfo(n) << endl;
-#       endif
-
-        frames.push_back(n);
-        if (execute_mode == IMMEDIATE) {
-            this_active_frame = n;
-            functions::execute(n);
-            free_unused_nodes();
-        }
-
-#   ifdef  DEBUG_BUILD
-        console::inspect(true);
-#   endif
-
+    const Node* this_last_created_node = nullptr;
+    const Node* last_created_node() {
+        return this_last_created_node;
     }
 
-    list <const Node*> tracked_nodes;
-
-    unordered_map<string, Node*> symbols;
-
     void track_node_create(const Node* n) {
+        this_last_created_node = n;
         logger::debug() << NodeInfo(n) << "created" << endl;
         tracked_nodes.push_back(n);
     }
@@ -59,8 +44,25 @@ namespace context {
         logger::debug() << NodeInfo(n) << "deleted" << endl;
         tracked_nodes.remove(n);
     }
+    
+    void execute_block(Node *n) { 
+#       ifdef  DEBUG_BUILD
+        logger::info() << "void execute_block: " << NodeInfo(n) << endl;
+#       endif
 
-    Node* func(int opcode, int count, Node* n1, Node* n2, Node* n3) {
+        blocks.push_back(n);
+        if (execute_mode == IMMEDIATE) {
+            this_active_block = n;
+            opcodes::execute(n);
+            free_unused_nodes();
+        }
+
+#   ifdef  DEBUG_BUILD
+        console::inspect(true);
+#   endif
+    }
+
+    Node* add_instruction(int opcode, int count, Node* n1, Node* n2, Node* n3) {
            
         auto v = vector<Node*>();
 
@@ -82,14 +84,13 @@ namespace context {
             v.push_back(n1);
             v.push_back(n2);
             break;
-        
         }
 
-        auto n = new Function(opcode, v);
+        auto n = new Instruction(opcode, v);
         logger::debug() << NodeInfo(n) << endl;
 
 #       ifdef  DEBUG_BUILD
-        //logger::info() << "func:[" << opcode_name(opcode) << "](" << count << ")" << "[" << (void*)n1 << "][" << (void*)n2 << "][" << (void*)n3 << "]" << endl;
+        //logger::info() << "add_instruction:[" << opcode_name(opcode) << "](" << count << ")" << "[" << (void*)n1 << "][" << (void*)n2 << "][" << (void*)n3 << "]" << endl;
         //logger::info() << NodeInfo(n) << endl;
         //if (opcode == T_COND) { console::inspect(true); }
 #       endif
@@ -102,7 +103,7 @@ namespace context {
         logger::warn(s.c_str());
     }
 
-    Node* get_node(string k, bool warn_if_not_defined) {
+    Node* get_symbol_node(string k, bool warn_if_not_defined) {
         auto v = symbols.find(k);
 
         if (v == symbols.end()) {
@@ -141,7 +142,7 @@ namespace context {
         logger::debug("get_val: trying symbol");
         auto symbol = dynamic_cast<Symbol*>(n);
         if (symbol) {
-            auto node = get_node(symbol->name);
+            auto node = get_symbol_node(symbol->name);
             variable = copy_dynamic_cast(node);
             if (variable) {
                 return variable;
@@ -149,9 +150,9 @@ namespace context {
         }
 
         logger::debug("get_val: trying instruction");
-        auto instruction = dynamic_cast<Function*>(n);
+        auto instruction = dynamic_cast<Instruction*>(n);
         if (instruction) {
-            variable = copy_dynamic_cast(functions::execute(instruction));
+            variable = copy_dynamic_cast(opcodes::execute(instruction));
             if (variable) {
                 return variable;
             }
@@ -166,7 +167,7 @@ namespace context {
         logger::debug() << "Node* assign(Symbol*, Variable*) " << (void*)k << " " << (void*)v << endl;
 
         if (!k || !v) {
-            logger::error("assign: null LHS or RHS");
+            logger::error("assign: null Symbol or Variable");
             return nullptr;
         }
 
@@ -195,22 +196,22 @@ namespace context {
         auto unused_nodes = tracked_nodes;
 
         for (auto it : symbols) {    
-            auto n = context::get_node(it.first);
+            auto n = context::get_symbol_node(it.first);
             logger::debug() << "free_unused_nodes() - keeping: " << (void*)n << endl;
             unused_nodes.remove(n);
         }
 
         for (auto n : unused_nodes) {
             logger::debug() << "free_unused_nodes() - deleting: " << (void*)n << endl;
-            frames.erase(remove(frames.begin(), frames.end(), n), frames.end());
+            blocks.erase(remove(blocks.begin(), blocks.end(), n), blocks.end());
             delete n;
         }       
     }
 
-    void execute() {
-        for (auto f : frames) {
-            this_active_frame = f;
-            functions::execute(f);
+    void execute_blocks() {
+        for (auto b : blocks) {
+            this_active_block = b;
+            opcodes::execute(b);
         }
     }
 }

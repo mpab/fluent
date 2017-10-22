@@ -20,7 +20,7 @@
 
 namespace context {
     extern unordered_map<string, Node*> symbols;
-    extern vector<Node*> frames;
+    extern vector<Node*> blocks;
     extern list <const Node*> tracked_nodes;
 }
 
@@ -54,21 +54,21 @@ namespace console {
         cout << "Symbols: " << context::symbols.size() << endl;
 
         for (auto it : context::symbols) {
-            auto n = context::get_node(it.first);
+            auto n = context::get_symbol_node(it.first);
             cout << it.first << " [" << NodeInfo(n) << "]" << endl;
         }
 
-        cout << "================================= FRAMES ======================================" << endl;
-        cout << "Frames: " << context::frames.size() << endl;
+        cout << "================================= BLOCKS ======================================" << endl;
+        cout << "Blocks: " << context::blocks.size() << endl;
 
-        for (auto n : context::frames) {
-            if (n == context::active_frame()) {
+        for (auto n : context::blocks) {
+            if (n == context::active_block()) {
                 cout << ANSI_COLOR_MAGENTA;
             }
             cout << NodeInfo(n) << ANSI_COLOR_RESET << endl;
         }
         
-        cout << "================================== NODES ======================================" << endl;
+        cout << "================================= NODES =======================================" << endl;
         cout << "Nodes: " << context::tracked_nodes.size() << endl;
 
         for (auto n : context::tracked_nodes) {

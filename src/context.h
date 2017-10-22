@@ -1,22 +1,24 @@
 #include <string>
 #include "node.h"
 
-#define ex context::execute
-#define opr context::func
+#define exec context::execute_block
+#define addi context::add_instruction
 
 namespace context {
     using namespace std;
     using namespace node;
 
-    Node* func(int opcode, int count, Node* n1, Node* n2 = nullptr, Node* n3 = nullptr);
+    Node* add_instruction(int opcode, int count, Node* n1, Node* n2 = nullptr, Node* n3 = nullptr);
 
-    Node* get_node(string k, bool warn_if_not_defined = true);
+    Node* get_symbol_node(string k, bool warn_if_not_defined = true);
     void free_unused_nodes();
     void free_all_nodes();
 
-    void execute(Node *n);
-    void execute();
-    Node* active_frame();
+    void execute_blocks();
+    void execute_block(Node *n);
+
+    const Node* active_block();
+    const Node* last_created_node();
 
     enum ExecuteMode {IMMEDIATE, BUFFERED};
     void set_execute_mode(ExecuteMode mode);

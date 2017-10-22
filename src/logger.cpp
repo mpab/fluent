@@ -144,6 +144,8 @@ void yyerror(const char *s) {
         return;
     }
 
+    //auto bad_token = context::current_node();
+
     if (0 == strcmp("syntax error, unexpected T_SYMBOL, expecting '('", s)) {
         logger::error("syntax error, missing '('");
         return;
