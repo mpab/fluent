@@ -5,10 +5,13 @@
 #ifndef FLUENT_CONSOLE_H
 #define FLUENT_CONSOLE_H
 
+#include "node.h"
+
 namespace console {
-    template <typename T> void echo(T v);
-    void echo_var(char* k);
-    void list();
+    using namespace node;
+
+    void echo(Node* pn);
+    void inspect(bool on_error = false);
     void help();
     void quit();
     void copyright();

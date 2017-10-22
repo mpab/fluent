@@ -1,0 +1,15 @@
+a=10;
+b=20.123;
+s1=a+b;       
+s2=b+a;
+c="hello,";
+d=" world";
+greeting=c+d;
+outl a;
+outl b;
+outl c;
+outl d;
+outl s1;
+outl s2;
+outl greeting;
+outl -greeting;

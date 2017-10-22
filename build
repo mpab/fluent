@@ -7,6 +7,9 @@ else
 fi
 
 cd src
+rm -f lex.yy.c
+rm -f lex.yy.h
+rm -f y.tab.c
 yacc -dtv parser.y
 lex lexer.l
 
@@ -17,9 +20,9 @@ rm -rf out
 mkdir out
 cd out
 
-export SRCFILES="../src/main.cpp ../src/yyerror.cpp ../src/var.cpp ../src/statement.cpp ../src/console.cpp ../src/y.tab.c ../src/lex.yy.c"
+export SRCFILES="../src/main.cpp ../src/logger.cpp ../src/node.cpp ../src/context.cpp ../src/functions.cpp ../src/console.cpp ../src/y.tab.c ../src/lex.yy.c ../src/opcode_map.cpp"
 export CPPFLAGS="-x c++ -Wno-write-strings -Wno-c++11-extensions"
 g++ $CPPFLAGS $SRCFILES -ll -o fluent
-g++ -DDEBUG_LOGGING $CPPFLAGS $SRCFILES -ll -o dfluent
+g++ -DDEBUG_BUILD $CPPFLAGS $SRCFILES -ll -o dfluent
 cp fluent ~/bin/
 cp dfluent ~/bin/

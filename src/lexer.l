@@ -2,137 +2,110 @@
 
 %{
 #include <stdlib.h>
+#include "node.h"
 #include "y.tab.h"
-
-#include "logging.h"
-
-extern void yyerror(const char *);
+#include "logger.h"
+#include "lexer.h"
 
 extern int __line__;
 
 %}
 
-DIGIT       [0-9]
-ALPHA       [a-zA-z]
-ALPHANUM    [a-zA-z0-9]
-IDSTART     [_a-zA-z]
+E_DIGIT             [0-9]
 
-DQSTRING    \"(\\.|[^"])*\"
-SQSTRING    \'(\\.|[^'])*\'
+E_INTEGER           {E_DIGIT}+
+E_REAL_1            {E_DIGIT}+"f"
+E_REAL_2            {E_DIGIT}+\.?{E_DIGIT}+"f"?
+E_BAD_REAL_1        {E_DIGIT}+\.
+E_BAD_REAL_2        \.{E_DIGIT}+
+E_QSTRING           (\"(\\.|[^"])*\"|\'(\\.|[^'])*\')
 
-INT         {DIGIT}+
-REAL_1      {DIGIT}+"f"
-REAL_2      {DIGIT}+\.?{DIGIT}+"f"?
-BAD_REAL_1  {DIGIT}+\.
-BAD_REAL_2  \.{DIGIT}+
-QSTRING     (\"(\\.|[^"])*\"|\'(\\.|[^'])*\')
-
-ID          [_a-zA-Z][_a-zA-Z0-9]*
-BADID       [0-9][_a-zA-Z][_a-zA-Z0-9]
+E_SYMBOL            [_a-zA-Z][_a-zA-Z0-9]*
+E_BAD_SYMBOL        [0-9][_a-zA-Z][_a-zA-Z0-9]
 
 %%
+
+"::help\n"    {++__line__; return T_CONSOLE_HELP;}
+"::h\n"       {++__line__; return T_CONSOLE_HELP;}
+"::quit\n"    {++__line__; return T_CONSOLE_QUIT;}
+"::q\n"       {++__line__; return T_CONSOLE_QUIT;}
+"::inspect\n" {++__line__; return T_CONSOLE_INSPECT;}
+"::i\n"       {++__line__; return T_CONSOLE_INSPECT;}
+"::clean\n"   {++__line__; return T_CONSOLE_CLEAN;}
+"::c\n"       {++__line__; return T_CONSOLE_CLEAN;}
+"::free\n"    {++__line__; return T_CONSOLE_FREE;}
+"::f\n"       {++__line__; return T_CONSOLE_FREE;}
+"::bon\n"     {++__line__; return T_CONSOLE_EXEC_BUFFERED;}
+"::boff\n"    {++__line__; return T_CONSOLE_EXEC_IMMEDIATE;}
+"::run\n"     {++__line__; return T_CONSOLE_EXECUTE;}
+"::r\n"       {++__line__; return T_CONSOLE_EXECUTE;}
+"::lon\n"     {++__line__; return T_CONSOLE_LOGGING_ON;}
+"::loff\n"    {++__line__; return T_CONSOLE_LOGGING_OFF;}
+"::".*\n      {logger::warn("unrecognised command"); ++__line__;}
 
 [ \t] ; /* skip whitespace */ 
 
 \n {
-    DP("T_ENDL:\n");
     ++__line__;
-    return T_ENDL;
 }
 
 "//".*\n {
-    DP("COMMENT\n");
+    logger::debug("COMMENT");
     ++__line__;
 }
 
-(out) {
-    DP("OUT ");
-    RET(T_OUT);
-}
-
-(outl) {
-    DP("OUTL ");
-    RET(T_OUTL);
-}
-
 "..." {
-    DP("T_ELLIPSIS ");
     RET(T_ELLIPSIS);
 }
 
-[-+=^*/] { // operators
-    DP("ARITH_OP: %s ", yytext);
+[-()<>=+*/;{}.,^] { // operators
     RET(*yytext);
 }
 
-[\(\)\{\}\[\]] { // operators
-    DP("BRACE: %s ", yytext);
-    RET(*yytext);
+">="            RET(T_GE);
+"<="            RET(T_LE);
+"=="            RET(T_EQ);
+"!="            RET(T_NE);
+"while"         RET(T_WHILE);
+"if"            RET(T_COND);
+"else"          RET(T_ELSE);
+"outl"          RET(T_OUTL);
+"out"           RET(T_OUT);
+
+{E_SYMBOL} { 
+    SET(T_SYMBOL, symbol);
 }
 
-"," {
-    DP("COMMA ");
-    RET(*yytext);
+{E_INTEGER} {
+    SET(T_NUMERIC, integer);
 }
 
-{ID} { // variable identifiers
-    strcpy(yylval.s, yytext);    
-    DP("ID: %s ", yylval.s);
-    RET(T_ID);
+{E_REAL_1} {
+    SET(T_NUMERIC, real);
 }
 
-{INT} { // integers
-    yylval.n = atoi(yytext);
-    DP("INT: %ld ", yylval.n);
-    RET(T_INT);
+{E_REAL_2} {
+    SET(T_NUMERIC, real);
 }
 
-{REAL_1} {
-    yylval.r = atof(yytext);
-    DP("REAL_1: %f ", yylval.r);
-    RET(T_REAL);
-}
-
-{REAL_2} {
-    yylval.r = atof(yytext);
-    DP("REAL_2: %f ", yylval.r);
-    RET(T_REAL);
-}
-
-{QSTRING} { // string
-    //strcpy(yylval.s, yytext);
-
-    memcpy(yylval.s, yytext + 1, yyleng - 2); // copy all but quotes
-    yylval.s[yyleng - 2] = 0;                 // terminator
-
-    DP("QSTRING: %s ", yylval.s);
-    RET(T_STRING);
+{E_QSTRING} {
+    SET(T_STRING, quoted_string);
 }
        
-"::help"    {return CONSOLE_HELP;}
-"::h"       {return CONSOLE_HELP;}
-"::quit"    {return CONSOLE_QUIT;}
-"::q"       {return CONSOLE_QUIT;}
-"::list"    {return CONSOLE_LIST;}
-"::l"       {return CONSOLE_LIST;}
-
-{BAD_REAL_1} {
-    DP("BAD_REAL_1 ");
-    yyerror("invalid floating point formatting - expected: 0-9f, 0-9.0-9, 0-9.0-9f");
+{E_BAD_REAL_1} {
+    logger::error("invalid floating point formatting - use: 123f or 1.234 or 0.123");
 }
 
-{BAD_REAL_2} {
-    DP("BAD_REAL_2 ");
-    yyerror("invalid floating point formatting - expected: 0-9f, 0-9.0-9, 0-9.0-9f");
+{E_BAD_REAL_2} {
+    logger::error("invalid floating point formatting - use: 123f or 1.234 or 0.123");
 }
 
-{BADID} {
-    yyerror("invalid identifier");
+{E_BAD_SYMBOL} {
+    logger::error("badly formed identifier");
 }
 
 . { /* anything else is an error */
-    //yyerror("ERR");
-    yyerror("invalid syntax");
+    logger::error("invalid input");
 }
 
 %%

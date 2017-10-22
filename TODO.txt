@@ -15,9 +15,26 @@ file i/o
     - displaying graphics
 
 syntax error messages
-    - inspect error in yyerror and subsitute better text for types - e.g. 'T_STRING'
+    - collate messages, remove duplicates, show at end of parse
+    - inspect error in yyerror and substitute better text for types - e.g. 'T_STRING'
+
+BUGS
+------------------------------------------------
 
 DONE
 ------------------------------------------------
+2017.10
+FIXED:
+parser.y
+arithmetic: evaluation of {symbol} - NUMERIC: syntax error, unexpected '-', expecting TOK_ENDL
+works in brackets
+works with assignment - e.g. n=n-1, r=r-1.0
+
+2017.10
+Node - use visitor pattern for accessing value
+
+2017.10
+refactor node to use boost:variant
+
 2017.10
 basic variable handling (integer, real, string, sequence)

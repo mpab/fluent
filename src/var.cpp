@@ -8,6 +8,7 @@
 #include <stack>
 #include <unordered_map>
 #include <iostream>
+#include "logger.h"
 
 #include "var.h"
 
@@ -37,7 +38,7 @@ namespace var {
 
     IVar* get_var(string k) {
         auto v = var_map.find(k);
-        return v != var_map.end() ? v->second : NULL;
+        return v != var_map.end() ? v->second : nullptr;
     }
 
     void add_var(string k, IVar *pv) {
@@ -45,24 +46,25 @@ namespace var {
         var_map[k] = pv;
     }
 
-    void var_not_defined_error(ostream& o, string n) {
-        o << "variable: " << n << " not defined" << endl;
+    void warn_undefined(string n) {
+        string s = "symbol " + n + " is not defined";
+        logger::warn(s.c_str());
     }
 
     void stream(string k) {
         auto var = get_var(k);
         if (!var) {
-            var_not_defined_error(cerr, k);
+            warn_undefined(k);
             return;
         }
 
         var->stream(cout);
     }
 
-    void assign(string k1, string k2) {
+    void copy(string k1, string k2) {
         auto var = get_var(k2);
         if (!var) {
-            var_not_defined_error(cerr, k2);
+            warn_undefined(k2);
             return;
         }
 
@@ -71,7 +73,7 @@ namespace var {
 
     template void create<long>(string k, long v);
     template void create<double>(string k, double v);
-    template void create<string>(string k, string v);
+    template void create<char*>(string k, char* v);
     template <typename T> void create(string k, T v) {
         add_var(k, new Var<T>(v));
     }
@@ -83,20 +85,20 @@ namespace var {
 
         auto pivar = get_var(k);
         if (!pivar) {
-            err << "variable: " << k << " not defined";
+            err << "symbol " << k << " is not defined";
             return T();
         }
 
         Var<T>* pvar = dynamic_cast< Var<T> * >(pivar);
         if (!pvar) {
-            err << "variable: " << k << " not of type: " << typeid(T).name() << endl;
+            err << "symbol " << k << " is not of type: " << typeid(T).name() << endl;
             return T();
         }
         
         return pvar->value();
     }
 
-    struct Sequence : public IVar{
+    struct Sequence : public IVar {
         Sequence(long start, long end) : IVar(typeid(Sequence)), start(start), end(end), v(start) {}
         Sequence() : IVar(typeid(Sequence)), start(0), end(0) {}
         void stream(ostream& o) { o << value(); }
@@ -129,21 +131,4 @@ namespace var {
         seq_stack.pop();
         add_var(k, var);
     }
-
-    void list_vars() {
-        if (0 == var_map.size()) {
-            cout << "No variables defined." << endl;
-            return;
-        }
-
-        cout << "=============================== VARIABLES =====================================" << endl;
-        for (auto it : var_map) {    
-            auto var = get_var(it.first);
-            cout << it.first << " = ";
-            var->info(cout);
-            cout << " (type: " << var->type.name() << ")" << endl;
-        }
-        cout << "===============================================================================" << endl;
-    }
-
 }

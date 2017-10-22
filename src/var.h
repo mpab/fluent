@@ -9,12 +9,14 @@
 #include <ostream>
 
 namespace var {   
-    void assign(std::string k1, std::string k2);
+    void copy(std::string k1, std::string k2);
     template <typename T> void create(std::string k, T v);
     template <typename T> T value(std::string k, std::ostream& err);
 
     void push_seq(long start, long end);
     void create_seq(std::string k);
+
+    void stream(std::string k);
 }
 
 #endif //FLUENT_VAR_H

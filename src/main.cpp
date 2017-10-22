@@ -1,5 +1,6 @@
 #include <iostream>
 #include "console.h"
+#include "context.h"
 
 extern FILE *yyin;
 extern int yyparse (void);
@@ -18,7 +19,6 @@ int main (int argc, char **argv) {
     } else {
         yyin = stdin;
         __file__ = 0;
-
         console::copyright();
     }
 

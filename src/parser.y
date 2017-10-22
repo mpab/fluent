@@ -1,163 +1,119 @@
 %{
-#include <iostream>
-using namespace std;
 
-#include "logging.h"
-#include "var.h"
-#include "statement.h"
+#include "node.h"
+#include "context.h"
 #include "console.h"
+#include "logger.h"
 
 int yylex(void);
-void yyerror(const char *);
 
 %}
+
 %define parse.error verbose
 
-%union
-{
-    long n;
-    double r;
-    char s[100];
-}
+%union {
+    node::Node* node;
+};
 
-%token T_INT T_REAL T_ID T_STRING
-%type<n> exp_int T_INT
-%type<r> exp_real T_REAL
-%type<s> T_ID
-%type<s> T_STRING
+%token <node> T_SYMBOL
+%token <node> T_NUMERIC
+%token <node> T_STRING
 
-%token T_ENDL T_EOF
-%token T_ELLIPSIS
-%token T_OUT T_OUTL
-%token CONSOLE_QUIT CONSOLE_HELP CONSOLE_LIST
+%token T_CONSOLE_QUIT T_CONSOLE_HELP T_CONSOLE_INSPECT
+%token T_CONSOLE_CLEAN T_CONSOLE_FREE T_CONSOLE_EXECUTE
+%token T_CONSOLE_LOGGING_ON T_CONSOLE_LOGGING_OFF T_CONSOLE_EXEC_BUFFERED T_CONSOLE_EXEC_IMMEDIATE
 
+%token T_ENDL T_EOF T_ELLIPSIS
+%token T_WHILE T_COND T_OUT T_OUTL
+%nonassoc T_CONDX
+%nonassoc T_ELSE
+
+%type <node> stmt expr stmt_list
+
+%left T_GE T_LE T_EQ T_NE '>' '<'
 %left '+' '-'
 %left '*' '/'
-%precedence NEG
-%right '^'
+%left '^'
+%precedence T_NEG
 
 %%
 
 program:
-| program line
-;
+        function                { exit(0); }
+        ;
 
-line: T_ENDL
-    | stmt T_ENDL {
-    }
-    | CONSOLE_QUIT T_ENDL {
-        console::quit();
-    }
-    | CONSOLE_HELP T_ENDL {
-        console::help();
-    }
-    | CONSOLE_LIST T_ENDL {
-        console::list();
-    }
-;
+function:
+          function stmt         { ex($2); }
+        | function console      {}
+        | /* nullptr */
+        ;
+
+console:
+        T_CONSOLE_QUIT {
+                console::quit();
+        }
+        | T_CONSOLE_HELP {
+                console::help();
+        }
+        | T_CONSOLE_EXEC_BUFFERED {
+                context::set_execute_mode(context::BUFFERED);
+        }
+        | T_CONSOLE_EXEC_IMMEDIATE {
+                context::set_execute_mode(context::IMMEDIATE);
+        }
+        | T_CONSOLE_INSPECT {
+                console::inspect();
+        }
+        | T_CONSOLE_CLEAN {
+                context::free_all_nodes();
+        }
+        | T_CONSOLE_FREE {
+                context::free_unused_nodes();
+        }
+        | T_CONSOLE_EXECUTE {
+                context::execute();
+        }
+        | T_CONSOLE_LOGGING_ON {
+                logger::on();
+        }
+        | T_CONSOLE_LOGGING_OFF {
+                logger::off();
+        }
+        ;
 
 stmt:
-    exp_int {
-        console::echo($1);
-    }
-    | exp_real {
-        console::echo($1);
-    }
-    | T_ID {
-        console::echo_var($1);
-    }
-    | T_STRING {
-        console::echo($1);
-    }
-    | T_ID '=' T_ID {
-        var::assign($1, $3);
-    }
-    | T_ID '=' exp_int {
-        var::create<long>($1, $3);
-    }
-    | T_ID '=' exp_real {
-        var::create<double>($1, $3);
-    }
-    | T_ID '=' T_STRING {
-        var::create<string>($1, $3);
-    }
-    | T_ID '=' seq {
-        var::create_seq($1);
-    }
-    | T_OUTL {
-        statement::outl();
-    }
-    | T_OUT exp_int {
-        statement::out($2);
-    }
-    | T_OUTL exp_int {
-        statement::outl($2);
-    }
-    | T_OUT exp_real {
-        statement::out($2);
-    }
-    | T_OUTL exp_real {
-        statement::outl($2);
-    }
-    | T_OUT T_STRING {
-        statement::out($2);
-    }
-    | T_OUTL T_STRING {
-        statement::outl($2);
-    }
-    | T_OUT T_ID {
-        statement::outv($2);
-    }
-    | T_OUTL T_ID {
-        statement::outvl($2);
-    }
-;
+        ';'                                     { $$ = opr(';', 2, 0, 0); }
+        | expr ';'                              { $$ = $1; }
+        | T_OUT expr ';'                        { $$ = opr(T_OUT, 1, $2); }
+        | T_OUTL expr ';'                       { $$ = opr(T_OUTL, 1, $2); }
+        | T_SYMBOL '=' expr ';'                 { $$ = opr('=', 2, $1, $3); }
+        | T_WHILE '(' expr ')' stmt             { $$ = opr(T_WHILE, 2, $3, $5); }
+        | T_COND '(' expr ')' stmt %prec T_CONDX{ $$ = opr(T_COND, 2, $3, $5); }
+        | T_COND '(' expr ')' stmt T_ELSE stmt  { $$ = opr(T_COND, 3, $3, $5, $7); }
+        | '{' stmt_list '}'                     { $$ = $2; }
+        ;
 
-exp_int:
-    T_INT {
-        $$ = $1;
-    }
-    | T_ID {
-        $$ = var::value<long>($1, cout);
-    }
-    | exp_int '+' exp_int { $$ = statement::add($1, $3); }
-    | exp_int '-' exp_int { $$ = statement::subtract($1, $3); }
-    | exp_int '*' exp_int { $$ = statement::multiply($1, $3); }
-    | exp_int '/' exp_int { $$ = statement::divide($1, $3); }
-    | '-' exp_int %prec NEG { $$ = statement::negate($2); }
-    | exp_int '^' exp_int { $$ = statement::power($1, $3); }
-    | '(' exp_int ')' { $$ = $2; }
-;
+stmt_list:
+          stmt                                  { $$ = $1; }
+        | stmt_list stmt                        { $$ = opr(';', 2, $1, $2); }
+        ;
 
-exp_real:
-    T_REAL {
-        $$ = $1;
-    }
-    | T_ID {
-        $$ = var::value<double>($1, cout);
-    }
-    | exp_real '+' exp_real { $$ = statement::add($1, $3); }
-    | exp_real '-' exp_real { $$ = statement::subtract($1, $3); }
-    | exp_real '*' exp_real { $$ = statement::multiply($1, $3); }
-    | exp_real '/' exp_real { $$ = statement::divide($1, $3); }
-    | '-' exp_real %prec NEG { $$ = statement::negate($2); }
-    | exp_real '^' exp_real { $$ = statement::power($1, $3); }
-    | '(' exp_real ')' { $$ = $2; }
-
-//exps:
-//    T_QSTRING { $$ = $1; }
-//    | exps '+' exps { $$ = $1 + $3; }
-//    | '(' exps ')' { $$ = $2; }
-//;
-
-seq:
-    '[' T_INT ',' T_ELLIPSIS ',' T_INT ']' {
-        //cout << "seq(" << $2 << " to " << $6 << ")";
-        var::push_seq($2, $6);
-    }
-    //| '[' T_INT T_ELLIPSIS T_INT ',' T_INT ']' {
-    //    cout << "seq_skip(" << $2 << " to " << $4 << " skip every " << $6 << ")";
-    //}
-;
-
+expr:
+          T_STRING                              { $$ = $1; }
+        | T_NUMERIC                             { $$ = $1; }   
+        | T_SYMBOL                              { $$ = $1; }
+        | '-' expr %prec T_NEG                  { $$ = opr(T_NEG, 1, $2); }
+        | expr '+' expr                         { $$ = opr('+', 2, $1, $3); }
+        | expr '-' expr                         { $$ = opr('-', 2, $1, $3); }
+        | expr '*' expr                         { $$ = opr('*', 2, $1, $3); }
+        | expr '/' expr                         { $$ = opr('/', 2, $1, $3); }
+        | expr '<' expr                         { $$ = opr('<', 2, $1, $3); }
+        | expr '>' expr                         { $$ = opr('>', 2, $1, $3); }
+        | expr T_GE expr                        { $$ = opr(T_GE, 2, $1, $3); }
+        | expr T_LE expr                        { $$ = opr(T_LE, 2, $1, $3); }
+        | expr T_NE expr                        { $$ = opr(T_NE, 2, $1, $3); }
+        | expr T_EQ expr                        { $$ = opr(T_EQ, 2, $1, $3); }
+        | expr '^' expr                         { $$ = opr('^', 2, $1, $3); }
+        | '(' expr ')'                          { $$ = $2; }
+        ;
 %%
