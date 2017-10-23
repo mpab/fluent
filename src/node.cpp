@@ -73,15 +73,6 @@ namespace node {
 =======================================================================================================================
 */
 
-    struct ostream_visitor : public static_visitor<> {
-        ostream& o;
-        ostream_visitor(ostream& o) : static_visitor(), o(o) {}
-
-        void operator() (string v) const { o << v; }
-        void operator() (long v) const { o << v; }
-        void operator() (double v) const { o << v; }      
-    };
-
     ostream& operator << (ostream& o, const Node& node) {
         return o << &node;
     }
@@ -89,12 +80,12 @@ namespace node {
     ostream& operator << (ostream& o, const Node* n) {
 
         if (!n) {
-            o << "{nullptr}";
+            return o << "{nullptr}";
         }
 
-        auto var = dynamic_cast<Variable*>(const_cast<Node*>(n));
-        if (var) {
-            apply_visitor(ostream_visitor(o), var->value);
+        auto v = dynamic_cast<Variable*>(const_cast<Node*>(n));
+        if (v) {
+            o << v->value;
         }
 
         auto f = dynamic_cast<Instruction*>(const_cast<Node*>(n));
