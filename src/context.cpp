@@ -56,22 +56,17 @@ namespace context {
             return false;
         }
 
-        if (!console::repl()) {
-            delete n;
-            return false;
-        }
-
         if (n->type == VARIABLE) {
             console::echo(n); 
-            delete n;
         }
 
         if (n->type == SYMBOL) {
             auto v = var(n);
             console::echo(v);
             delete v; // because of unaliasing...
-            delete n;
         }
+
+        delete n;
 
         return true;
     }
