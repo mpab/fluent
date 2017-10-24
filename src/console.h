@@ -10,7 +10,9 @@
 namespace console {
     using namespace node;
 
-    void echo(Node* pn);
+    bool repl();
+
+    void echo(Node* p);
     void inspect(bool on_error = false);
     void help();
     void quit();

@@ -24,7 +24,7 @@ namespace context {
     extern list <const Node*> tracked_nodes;
 }
 
-extern char *__file__;
+extern char *_src_filename;
 
 /*
 =======================================================================================================================
@@ -33,20 +33,22 @@ extern char *__file__;
 namespace console {
     using namespace std;
 
-    void echo(node::Node* n) {
-        if (__file__) {
-            return;
-        }
+    bool repl() {
+        return _src_filename == nullptr;
+    }
 
-        cout << n;
-        cout << endl;
+    void echo(node::Node* n) {
+        if (!repl())
+            return;
+
+        logger::info() << n << endl;
     }
 
 /*
 =======================================================================================================================
 */
     void inspect(bool on_error) {
-        if (!on_error && __file__) {
+        if (!on_error && !repl()) {
             return;
         }
 
@@ -83,7 +85,7 @@ namespace console {
 */
 
     void help() {
-        if (__file__) {
+        if (!repl()) {
             return;
         }
 
@@ -108,7 +110,7 @@ namespace console {
     }
 
     void quit() {
-        if (__file__) {
+        if (!repl()) {
             return;
         }
 

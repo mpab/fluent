@@ -1,18 +1,22 @@
-#include "opcode_templates.h"
+//#include "opcode_templates.h"
 
 #include "opcode_map.cpp"
 
-#include "instructions.cpp"
+#include "context.cpp"
 
 #include "node.cpp"
 
-#include "context.cpp"
+#include "opcodes.cpp"
+
+//#include "node.cpp"
+
+//#include "context.cpp"
 
 #include "logger.cpp"
 
-#include "console.cpp"
+//#include "console.cpp"
 
-char* __file__ = 0;
+extern char* _src_filename;
 
 int main() {
 

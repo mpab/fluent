@@ -1,5 +1,6 @@
 cd src
 rm y.*
+rm parser.tab.c
 rm lex.*
 rm build_date.h
 rm *.7z

@@ -13,7 +13,7 @@
 using namespace std;
 
 int __line__ = 1;
-extern char *__file__;
+char *_src_filename = nullptr;
 
 #ifndef DEBUG_BUILD
 bool disable_logging = true;
@@ -106,8 +106,8 @@ namespace logger {
         
         cout << c << s;
 
-        if (__file__) {
-            cout << ", in file: " << __file__ << ", at line " << __line__ << ANSI_COLOR_RESET << endl;
+        if (!console::repl()) {
+            cout << ", in file: " << _src_filename << ", at line " << __line__ << ANSI_COLOR_RESET << endl;
             if (inspect_and_exit) {
                 console::inspect(true);
                 exit(-1);

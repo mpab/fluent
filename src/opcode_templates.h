@@ -2,13 +2,12 @@
 #define FLUENT_OPERATION_TEMPLATES_H
 
 #include <algorithm>
-#include <math.h>
+#include <cmath>
 #include "boost/variant.hpp"
 #include "node.h"
 #include "logger.h"
 
 namespace op {
-    using namespace std;
     using namespace boost;
     using namespace node;
 
@@ -527,7 +526,7 @@ namespace op {
     using eq_v = op_vis_2 <Value, eq_op<Value> >;
 
     Variable* (&xeq)(const char*, Variable*, Variable*) = op<eq_v>;
-    #define eq(a,b) xeq("eq:",a,b)
+    #define is_eq(a,b) xeq("eq:",a,b)
 
     ///////////////////////////////////////////////////////////////////////////
 

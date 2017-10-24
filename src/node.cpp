@@ -79,9 +79,11 @@ namespace node {
 
     ostream& operator << (ostream& o, const Node* n) {
 
-        if (!n) {
-            return o << "{nullptr}";
-        }
+#       ifdef DEBUG_BUILD
+        if (!n) return o << "{nullptr}";
+#       else
+        if (!n)    return o;
+#       endif
 
         auto v = dynamic_cast<Variable*>(const_cast<Node*>(n));
         if (v) {
@@ -90,7 +92,7 @@ namespace node {
 
         auto f = dynamic_cast<Instruction*>(const_cast<Node*>(n));
         if (f) {
-            o << opcode_name(f->opcode) << " ";
+            o << opcode_name(f->opcode);
         }
 
         auto s = dynamic_cast<Symbol*>(const_cast<Node*>(n));

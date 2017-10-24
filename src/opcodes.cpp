@@ -6,28 +6,27 @@
 
 namespace context {
     using namespace node;
-    Variable* get_val(Node* n);
+    Variable* var(Node* n);
     Node* assign(Node* k, Node* v);
 }
 
 namespace opcodes {
     using namespace node;
-    using namespace std;
 
     Node* execute(Node* n);
 
     Node* print(Node* n) {
-        cout << context::get_val(n);
+        cout << context::var(n);
         return nullptr;
     }
 
     Node* println(Node* n) {
-        cout << context::get_val(n) << endl;
+        cout << context::var(n) << endl;
         return nullptr;
     }
 
     bool eval_condition(Node* n) {
-        auto value = context::get_val(n);
+        auto value = context::var(n);
         if (!value) {
             return false;
         }
@@ -43,19 +42,19 @@ namespace opcodes {
             return context::assign(n->operands[0], n->operands[1]);
 
             case '+':
-            return op::add(context::get_val(n->operands[0]), context::get_val(n->operands[1]));
+            return op::add(context::var(n->operands[0]), context::var(n->operands[1]));
 
             case '-':
-            return op::sub(context::get_val(n->operands[0]), context::get_val(n->operands[1]));
+            return op::sub(context::var(n->operands[0]), context::var(n->operands[1]));
 
             case '*':
-            return op::mul(context::get_val(n->operands[0]), context::get_val(n->operands[1]));
+            return op::mul(context::var(n->operands[0]), context::var(n->operands[1]));
 
             case '/':
-            return op::div(context::get_val(n->operands[0]), context::get_val(n->operands[1]));
+            return op::div(context::var(n->operands[0]), context::var(n->operands[1]));
             
             case T_NEG:
-            return op::negate(context::get_val(n->operands[0]));
+            return op::negate(context::var(n->operands[0]));
 
             case T_OUT:
             return print(n->operands[0]);
@@ -83,31 +82,31 @@ namespace opcodes {
 
             case '>':
             //logger::info() << "Node* execute(Instruction *n): '>'" << endl;
-            return op::gt(context::get_val(n->operands[0]), context::get_val(n->operands[1]));
+            return op::gt(context::var(n->operands[0]), context::var(n->operands[1]));
 
             case T_GE:
             //logger::info() << "Node* execute(Instruction *n): '>='" << endl;
-            return op::ge(context::get_val(n->operands[0]), context::get_val(n->operands[1]));
+            return op::ge(context::var(n->operands[0]), context::var(n->operands[1]));
 
             case '<':
             //logger::info() << "Node* execute(Instruction *n): '<'" << endl;
-            return op::lt(context::get_val(n->operands[0]), context::get_val(n->operands[1]));
+            return op::lt(context::var(n->operands[0]), context::var(n->operands[1]));
 
             case T_LE:
             //logger::info() << "Node* execute(Instruction *n): '<='" << endl;
-            return op::le(context::get_val(n->operands[0]), context::get_val(n->operands[1]));
+            return op::le(context::var(n->operands[0]), context::var(n->operands[1]));
 
             case T_EQ:
             //logger::info() << "Node* execute(Instruction *n): '=='" << endl;
-            return op::eq(context::get_val(n->operands[0]), context::get_val(n->operands[1]));
+            return op::is_eq(context::var(n->operands[0]), context::var(n->operands[1]));
 
             case T_NE:
             //logger::info() << "Node* execute(Instruction *n): '!='" << endl;
-            return op::ne(context::get_val(n->operands[0]), context::get_val(n->operands[1]));
+            return op::ne(context::var(n->operands[0]), context::var(n->operands[1]));
 
             case '^':
             //logger::info() << "Node* execute(Instruction *n): '^'" << endl;
-            return op::exp(context::get_val(n->operands[0]), context::get_val(n->operands[1]));
+            return op::exp(context::var(n->operands[0]), context::var(n->operands[1]));
 
             default:
             break;

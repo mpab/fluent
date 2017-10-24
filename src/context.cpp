@@ -15,6 +15,8 @@ namespace context {
     using namespace std;
     using namespace node;
 
+    Variable* var(Node* n);
+
     vector<Node*> blocks;
     list <const Node*> tracked_nodes;
     unordered_map<string, Node*> symbols;
@@ -35,20 +37,54 @@ namespace context {
     }
 
     void track_node_create(const Node* n) {
-        this_last_created_node = n;
-        logger::debug() << NodeInfo(n) << "created" << endl;
-        tracked_nodes.push_back(n);
+        if (n) {
+            this_last_created_node = n;
+            logger::debug() << NodeInfo(n) << "created" << endl;
+            tracked_nodes.push_back(n);
+        }
     }
 
     void track_node_delete(const Node* n) {
-        logger::debug() << NodeInfo(n) << "deleted" << endl;
-        tracked_nodes.remove(n);
+        if (n) {
+            logger::debug() << NodeInfo(n) << "deleted" << endl;
+            tracked_nodes.remove(n);
+        }
     }
-    
+
+    bool is_not_an_instruction(Node *n) { 
+        if (n->type == INSTRUCTION) {
+            return false;
+        }
+
+        if (!console::repl()) {
+            delete n;
+            return false;
+        }
+
+        if (n->type == VARIABLE) {
+            console::echo(n); 
+            delete n;
+        }
+
+        if (n->type == SYMBOL) {
+            auto v = var(n);
+            console::echo(v);
+            delete v; // because of unaliasing...
+            delete n;
+        }
+
+        return true;
+    }
+     
     void execute_block(Node *n) { 
 #       ifdef  DEBUG_BUILD
         logger::info() << "void execute_block: " << NodeInfo(n) << endl;
 #       endif
+
+        // print out raw variables or symbols in repl, and don't store them
+        if (is_not_an_instruction(n)) {
+            return;
+        }
 
         blocks.push_back(n);
         if (execute_mode == IMMEDIATE) {
@@ -115,7 +151,7 @@ namespace context {
         return v->second;
     }
 
-    Variable* copy_dynamic_cast(Node* n) {
+    Variable* var_copy_cast(Node* n) {
         auto variable = dynamic_cast<Variable*>(n);
         if (variable) {
             //return a copy to prevent symbol aliasing...
@@ -124,41 +160,41 @@ namespace context {
         return nullptr;
     }
 
-    Variable* get_val(Node* n) {
+    Variable* var(Node* n) {
 
-        logger::debug() << "Variable* get_val(Node*) " << (void*)n << endl;
+        logger::debug() << "Variable* var(Node*) " << (void*)n << endl;
         
         if (!n) {
-            logger::error("get_val: Operand is null");
+            logger::error("variable: Operand is null");
             return nullptr;
         }
 
-        logger::debug("get_val: trying variable");
+        logger::debug("variable: trying variable");
         auto variable = dynamic_cast<Variable*>(n);
         if (variable) {
             return variable;
         }
 
-        logger::debug("get_val: trying symbol");
+        logger::debug("variable: trying symbol");
         auto symbol = dynamic_cast<Symbol*>(n);
         if (symbol) {
             auto node = get_symbol_node(symbol->name);
-            variable = copy_dynamic_cast(node);
+            variable = var_copy_cast(node);
             if (variable) {
                 return variable;
             }
         }
 
-        logger::debug("get_val: trying instruction");
+        logger::debug("variable: trying instruction");
         auto instruction = dynamic_cast<Instruction*>(n);
         if (instruction) {
-            variable = copy_dynamic_cast(opcodes::execute(instruction));
+            variable = var_copy_cast(opcodes::execute(instruction));
             if (variable) {
                 return variable;
             }
          }
 
-        logger::error_if(!variable, "get_val: failed");
+        logger::error_if(!variable, "variable: failed");
         return nullptr;
     }
 
@@ -183,7 +219,7 @@ namespace context {
             logger::error("assign: null LHS or RHS");
             return nullptr;
         }
-        return assign(dynamic_cast<Symbol*>(k), get_val(v));
+        return assign(dynamic_cast<Symbol*>(k), var(v));
     }
 
     void free_all_nodes() {
