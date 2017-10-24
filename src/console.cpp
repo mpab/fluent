@@ -4,12 +4,9 @@
 
 #include <iostream>
 #include <stdlib.h>
-#include <unordered_map>
-#include <list>
 #include <iomanip>
 #include "context.h"
 #include "build_date.h"
-#include "node.h"
 #include "logger.h"
 
 #include "console.h"

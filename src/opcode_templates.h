@@ -1,5 +1,9 @@
-#ifndef FLUENT_OPERATION_TEMPLATES_H
-#define FLUENT_OPERATION_TEMPLATES_H
+//
+// Created by mick on 11.10.17.
+//
+
+#ifndef FLUENT_OPERATION_TEMPLATES_H_INCLUDED
+#define FLUENT_OPERATION_TEMPLATES_H_INCLUDED
 
 #include <algorithm>
 #include <cmath>
@@ -618,4 +622,4 @@ namespace op {
     
 }
 
-#endif //FLUENT_OPERATION_TEMPLATES_H
+#endif //FLUENT_OPERATION_TEMPLATES_H_INCLUDED

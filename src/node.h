@@ -2,8 +2,8 @@
 // Created by mick on 13.10.17.
 //
 
-#ifndef FLUENT_PARSER_NODE_H
-#define FLUENT_PARSER_NODE_H
+#ifndef FLUENT_PARSER_NODE_H_INCLUDED
+#define FLUENT_PARSER_NODE_H_INCLUDED
 
 #include <ostream>
 #include <vector>
@@ -76,4 +76,4 @@ namespace node {
     ostream& operator << (ostream& o, const NodeInfo& n);
 }
 
-#endif //FLUENT_PARSER_NODE_H
+#endif //FLUENT_PARSER_NODE_H_INCLUDED

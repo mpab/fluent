@@ -2,8 +2,8 @@
 // Created by mick on 11.10.17.
 //
 
-#ifndef FLUENT_CONSOLE_H
-#define FLUENT_CONSOLE_H
+#ifndef FLUENT_CONSOLE_H_INCLUDED
+#define FLUENT_CONSOLE_H_INCLUDED
 
 #include "node.h"
 
@@ -18,4 +18,4 @@ namespace console {
     void copyright();
 }
 
-#endif //FLUENT_CONSOLE_H
+#endif //FLUENT_CONSOLE_H_INCLUDED

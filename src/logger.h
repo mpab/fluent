@@ -1,5 +1,9 @@
-#ifndef FLUENT_LOGGING_H
-#define FLUENT_LOGGING_H
+//
+// Created by mick on 11.10.17.
+//
+
+#ifndef FLUENT_LOGGING_H_INCLUDED
+#define FLUENT_LOGGING_H_INCLUDED
 
 #include <ostream>
 #include <iomanip>
@@ -38,4 +42,4 @@ namespace logger {
     void error_if(bool b, const char *s);
 }
 
-#endif //FLUENT_LOGGING_H
+#endif //FLUENT_LOGGING_H_INCLUDED

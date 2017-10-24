@@ -1,11 +1,14 @@
-#ifndef FLUENT_OPCODES_H
-#define FLUENT_OPCODES_H
+//
+// Created by mick on 13.10.17.
+//
+
+#ifndef FLUENT_OPCODES_H_INCLUDED
+#define FLUENT_OPCODES_H_INCLUDED
 
 #include "node.h"
 
 namespace opcodes {
-    using namespace node;
-    Node* execute(Node* n);
+    node::Node* execute(node::Node* n);
 }
 
-#endif //FLUENT_OPCODES_H
+#endif //FLUENT_OPCODES_H_INCLUDED
