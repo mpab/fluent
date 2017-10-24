@@ -62,7 +62,8 @@ console:
                 context::set_execute_mode(context::IMMEDIATE);
         }
         | T_CONSOLE_INSPECT {
-                console::inspect();
+                // TODO - disable when source file is active
+                context::inspect();
         }
         | T_CONSOLE_CLEAN {
                 context::free_all_nodes();

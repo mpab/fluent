@@ -10,7 +10,7 @@ namespace context {
 
     Node* add_instruction(int opcode, int count, Node* n1, Node* n2 = nullptr, Node* n3 = nullptr);
 
-    Node* get_symbol_node(string k, bool warn_if_not_defined = true);
+    Node* get_symbolic_node(string symbol_name);
     void free_unused_nodes();
     void free_all_nodes();
 
@@ -22,4 +22,6 @@ namespace context {
 
     enum ExecuteMode {IMMEDIATE, BUFFERED};
     void set_execute_mode(ExecuteMode mode);
+
+    void inspect();
 }

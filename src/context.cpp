@@ -89,12 +89,18 @@ namespace context {
         blocks.push_back(n);
         if (execute_mode == IMMEDIATE) {
             this_active_block = n;
-            opcodes::execute(n);
+
+            Node* repl_out = opcodes::execute(n);
+
+            if (console::repl()) {
+                console::echo(var(repl_out));
+            }
+
             free_unused_nodes();
         }
 
 #   ifdef  DEBUG_BUILD
-        console::inspect(true);
+        inspect();
 #   endif
     }
 
@@ -134,18 +140,12 @@ namespace context {
         return n;
     }
 
-    void warn_undefined(string n) {
-        string s = "symbol " + n + " is not defined";
-        logger::warn(s.c_str());
-    }
-
-    Node* get_symbol_node(string k, bool warn_if_not_defined) {
-        auto v = symbols.find(k);
+    Node* get_symbolic_node(string symbol_name) {
+        auto v = symbols.find(symbol_name);
 
         if (v == symbols.end()) {
-            if (warn_if_not_defined) {
-                warn_undefined(k);
-            }
+            string warning = "symbol " + symbol_name + " is not defined";
+            logger::warn(warning.c_str());
             return nullptr;
         }
         return v->second;
@@ -165,27 +165,27 @@ namespace context {
         logger::debug() << "Variable* var(Node*) " << (void*)n << endl;
         
         if (!n) {
-            logger::error("variable: Operand is null");
+            logger::error("var: Operand is null");
             return nullptr;
         }
 
-        logger::debug("variable: trying variable");
+        logger::debug("var: trying variable");
         auto variable = dynamic_cast<Variable*>(n);
         if (variable) {
             return variable;
         }
 
-        logger::debug("variable: trying symbol");
+        logger::debug("var: trying symbol");
         auto symbol = dynamic_cast<Symbol*>(n);
         if (symbol) {
-            auto node = get_symbol_node(symbol->name);
+            auto node = get_symbolic_node(symbol->name);
             variable = var_copy_cast(node);
             if (variable) {
                 return variable;
             }
         }
 
-        logger::debug("variable: trying instruction");
+        logger::debug("var: trying instruction");
         auto instruction = dynamic_cast<Instruction*>(n);
         if (instruction) {
             variable = var_copy_cast(opcodes::execute(instruction));
@@ -194,7 +194,7 @@ namespace context {
             }
          }
 
-        logger::error_if(!variable, "variable: failed");
+        logger::warn_if(!variable, "var: failed to get variable");
         return nullptr;
     }
 
@@ -232,7 +232,7 @@ namespace context {
         auto unused_nodes = tracked_nodes;
 
         for (auto it : symbols) {    
-            auto n = context::get_symbol_node(it.first);
+            auto n = get_symbolic_node(it.first);
             logger::debug() << "free_unused_nodes() - keeping: " << (void*)n << endl;
             unused_nodes.remove(n);
         }
@@ -250,4 +250,39 @@ namespace context {
             opcodes::execute(b);
         }
     }
+
+/*
+=======================================================================================================================
+*/
+
+#define OUT logger::info()
+
+void inspect() {
+    OUT << "================================= SYMBOLS =====================================" << endl;
+    OUT << "Symbols: " << context::symbols.size() << endl;
+
+    for (auto it : context::symbols) {
+        auto n = context::get_symbolic_node(it.first);
+        OUT << it.first << " [" << NodeInfo(n) << "]" << endl;
+    }
+
+    OUT << "================================= BLOCKS ======================================" << endl;
+    OUT << "Blocks: " << context::blocks.size() << endl;
+
+    for (auto n : context::blocks) {
+        if (n == context::active_block()) {
+            OUT << ANSI_COLOR_MAGENTA;
+        }
+        OUT << NodeInfo(n) << ANSI_COLOR_RESET << endl;
+    }
+    
+    OUT << "================================= NODES =======================================" << endl;
+    OUT << "Nodes: " << context::tracked_nodes.size() << endl;
+
+    for (auto n : context::tracked_nodes) {
+        OUT << NodeInfo(n) << endl;
+    }
+
+    OUT << "===============================================================================" << endl;
+}
 }

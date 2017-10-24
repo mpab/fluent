@@ -18,12 +18,6 @@
 =======================================================================================================================
 */
 
-namespace context {
-    extern unordered_map<string, Node*> symbols;
-    extern vector<Node*> blocks;
-    extern list <const Node*> tracked_nodes;
-}
-
 extern char *_src_filename;
 
 /*
@@ -42,42 +36,6 @@ namespace console {
             return;
 
         logger::info() << n << endl;
-    }
-
-/*
-=======================================================================================================================
-*/
-    void inspect(bool on_error) {
-        if (!on_error && !repl()) {
-            return;
-        }
-
-        cout << "================================= SYMBOLS =====================================" << endl;
-        cout << "Symbols: " << context::symbols.size() << endl;
-
-        for (auto it : context::symbols) {
-            auto n = context::get_symbol_node(it.first);
-            cout << it.first << " [" << NodeInfo(n) << "]" << endl;
-        }
-
-        cout << "================================= BLOCKS ======================================" << endl;
-        cout << "Blocks: " << context::blocks.size() << endl;
-
-        for (auto n : context::blocks) {
-            if (n == context::active_block()) {
-                cout << ANSI_COLOR_MAGENTA;
-            }
-            cout << NodeInfo(n) << ANSI_COLOR_RESET << endl;
-        }
-        
-        cout << "================================= NODES =======================================" << endl;
-        cout << "Nodes: " << context::tracked_nodes.size() << endl;
-
-        for (auto n : context::tracked_nodes) {
-            cout << NodeInfo(n) << endl;
-        }
-
-        cout << "===============================================================================" << endl;
     }
 
 /*

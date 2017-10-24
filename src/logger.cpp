@@ -7,6 +7,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "console.h"
+#include "context.h"
 
 #include "logger.h"
 
@@ -108,17 +109,23 @@ namespace logger {
 
         if (!console::repl()) {
             cout << ", in file: " << _src_filename << ", at line " << __line__ << ANSI_COLOR_RESET << endl;
-            if (inspect_and_exit) {
-                console::inspect(true);
-                exit(-1);
-            }
         }
 
         cout << ANSI_COLOR_RESET << endl;
+
+        if (inspect_and_exit) {
+            context::inspect();
+            exit(-1);
+        }
     }
 
     void warn(const char *s) {
-        msg(s, ANSI_COLOR_YELLOW, false);
+        if (console::repl()) {
+            msg(s, ANSI_COLOR_YELLOW, false);
+        } else {
+            // elevate to error
+            error(s);
+        }
     }
 
     void warn_if(bool b, const char *s) {

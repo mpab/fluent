@@ -13,7 +13,6 @@ namespace console {
     bool repl();
 
     void echo(Node* p);
-    void inspect(bool on_error = false);
     void help();
     void quit();
     void copyright();
