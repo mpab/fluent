@@ -44,4 +44,4 @@ C++11, boost, lex, yacc...
   - lex, yacc For Windows use this port: https://sourceforge.net/projects/winflexbison/ and **make sure the folder where you unzip this is on your path**.
 - OSX and Linux
   - google is your friend (for the purposes of search...)
-  - vscode uses an older, incompatible version of yacc, use homebrew to get the latest, and update your path settings accordingly.
+  - xcode uses an older, incompatible version of yacc, use homebrew to get the latest, and update your path settings accordingly.
