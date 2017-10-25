@@ -8,8 +8,16 @@
 #include <string>
 #include "node.h"
 
-#define exec context::execute_block
-#define addi context::add_instruction
+/*
+	this cast from void* to Node* is because the windows lexer stuffs up the code generation
+	parsey. y *should* contain this:
+	%union {
+		node::Node* node;
+	};
+*/
+
+void exec(void* n);
+void* addi(int opcode, int count, void* n1, void* n2 = nullptr, void* n3 = nullptr);
 
 namespace context {
     using namespace std;

@@ -44,6 +44,10 @@ Thumbs.db
 # folders & files    #
 ######################
 .idea
+.vscode
+vs2015/x86
+vs2015/x64
+experiments
 out
 interpreter
 sublime_text
@@ -52,6 +56,8 @@ Fluent.sublime-workspace
 Fluent.sublime-project
 src/build_date.h
 src/lex.yy.c
+src/lex.yy.cpp
 src/y.output
 src/y.tab.c
+src/y.tab.cpp
 src/y.tab.h

@@ -11,11 +11,19 @@
 
 #include "context.h"
 
+void exec(void* n) {
+	context::execute_block((node::Node*)n);
+}
+
+void* addi(int opcode, int count, void* n1, void* n2, void* n3) {
+	return context::add_instruction(opcode, count, (node::Node*)n1, (node::Node*)n2, (node::Node*)n3);
+}
+
 namespace context {
     using namespace std;
     using namespace node;
 
-    Variable* var(Node* n);
+    Variable* eval(Node* n);
 
     vector<Node*> blocks;
     list <const Node*> tracked_nodes;
@@ -61,7 +69,7 @@ namespace context {
         }
 
         if (n->type == SYMBOL) {
-            auto v = var(n);
+            auto v = eval(n);
             console::echo(v);
             delete v; // because of unaliasing...
         }
@@ -85,10 +93,11 @@ namespace context {
         if (execute_mode == IMMEDIATE) {
             this_active_block = n;
 
-            Node* repl_out = opcodes::execute(n);
+            Node* v_out = opcodes::execute(n);
 
-            if (console::repl()) {
-                console::echo(var(repl_out));
+            if (v_out && console::repl()) {
+				auto v = eval(v_out);
+				console::echo(v);
             }
 
             free_unused_nodes();
@@ -155,22 +164,22 @@ namespace context {
         return nullptr;
     }
 
-    Variable* var(Node* n) {
+    Variable* eval(Node* n) {
 
-        logger::debug() << "Variable* var(Node*) " << (void*)n << endl;
+        logger::debug() << "Variable* eval(Node*) " << (void*)n << endl;
         
         if (!n) {
-            logger::error("var: Operand is null");
+            logger::warn("eval: Operand is null");
             return nullptr;
         }
 
-        logger::debug("var: trying variable");
+        logger::debug("eval: trying variable");
         auto variable = dynamic_cast<Variable*>(n);
         if (variable) {
             return variable;
         }
 
-        logger::debug("var: trying symbol");
+        logger::debug("eval: trying symbol");
         auto symbol = dynamic_cast<Symbol*>(n);
         if (symbol) {
             auto node = get_symbolic_node(symbol->name);
@@ -180,7 +189,7 @@ namespace context {
             }
         }
 
-        logger::debug("var: trying instruction");
+        logger::debug("eval: trying instruction");
         auto instruction = dynamic_cast<Instruction*>(n);
         if (instruction) {
             variable = var_copy_cast(opcodes::execute(instruction));
@@ -189,7 +198,7 @@ namespace context {
             }
          }
 
-        logger::warn_if(!variable, "var: failed to get variable");
+        logger::warn_if(!variable, "eval: bad value");
         return nullptr;
     }
 
@@ -198,7 +207,7 @@ namespace context {
         logger::debug() << "Node* assign(Symbol*, Variable*) " << (void*)k << " " << (void*)v << endl;
 
         if (!k || !v) {
-            logger::error("assign: null Symbol or Variable");
+            logger::warn("assign(s, v): bad symbol or rval");
             return nullptr;
         }
 
@@ -211,10 +220,10 @@ namespace context {
         logger::debug() << "Node* assign(Node*, Node*) " << (void*)k << " " << (void*)v << endl;
 
         if (!k || !v) {
-            logger::error("assign: null LHS or RHS");
+            logger::warn("assign (k, v): bad lval or rval");
             return nullptr;
         }
-        return assign(dynamic_cast<Symbol*>(k), var(v));
+        return assign(dynamic_cast<Symbol*>(k), eval(v));
     }
 
     void free_all_nodes() {

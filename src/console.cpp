@@ -73,7 +73,7 @@ namespace console {
     }
 
     void copyright() {
-        cout << "Fluent v0.0.2, (c) 2017- Michael Alderson-Bythell" << endl;
+        cout << "Fluent v0.0.3, (c) 2017- Michael Alderson-Bythell" << endl;
         cout << "built: " << build_date << endl;
         cout << "type ::help if you need it" << endl;
     }

@@ -1,3 +1,5 @@
+#ifdef TEST_BUILD
+
 //#include "opcode_templates.h"
 
 #include "opcode_map.cpp"
@@ -21,3 +23,5 @@ extern char* _src_filename;
 int main() {
 
 }
+
+#endif

@@ -105,7 +105,11 @@ namespace node {
 
     ostream& operator << (ostream& o, const NodeInfo& n) {
         
-        o << FMT16 << (void*)n.n << FMT12 << n.n->type_name() << n.n;
+		if (!n.n) {
+			return o << FMT24 << (void*)n.n;
+		}
+
+		o << FMT24 << (void*)n.n << FMT12 << n.n->type_name() << n.n;
         
         auto i = dynamic_cast<Instruction*>(const_cast<Node*>(n.n));
         

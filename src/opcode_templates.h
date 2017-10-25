@@ -34,7 +34,7 @@ namespace op {
 
     template <typename O, typename T> T* op(const char* fn, T* a) {
         if (!a) {
-            logger::error() << fn << " bad value (" << NodeInfo(a) << ")" << endl;
+            logger::error() << fn << " bad val" << endl;
             return nullptr;
         }
         auto r = apply_visitor(O(), a->value);
@@ -85,7 +85,8 @@ namespace op {
 
     template <typename O, typename T> T* op(const char* fn, T* a, T* b) {
         if (!a || !b) {
-            logger::error() << fn << " bad values (" << NodeInfo(a) << ", " << NodeInfo(b) << ")" << endl;
+			if (!a) logger::warn() << fn << " bad lval" << endl;
+			if (!b) logger::warn() << fn << " bad rval" << endl;
             return nullptr;
         }
         auto r = apply_visitor(O(), a->value, b->value);
