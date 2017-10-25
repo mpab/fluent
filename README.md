@@ -43,6 +43,6 @@ C++11, boost, lex, yacc...
   - google is your friend (for the purposes of search...)
   - vscode uses an older, incompatible version of yacc, use homebrew to get the latest, and update your path settings accordingly.
 - Build weirdness: OSX and Linux
-  - The build script copies the output executables to ~/bin/fluent and ~/bin/dfluent - so you can comment this out or add these folders.
+  - The build script copies the output executables to ~/bin/fluent and ~/bin/dfluent - comment this out in the build script or add the folder as required.
 - Build weirdness: Windows
-  - The build script copies the output executables to C:\Apps\bin - so you can comment this out or add these folders.
+  - The build script copies the output executables to C:\Apps\bin - comment this out in the build script or add the folder as required.
