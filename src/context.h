@@ -9,9 +9,12 @@
 #include "node.h"
 
 /*
-	this cast from void* to Node* is because the windows lexer stuffs up the code generation
-	parsey. y *should* contain this:
-	%union {
+    these noddy wrappers and the shonky casts from void* to Node* are 
+    required because the windows lexer stuffs up the code generation...
+
+	parser. y *should* contain this:
+    
+    %union {
 		node::Node* node;
 	};
 */

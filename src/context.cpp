@@ -11,6 +11,17 @@
 
 #include "context.h"
 
+/*
+    these noddy wrappers and the shonky casts from void* to Node* are 
+    required because the windows lexer stuffs up the code generation...
+
+	parser. y *should* contain this:
+    
+    %union {
+		node::Node* node;
+	};
+*/
+
 void exec(void* n) {
 	context::execute_block((node::Node*)n);
 }
@@ -261,32 +272,32 @@ namespace context {
 
 #define OUT logger::info()
 
-void inspect() {
-    OUT << "================================= SYMBOLS =====================================" << endl;
-    OUT << "Symbols: " << context::symbols.size() << endl;
+    void inspect() {
+        OUT << "================================= SYMBOLS =====================================" << endl;
+        OUT << "Symbols: " << context::symbols.size() << endl;
 
-    for (auto it : context::symbols) {
-        auto n = context::get_symbolic_node(it.first);
-        OUT << it.first << " [" << NodeInfo(n) << "]" << endl;
-    }
-
-    OUT << "================================= BLOCKS ======================================" << endl;
-    OUT << "Blocks: " << context::blocks.size() << endl;
-
-    for (auto n : context::blocks) {
-        if (n == context::active_block()) {
-            OUT << ANSI_COLOR_MAGENTA;
+        for (auto it : context::symbols) {
+            auto n = context::get_symbolic_node(it.first);
+            OUT << it.first << " [" << NodeInfo(n) << "]" << endl;
         }
-        OUT << NodeInfo(n) << ANSI_COLOR_RESET << endl;
-    }
-    
-    OUT << "================================= NODES =======================================" << endl;
-    OUT << "Nodes: " << context::tracked_nodes.size() << endl;
 
-    for (auto n : context::tracked_nodes) {
-        OUT << NodeInfo(n) << endl;
-    }
+        OUT << "================================= BLOCKS ======================================" << endl;
+        OUT << "Blocks: " << context::blocks.size() << endl;
 
-    OUT << "===============================================================================" << endl;
-}
+        for (auto n : context::blocks) {
+            if (n == context::active_block()) {
+                OUT << ANSI_COLOR_MAGENTA;
+            }
+            OUT << NodeInfo(n) << ANSI_COLOR_RESET << endl;
+        }
+        
+        OUT << "================================= NODES =======================================" << endl;
+        OUT << "Nodes: " << context::tracked_nodes.size() << endl;
+
+        for (auto n : context::tracked_nodes) {
+            OUT << NodeInfo(n) << endl;
+        }
+
+        OUT << "===============================================================================" << endl;
+    }
 }
