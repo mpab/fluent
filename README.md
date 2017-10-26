@@ -9,7 +9,7 @@ Valid names start with a letter or underscore '_'.
 
 ### Arithmetic operations:
 
-'+' '/' '-' '+' '^' operations are supported with numeric types.
+'*' '/' '-' '+' '^' operations are supported with numeric types.
 Some operations are also valid with string types.
 
 ### Logic operations:
