@@ -9,8 +9,8 @@
 #include "node.h"
 
 /*
-    these noddy wrappers and the shonky casts from void* to Node* are 
-    required because the windows lexer stuffs up the code generation...
+    these noddy wrappers and the shonky casts from void* to Node* are required
+    because the windows version of yacc/bison stuffs up the code generation...
 
 	parser. y *should* contain this:
     
@@ -21,6 +21,9 @@
 
 void exec(void* n);
 void* addi(int opcode, int count, void* n1, void* n2 = nullptr, void* n3 = nullptr);
+
+// required for parser testing only
+void* nop();
 
 namespace context {
     using namespace std;

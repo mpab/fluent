@@ -12,8 +12,8 @@
 #include "context.h"
 
 /*
-    these noddy wrappers and the shonky casts from void* to Node* are 
-    required because the windows lexer stuffs up the code generation...
+    these noddy wrappers and the shonky casts from void* to Node* are required
+    because the windows version of yacc/bison stuffs up the code generation...
 
 	parser. y *should* contain this:
     
@@ -23,11 +23,22 @@
 */
 
 void exec(void* n) {
+    if (!n) { // for nop...
+        logger::debug("exec(nullptr)");
+        return;
+    }
+
 	context::execute_block((node::Node*)n);
 }
 
 void* addi(int opcode, int count, void* n1, void* n2, void* n3) {
 	return context::add_instruction(opcode, count, (node::Node*)n1, (node::Node*)n2, (node::Node*)n3);
+}
+
+// required for parser testing
+void* nop() {
+    logger::debug("nop()");
+    return nullptr;
 }
 
 namespace context {
