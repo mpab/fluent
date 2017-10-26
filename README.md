@@ -30,7 +30,6 @@ On OSX and Linux: use the ./build script.
 On Windows: use build.bat or load the solution in the vs2015 folder.
 
 - For a command line build (build.bat) make sure VS tools are available (hint: use vsvars32).
-- Coloured logging is disabled on Windows.
 - Build weirdness: the build script copies the output executables to C:\Apps\bin - comment this out in the build script or add the folder as required.
 
 #### Build prerequisites:

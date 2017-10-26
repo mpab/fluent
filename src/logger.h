@@ -22,13 +22,15 @@
 #define ANSI_COLOR_CYAN    "\x1b[36m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
 #else
-#define ANSI_COLOR_RED     ""
-#define ANSI_COLOR_GREEN   ""
-#define ANSI_COLOR_YELLOW  ""
-#define ANSI_COLOR_BLUE    ""
-#define ANSI_COLOR_MAGENTA ""
-#define ANSI_COLOR_CYAN    ""
-#define ANSI_COLOR_RESET   ""
+const char* win_console_set_fg_col(int idx);
+const char* win_console_reset_col();
+#define ANSI_COLOR_RED     win_console_set_fg_col(4)
+#define ANSI_COLOR_GREEN   win_console_set_fg_col(10)
+#define ANSI_COLOR_YELLOW  win_console_set_fg_col(14)
+#define ANSI_COLOR_BLUE    win_console_set_fg_col(9)
+#define ANSI_COLOR_MAGENTA win_console_set_fg_col(13)
+#define ANSI_COLOR_CYAN    win_console_set_fg_col(11)
+#define ANSI_COLOR_RESET   win_console_reset_col()
 #endif
 
 void yyerror(const char *s);

@@ -24,6 +24,53 @@ bool disable_logging = false;
 
 std::stringstream nullstream;
 
+#ifdef _MSC_VER
+
+#include <windows.h>
+
+struct WinConsole {
+    const HANDLE hout;
+    WORD orig_col;
+
+    WinConsole()
+    : hout(GetStdHandle(STD_OUTPUT_HANDLE)) {
+
+        CONSOLE_SCREEN_BUFFER_INFO csbi;
+        GetConsoleScreenBufferInfo(hout, &csbi);
+        orig_col = csbi.wAttributes;
+
+        //cout << "saved orig_col " << orig_col << endl;
+
+        //for (auto i = 0; i != 256; ++i) {
+        //    SetConsoleTextAttribute(hout, i);
+        //    cout << "i = " << i << ", col = " << i << endl;
+        //    reset_col();
+        //}
+    }
+
+    ~WinConsole() {
+        reset_col();
+    }
+    
+    void set_fg_col(int c) {
+        c &= 0x0F;
+        c += orig_col & 0xF0;
+        SetConsoleTextAttribute(hout, c);
+    }
+
+    void reset_col() {
+        SetConsoleTextAttribute(hout, orig_col);
+        //cout << "restored orig_col " << orig_col << endl;
+    }
+};
+
+WinConsole win_console;
+
+const char* win_console_set_fg_col(int c) { win_console.set_fg_col(c); return ""; }
+const char* win_console_reset_col() { win_console.reset_col(); return ""; }
+
+#endif
+
 namespace logger {
 
     void on() {
@@ -70,6 +117,7 @@ namespace logger {
     Stream debug_stream(std::cout, ANSI_COLOR_CYAN);
     Stream warn_stream(std::cout, ANSI_COLOR_YELLOW);
     Stream error_stream(std::cout, ANSI_COLOR_RED);
+    Stream info_stream(std::cout, ANSI_COLOR_RESET);
 
     std::ostream& debug() {
         if (disable_logging) {
