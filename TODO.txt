@@ -1,5 +1,12 @@
 TODO
 ------------------------------------------------
+functions/objects
+    - define function syntax & implement in parser.y
+    - implement function model in node/context
+    - define object syntax & implement in parser.y
+    - implement object model in node/context
+    - closures?
+
 loop implementation using sequence
     - statement lists
     - program counter
