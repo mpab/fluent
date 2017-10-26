@@ -43,6 +43,7 @@ namespace logger {
     void debug_if(bool b, const char *s);
 
     std::ostream& info();
+    void info(const char *s);
 
     std::ostream& warn();
     void warn(const char *s);

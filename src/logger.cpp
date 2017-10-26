@@ -102,6 +102,11 @@ namespace logger {
         return cout;
     }
 
+    void info(const char* s) {
+        if (!s) return;
+        cout << s << endl;
+    }
+
     void msg(const char* s, const char *c, bool inspect_and_exit) {
         if (!s) return;
         
