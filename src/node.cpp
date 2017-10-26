@@ -56,7 +56,7 @@ namespace node {
     }
 
     Variable* create_quoted_string(char* s) {
-        int len = strlen(s);
+        auto len = strlen(s);
         s[len-1] = 0;
         return create_string(&s[1]);
     }
