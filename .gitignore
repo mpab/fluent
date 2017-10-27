@@ -48,6 +48,7 @@ Thumbs.db
 vs2015/x86
 vs2015/x64
 vs2015/*.db
+vs2015/.vs
 experiments
 out
 interpreter
