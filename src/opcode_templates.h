@@ -85,8 +85,8 @@ namespace op {
 
     template <typename O, typename T> T* op(const char* fn, T* a, T* b) {
         if (!a || !b) {
-			if (!a) logger::warn() << fn << " bad lval" << endl;
-			if (!b) logger::warn() << fn << " bad rval" << endl;
+            if (!a) logger::warn() << fn << " bad lval" << endl;
+            if (!b) logger::warn() << fn << " bad rval" << endl;
             return nullptr;
         }
         auto r = apply_visitor(O(), a->value, b->value);

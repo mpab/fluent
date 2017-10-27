@@ -15,11 +15,11 @@
     these noddy wrappers and the shonky casts from void* to Node* are required
     because the windows version of yacc/bison stuffs up the code generation...
 
-	parser. y *should* contain this:
+    parser. y *should* contain this:
     
     %union {
-		node::Node* node;
-	};
+        node::Node* node;
+    };
 */
 
 void exec(void* n) {
@@ -28,11 +28,11 @@ void exec(void* n) {
         return;
     }
 
-	context::execute_block((node::Node*)n);
+    context::execute_block((node::Node*)n);
 }
 
 void* addi(int opcode, int count, void* n1, void* n2, void* n3) {
-	return context::add_instruction(opcode, count, (node::Node*)n1, (node::Node*)n2, (node::Node*)n3);
+    return context::add_instruction(opcode, count, (node::Node*)n1, (node::Node*)n2, (node::Node*)n3);
 }
 
 // required for parser testing
@@ -118,8 +118,8 @@ namespace context {
             Node* v_out = opcodes::execute(n);
 
             if (v_out && console::repl()) {
-				auto v = eval(v_out);
-				console::echo(v);
+                auto v = eval(v_out);
+                console::echo(v);
             }
 
             free_unused_nodes();

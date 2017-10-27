@@ -28,7 +28,13 @@ int yylex(void);
 %nonassoc T_CONDX
 %nonassoc T_ELSE
 
-%type <node> stmt expr stmt_list
+%type <node> stmt
+%type <node> expr
+%type <node> stmt_list
+%type <node> symbol_list
+%type <node> closure_def
+%type <node> void_closure_def
+%type <node> param_closure_def
 
 %left T_GE T_LE T_EQ T_NE '>' '<'
 %left '+' '-'
@@ -39,17 +45,18 @@ int yylex(void);
 %%
 
 program:
-        function                { exit(0); }
+        function                        { exit(0); }
         ;
 
 function:
-          function stmt         { exec($2); }
-        | function console      {}
+          function stmt                 { exec($2); }
+        | function console              {}
+        | function closure_def          { logger::info("anon:closure_def"); }
         | /* nullptr */
         ;
 
 console:
-        T_CONSOLE_QUIT {
+          T_CONSOLE_QUIT {
                 console::quit();
         }
         | T_CONSOLE_HELP {
@@ -83,7 +90,7 @@ console:
         ;
 
 stmt:
-        ';'                                     { $$ = addi(';', 2, 0, 0); }
+          ';'                                   { $$ = addi(';', 2, 0, 0); }
         | expr ';'                              { $$ = $1; }
         | T_OUT expr ';'                        { $$ = addi(T_OUT, 1, $2); }
         | T_OUTL expr ';'                       { $$ = addi(T_OUTL, 1, $2); }
@@ -117,4 +124,29 @@ expr:
         | expr '^' expr                         { $$ = addi('^', 2, $1, $3); }
         | '(' expr ')'                          { $$ = $2; }
         ;
+/*
+        | T_SYMBOL '=' closure_def         { logger::info("vclosure (0)"); $$ = nop(); }
+        | '(' ')' '' ''                      { logger::info("anon:vclosure (0)"); $$ = nop(); }
+        | T_SYMBOL '=' param_closure_def        { logger::info("pclosure (0)"); $$ = nop(); }
+        | param_closure_def                     { logger::info("anon:pclosure (0)"); $$ = nop(); }
+*/
+
+closure_def:
+          void_closure_def {}
+        | param_closure_def {}
+        ;
+
+void_closure_def:
+        '(' ')' '{' stmt '}'                    { logger::info("void_closure_def"); $$ = nop(); }
+        ;
+
+param_closure_def:
+        '(' symbol_list ')' '{' stmt '}'        { logger::info("param_closure_def"); $$ = nop();}
+        ;
+
+symbol_list:
+          T_SYMBOL                      {$$ = nop();}
+        | symbol_list ',' T_SYMBOL      {$$ = nop();}
+        ;
+
 %%

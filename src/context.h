@@ -12,11 +12,11 @@
     these noddy wrappers and the shonky casts from void* to Node* are required
     because the windows version of yacc/bison stuffs up the code generation...
 
-	parser. y *should* contain this:
+    parser. y *should* contain this:
     
     %union {
-		node::Node* node;
-	};
+        node::Node* node;
+    };
 */
 
 void exec(void* n);

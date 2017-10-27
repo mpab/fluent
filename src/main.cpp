@@ -17,14 +17,14 @@ int main (int argc, char **argv) {
     if (argc > 0) {
         _src_filename = argv[0];
 #ifdef _MSC_VER
-		auto err = fopen_s(&yyin, _src_filename, "r");
-#		else
-		yyin = fopen(_src_filename, "r" );
-#		endif
+        auto err = fopen_s(&yyin, _src_filename, "r");
+#       else
+        yyin = fopen(_src_filename, "r" );
+#       endif
 
-		if (!yyin) {
-			logger::error() << "source file: " << _src_filename << " not found." << endl;
-		}
+        if (!yyin) {
+            logger::error() << "source file: " << _src_filename << " not found." << endl;
+        }
 
     } else {
         yyin = stdin;

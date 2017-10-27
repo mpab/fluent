@@ -67,16 +67,6 @@ struct WinConsole {
 
 WinConsole win_console;
 
-/*
-#define ANSI_COLOR_RED     console_set_fg_col(4)
-#define ANSI_COLOR_GREEN   console_set_fg_col(10)
-#define ANSI_COLOR_YELLOW  console_set_fg_col(14)
-#define ANSI_COLOR_BLUE    console_set_fg_col(9)
-#define ANSI_COLOR_MAGENTA console_set_fg_col(13)
-#define ANSI_COLOR_CYAN    console_set_fg_col(11)
-#define ANSI_COLOR_RESET   console_reset_col()
-*/
-
 ostream& operator << (ostream& o, const console_fg_col& fgc) {
     switch(fgc.c) {
         case console_fg_col::RED:       win_console.set_fg_col(4);  break;
@@ -91,16 +81,6 @@ ostream& operator << (ostream& o, const console_fg_col& fgc) {
 }
 
 #else
-
-/*
-#define ANSI_COLOR_RED     console_set_fg_col("\x1b[31m")
-#define ANSI_COLOR_GREEN   console_set_fg_col("\x1b[32m")
-#define ANSI_COLOR_YELLOW  console_set_fg_col("\x1b[33m")
-#define ANSI_COLOR_BLUE    console_set_fg_col("\x1b[34m")
-#define ANSI_COLOR_MAGENTA console_set_fg_col("\x1b[35m")
-#define ANSI_COLOR_CYAN    console_set_fg_col("\x1b[36m")
-#define ANSI_COLOR_RESET   console_set_fg_col("\x1b[0m")
-*/
 
 ostream& operator << (ostream& o, const console_fg_col& fgc) {
     switch(fgc.c) {
@@ -119,25 +99,25 @@ ostream& operator << (ostream& o, const console_fg_col& fgc) {
 
 class ResetColorStream : public std::ostream
 {
-	// Write a stream buffer that resets the colour when sync'(d)
-	class StreamBuf : public std::stringbuf
-	{
-		std::ostream& o;
-	public:
-		StreamBuf(std::ostream& str) : o(str) {}
+    // Write a stream buffer that resets the colour when sync'(d)
+    class StreamBuf : public std::stringbuf
+    {
+        std::ostream& o;
+    public:
+        StreamBuf(std::ostream& str) : o(str) {}
 
-		virtual int sync() {
-			o << str() << ANSI_COLOR_RESET;
-			str("");
-			o.flush();
-			return 0;
-		}
-	};
+        virtual int sync() {
+            o << str() << ANSI_COLOR_RESET;
+            str("");
+            o.flush();
+            return 0;
+        }
+    };
 
-	StreamBuf buffer;
+    StreamBuf buffer;
 
 public:
-	ResetColorStream(std::ostream& str) : std::ostream(&buffer), buffer(str) {}
+    ResetColorStream(std::ostream& str) : std::ostream(&buffer), buffer(str) {}
 };
 
 ResetColorStream rcs(std::cout);
@@ -145,12 +125,12 @@ ResetColorStream rcs(std::cout);
 namespace logger {
 
     void on() {
-		rcs << ANSI_COLOR_MAGENTA << "verbose logging=on" << endl;
+        rcs << ANSI_COLOR_MAGENTA << "verbose logging=on" << endl;
         disable_logging = false;
     }
 
     void off() {
-		rcs << ANSI_COLOR_MAGENTA << "verbose logging=off" << endl;
+        rcs << ANSI_COLOR_MAGENTA << "verbose logging=off" << endl;
         disable_logging = true;
     }
 
