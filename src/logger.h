@@ -8,36 +8,32 @@
 #include <ostream>
 #include <iomanip>
 
-#define FMT8 std::left << std::setw(8) << std::setfill(' ')
+#define FMT8  std::left << std::setw(8)  << std::setfill(' ')
 #define FMT12 std::left << std::setw(12) << std::setfill(' ')
 #define FMT16 std::left << std::setw(16) << std::setfill(' ')
 #define FMT24 std::left << std::setw(20) << std::setfill(' ')
 
-#ifndef _MSC_VER
-#define ANSI_COLOR_RED     "\x1b[31m"
-#define ANSI_COLOR_GREEN   "\x1b[32m"
-#define ANSI_COLOR_YELLOW  "\x1b[33m"
-#define ANSI_COLOR_BLUE    "\x1b[34m"
-#define ANSI_COLOR_MAGENTA "\x1b[35m"
-#define ANSI_COLOR_CYAN    "\x1b[36m"
-#define ANSI_COLOR_RESET   "\x1b[0m"
-#else
-const char* win_console_set_fg_col(int idx);
-const char* win_console_reset_col();
-#define ANSI_COLOR_RED     win_console_set_fg_col(4)
-#define ANSI_COLOR_GREEN   win_console_set_fg_col(10)
-#define ANSI_COLOR_YELLOW  win_console_set_fg_col(14)
-#define ANSI_COLOR_BLUE    win_console_set_fg_col(9)
-#define ANSI_COLOR_MAGENTA win_console_set_fg_col(13)
-#define ANSI_COLOR_CYAN    win_console_set_fg_col(11)
-#define ANSI_COLOR_RESET   win_console_reset_col()
-#endif
+struct console_fg_col {
+    enum col{ RESET, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN };
+    const col c;
+    console_fg_col(const col c) : c(c){}
+};
+
+std::ostream& operator << (std::ostream&, const console_fg_col&);
+
+#define ANSI_COLOR_RED     console_fg_col(console_fg_col::RED)
+#define ANSI_COLOR_GREEN   console_fg_col(console_fg_col::GREEN)
+#define ANSI_COLOR_YELLOW  console_fg_col(console_fg_col::YELLOW)
+#define ANSI_COLOR_BLUE    console_fg_col(console_fg_col::BLUE)
+#define ANSI_COLOR_MAGENTA console_fg_col(console_fg_col::MAGENTA)
+#define ANSI_COLOR_CYAN    console_fg_col(console_fg_col::CYAN)
+#define ANSI_COLOR_RESET   console_fg_col(console_fg_col::RESET)
 
 void yyerror(const char *s);
 const char* opcode_name(int id);
 
 namespace logger {
-    void on();
+    void on(); // TODO - use level filter
     void off();
     
     std::ostream& debug();

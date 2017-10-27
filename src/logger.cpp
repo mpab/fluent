@@ -56,89 +56,127 @@ struct WinConsole {
         c &= 0x0F;
         c += orig_col & 0xF0;
         SetConsoleTextAttribute(hout, c);
+        //cout << "set_fg_col() = " << c << endl;
     }
 
     void reset_col() {
         SetConsoleTextAttribute(hout, orig_col);
-        //cout << "restored orig_col " << orig_col << endl;
+        //cout << "reset_col()" << endl;
     }
 };
 
 WinConsole win_console;
 
-const char* win_console_set_fg_col(int c) { win_console.set_fg_col(c); return ""; }
-const char* win_console_reset_col() { win_console.reset_col(); return ""; }
+/*
+#define ANSI_COLOR_RED     console_set_fg_col(4)
+#define ANSI_COLOR_GREEN   console_set_fg_col(10)
+#define ANSI_COLOR_YELLOW  console_set_fg_col(14)
+#define ANSI_COLOR_BLUE    console_set_fg_col(9)
+#define ANSI_COLOR_MAGENTA console_set_fg_col(13)
+#define ANSI_COLOR_CYAN    console_set_fg_col(11)
+#define ANSI_COLOR_RESET   console_reset_col()
+*/
+
+ostream& operator << (ostream& o, const console_fg_col& fgc) {
+    switch(fgc.c) {
+        case console_fg_col::RED:       win_console.set_fg_col(4);  break;
+        case console_fg_col::GREEN:     win_console.set_fg_col(10); break;
+        case console_fg_col::YELLOW:    win_console.set_fg_col(14); break;
+        case console_fg_col::BLUE:      win_console.set_fg_col(9);  break;
+        case console_fg_col::MAGENTA:   win_console.set_fg_col(13); break;
+        case console_fg_col::CYAN:      win_console.set_fg_col(11); break;
+        default:                        win_console.reset_col();    break;
+    }
+    return o;
+}
+
+#else
+
+/*
+#define ANSI_COLOR_RED     console_set_fg_col("\x1b[31m")
+#define ANSI_COLOR_GREEN   console_set_fg_col("\x1b[32m")
+#define ANSI_COLOR_YELLOW  console_set_fg_col("\x1b[33m")
+#define ANSI_COLOR_BLUE    console_set_fg_col("\x1b[34m")
+#define ANSI_COLOR_MAGENTA console_set_fg_col("\x1b[35m")
+#define ANSI_COLOR_CYAN    console_set_fg_col("\x1b[36m")
+#define ANSI_COLOR_RESET   console_set_fg_col("\x1b[0m")
+*/
+
+ostream& operator << (ostream& o, const console_fg_col& fgc) {
+    switch(fgc.c) {
+        case console_fg_col::RED:       o << "\x1b[31m"; break;
+        case console_fg_col::GREEN:     o << "\x1b[32m"; break;
+        case console_fg_col::YELLOW:    0 << "\x1b[33m"; break;
+        case console_fg_col::BLUE:      o << "\x1b[34m"; break;
+        case console_fg_col::MAGENTA:   o << "\x1b[35m"; break;
+        case console_fg_col::CYAN:      o << "\x1b[36m"; break;
+        default:                        o << "\x1b[0m";  break;
+    }
+    return o;
+}
 
 #endif
+
+class ResetColorStream : public std::ostream
+{
+	// Write a stream buffer that resets the colour when sync'(d)
+	class StreamBuf : public std::stringbuf
+	{
+		std::ostream& o;
+	public:
+		StreamBuf(std::ostream& str) : o(str) {}
+
+		virtual int sync() {
+			o << str() << ANSI_COLOR_RESET;
+			str("");
+			o.flush();
+			return 0;
+		}
+	};
+
+	StreamBuf buffer;
+
+public:
+	ResetColorStream(std::ostream& str) : std::ostream(&buffer), buffer(str) {}
+};
+
+ResetColorStream rcs(std::cout);
 
 namespace logger {
 
     void on() {
+		rcs << ANSI_COLOR_MAGENTA << "verbose logging=on" << endl;
         disable_logging = false;
-        debug("logging=on");
-        cout << ANSI_COLOR_RESET;
     }
 
     void off() {
-        debug("logging=off");
-        cout << ANSI_COLOR_RESET;
+		rcs << ANSI_COLOR_MAGENTA << "verbose logging=off" << endl;
         disable_logging = true;
     }
-
-    class Stream : public std::ostream
-    {
-        // Write a stream buffer that prefixes each line with Plop
-        class StreamBuf : public std::stringbuf
-        {
-            std::ostream& output;
-            const char* text_color;
-            public:
-                StreamBuf(std::ostream& str, const char* text_color) : output(str), text_color(text_color) {}
-    
-            // When we sync the stream with the output. 
-            // 1) Output color then the buffer
-            // 2) Reset the buffer
-            // 3) flush the actual output stream we are using.
-            virtual int sync () {
-                output << text_color << str() << ANSI_COLOR_RESET;
-                str("");
-                output.flush();
-                return 0;
-            }
-        };
-    
-        // Stream uses a version of buffer
-        StreamBuf buffer;
-
-        public:
-            Stream(std::ostream& str, const char* text_color) : std::ostream(&buffer), buffer(str, text_color) {}
-    };
-
-    Stream debug_stream(std::cout, ANSI_COLOR_CYAN);
-    Stream warn_stream(std::cout, ANSI_COLOR_YELLOW);
-    Stream error_stream(std::cout, ANSI_COLOR_RED);
-    Stream info_stream(std::cout, ANSI_COLOR_RESET);
 
     std::ostream& debug() {
         if (disable_logging) {
             nullstream.clear();
             return nullstream;
         }
-        return debug_stream;
+        return rcs << ANSI_COLOR_CYAN;
     }
 
     std::ostream& warn() {
-        return warn_stream;
+        return rcs << ANSI_COLOR_YELLOW;
     }
 
     std::ostream& error() {
-        return error_stream;
+        return rcs << ANSI_COLOR_RED;
+    }
+
+    std::ostream& info() {
+        return rcs << ANSI_COLOR_RESET;
     }
 
     void debug(const char *s) {
         if (disable_logging || !s) return;
-        
-        cout << ANSI_COLOR_CYAN << s << ANSI_COLOR_RESET << endl;
+        debug() << s << endl;
     }
 
     void debug_if(bool b, const char *s) {
@@ -146,25 +184,21 @@ namespace logger {
         debug(s);
     }
 
-    std::ostream& info() {
-        return cout;
-    }
-
     void info(const char* s) {
         if (!s) return;
-        cout << s << endl;
+        info() << s << endl;
     }
 
-    void msg(const char* s, const char *c, bool inspect_and_exit) {
+    void msg(const char* s, std::ostream& o, bool inspect_and_exit) {
         if (!s) return;
         
-        cout << c << s;
+        o << s;
 
         if (!console::repl()) {
-            cout << ", in file: " << _src_filename << ", at line " << __line__ << ANSI_COLOR_RESET << endl;
+            o << ", in file: " << _src_filename << ", at line " << __line__;
         }
 
-        cout << ANSI_COLOR_RESET << endl;
+        o << endl;
 
         if (inspect_and_exit) {
             context::inspect();
@@ -174,7 +208,7 @@ namespace logger {
 
     void warn(const char *s) {
         if (console::repl()) {
-            msg(s, ANSI_COLOR_YELLOW, false);
+            msg(s, warn(), false);
         } else {
             // elevate to error
             error(s);
@@ -187,7 +221,7 @@ namespace logger {
     }
 
     void error(const char *s) {
-        msg(s, ANSI_COLOR_RED, true);
+        msg(s, error(), true);
     }
 
     void error_if(bool b, const char *s) {
