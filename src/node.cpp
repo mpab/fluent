@@ -92,7 +92,7 @@ namespace node {
 
         auto f = dynamic_cast<Instruction*>(const_cast<Node*>(n));
         if (f) {
-            o << opcode_name(f->opcode);
+            o << FMT8 << opcode_name(f->opcode);
         }
 
         auto s = dynamic_cast<Symbol*>(const_cast<Node*>(n));

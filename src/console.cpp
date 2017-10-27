@@ -14,9 +14,8 @@
 /*
 =======================================================================================================================
 */
-
+#define IOUT logger::info()
 extern char *_src_filename;
-
 /*
 =======================================================================================================================
 */
@@ -32,36 +31,38 @@ namespace console {
         if (!repl())
             return;
 
-        logger::info() << n << endl;
+        IOUT << n << endl;
     }
 
 /*
 =======================================================================================================================
 */
 
+
+
     void help() {
         if (!repl()) {
             return;
         }
 
-        cout << "============================== FLUENT HELP ====================================" << endl;
-        cout << "Variables:     integer, floating point and string variables can be used." << endl;
-        cout << "               valid names start with a letter or underscore (_)." << endl;
-        cout << "Arithmetic:    + / - + ^ operations are supported with numeric types." << endl;
-        cout << "Examples:      You can also check out the samples folder." << endl;
-        cout << "               Press ctrl+d if you want to leave fluent." << endl;
-        cout << ":: commands:" << endl;
-        cout << "               ::q/::quit      - exit Fluent." << endl;
-        cout << "               ::h/::help      - help." << endl;
-        cout << "               ::i/::inspect   - inspect environment." << endl;
-        cout << "               ::f/::free      - free unused environment data (use in buffered mode)." << endl;
-        cout << "               ::c/::clean     - clean all environment data (including symbols)." << endl;
-        cout << "               ::bon           - buffered mode on (default is off)." << endl;
-        cout << "               ::boff          - buffered mode off." << endl;
-        cout << "               ::r/::run       - run program (only if buffered mode on)." << endl;
-        cout << "               ::lon           - debug logging on (default is off)." << endl;
-        cout << "               ::loff          - debug logging off." << endl;
-        cout << "===============================================================================" << endl;
+        IOUT << "============================== FLUENT HELP ====================================" << endl;
+        IOUT << "Variables:     integer, floating point and string variables can be used." << endl;
+        IOUT << "               valid names start with a letter or underscore (_)." << endl;
+        IOUT << "Arithmetic:    + / - + ^ operations are supported with numeric types." << endl;
+        IOUT << "Examples:      You can also check IOUT the samples folder." << endl;
+        IOUT << "               Press ctrl+d if you want to leave fluent." << endl;
+        IOUT << ":: commands:" << endl;
+        IOUT << "               ::q/::quit      - exit Fluent." << endl;
+        IOUT << "               ::h/::help      - help." << endl;
+        IOUT << "               ::i/::inspect   - inspect environment." << endl;
+        IOUT << "               ::f/::free      - free unused environment data (use in buffered mode)." << endl;
+        IOUT << "               ::c/::clean     - clean all environment data (including symbols)." << endl;
+        IOUT << "               ::bon           - buffered mode on (default is off)." << endl;
+        IOUT << "               ::boff          - buffered mode off." << endl;
+        IOUT << "               ::r/::run       - run program (only if buffered mode on)." << endl;
+        IOUT << "               ::lon           - verbose logging on (default is off)." << endl;
+        IOUT << "               ::loff          - verbose logging off." << endl;
+        IOUT << "===============================================================================" << endl;
     }
 
     void quit() {
@@ -73,9 +74,9 @@ namespace console {
     }
 
     void copyright() {
-        cout << "Fluent v0.0.3, (c) 2017- Michael Alderson-Bythell" << endl;
-        cout << "built: " << build_date << endl;
-        cout << "type ::help if you need it" << endl;
+        IOUT << "Fluent v0.0.3, (c) 2017- Michael Alderson-Bythell" << endl;
+        IOUT << "built: " << build_date << endl;
+        IOUT << "type ::help if you need it" << endl;
     }
   
 }

@@ -297,9 +297,10 @@ namespace context {
 
         for (auto n : context::blocks) {
             if (n == context::active_block()) {
-                OUT << ANSI_COLOR_MAGENTA;
+                OUT << ANSI_COLOR_MAGENTA << NodeInfo(n) << endl;
+            } else {
+                OUT << NodeInfo(n) << endl;
             }
-            OUT << NodeInfo(n) << ANSI_COLOR_RESET << endl;
         }
         
         OUT << "================================= NODES =======================================" << endl;
