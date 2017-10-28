@@ -86,7 +86,7 @@ ostream& operator << (ostream& o, const console_fg_col& fgc) {
     switch(fgc.c) {
         case console_fg_col::RED:       o << "\x1b[31m"; break;
         case console_fg_col::GREEN:     o << "\x1b[32m"; break;
-        case console_fg_col::YELLOW:    0 << "\x1b[33m"; break;
+        case console_fg_col::YELLOW:    o << "\x1b[33m"; break;
         case console_fg_col::BLUE:      o << "\x1b[34m"; break;
         case console_fg_col::MAGENTA:   o << "\x1b[35m"; break;
         case console_fg_col::CYAN:      o << "\x1b[36m"; break;
