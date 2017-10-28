@@ -6,17 +6,13 @@ else
     echo "building in" $PWD"."
 fi
 
-./gen-lex-parse
+./genfiles
 
-cd src
-echo "const char build_date[] = \"$(date)\";" > build_date.h
-
-cd ..
 rm -rf out
 mkdir out
 cd out
 
-export SRCFILES="../src/main.cpp ../src/logger.cpp ../src/node.cpp ../src/context.cpp ../src/opcodes.cpp ../src/console.cpp ../src/y.tab.cpp ../src/lex.yy.cpp ../src/opcode_map.cpp"
+export SRCFILES="../src/main.cpp ../src/logger.cpp ../src/node.cpp ../src/context.cpp ../src/opcodes.cpp ../src/console.cpp ../gen/y.tab.cpp ../gen/lex.yy.cpp ../src/opcode_map.cpp"
 export CPPFLAGS="-x c++ -Wno-write-strings -Wno-c++11-extensions"
 g++ $CPPFLAGS $SRCFILES -ll -o fluent
 g++ -DDEBUG_BUILD $CPPFLAGS $SRCFILES -ll -o dfluent

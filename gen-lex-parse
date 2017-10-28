@@ -1,8 +1,0 @@
-pushd src
-rm -f lex.yy.*
-rm -f y.tab.*
-rm -f y.output
-yacc --output=y.tab.cpp --defines=y.tab.h parser.y
-lex --outfile=lex.yy.cpp lexer.l
-#lex needs -dtv flags?
-popd

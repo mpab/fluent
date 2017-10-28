@@ -1,5 +1,5 @@
 #include "node.h"
-#include "..\gen\y.tab.h"
+#include "../gen/y.tab.h"
 
 const char* opcode_name(int id) {
     

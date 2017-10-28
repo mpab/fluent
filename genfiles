@@ -1,0 +1,8 @@
+rm -rf gen
+mkdir gen
+yacc --output=gen/y.tab.cpp --defines=gen/y.tab.h src/parser.y
+lex --outfile=gen/lex.yy.cpp src/lexer.l
+#lex needs -dtv flags?
+
+echo "const char build_date[] = \"$(date)\";" > gen/build_date.h
+
