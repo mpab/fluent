@@ -12,7 +12,7 @@ int yylex(void);
 %define parse.error verbose
 
 %union {
-    void* node;
+    node::Node* node;
 };
 
 %token <node> T_SYMBOL

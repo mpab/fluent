@@ -11,9 +11,29 @@
 
 #include "context.h"
 
+#ifndef PARSER_USES_VOID_NODE_DEFINITION
+void exec(node::Node* n) {
+    if (!n) { // for nop...
+        logger::debug("exec(nullptr)");
+        return;
+    }
+
+    context::execute_block(n);
+}
+
+node::Node* addi(int opcode, int count, node::Node* n1, node::Node* n2, node::Node* n3) {
+    return context::add_instruction(opcode, count, n1, n2, n3);
+}
+
+// required for parser testing
+node::Node* nop() {
+    logger::debug("nop()");
+    return nullptr;
+}
+#else
 /*
     these noddy wrappers and the shonky casts from void* to Node* are required
-    because the windows version of yacc/bison stuffs up the code generation...
+    if yacc/bison stuffs up the code generation...
 
     parser. y *should* contain this:
     
@@ -40,6 +60,7 @@ void* nop() {
     logger::debug("nop()");
     return nullptr;
 }
+#endif
 
 namespace context {
     using namespace std;
