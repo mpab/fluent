@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <iomanip>
 #include "context.h"
-#include "build_date.h"
+#include "../gen/build_date.h"
 #include "logger.h"
 
 #include "console.h"

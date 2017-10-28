@@ -4,7 +4,7 @@
 #include "node.h"
 #include "logger.h"
 #include "opcodes.h"
-#include "y.tab.h"
+#include "../gen/y.tab.h"
 
 // for debugging
 #include "console.h"

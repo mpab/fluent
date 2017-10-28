@@ -51,15 +51,9 @@ vs2015/*.db
 vs2015/.vs
 experiments
 out
+gen
 interpreter
 sublime_text
 CMakeLists.txt
 *.sublime-workspace
 *.sublime-project
-src/build_date.h
-src/lex.yy.c
-src/lex.yy.cpp
-src/y.tab.c
-src/y.tab.cpp
-src/y.tab.h
-src/*.output

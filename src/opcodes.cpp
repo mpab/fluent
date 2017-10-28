@@ -1,7 +1,7 @@
 #include <iostream>
 #include "node.h"
 #include "logger.h"
-#include "y.tab.h"
+#include "../gen/y.tab.h"
 #include "opcode_templates.h"
 
 namespace context {

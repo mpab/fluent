@@ -22,6 +22,9 @@
     <ClInclude Include="..\src\*.h" />
     <ClCompile Include="..\src\*.cpp" />
     <ClCompile Include="..\src\*.c" />
+    <ClInclude Include="..\gen\*.h" />
+    <ClCompile Include="..\gen\*.cpp" />
+    <ClCompile Include="..\gen\*.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\src\lexer.l" />
@@ -96,8 +99,7 @@
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <PreBuildEvent>
-      <Command>call $(ProjectDir)..\gen-lex-parse.bat $(ProjectDir)
-call $(ProjectDir)..\gen-build-date.bat $(ProjectDir)</Command>
+      <Command>call $(ProjectDir)..\genfiles.bat $(ProjectDir)</Command>
     </PreBuildEvent>
     <PreBuildEvent>
       <Message>source generation: lex &amp; yacc &amp; build date</Message>
@@ -110,8 +112,7 @@ call $(ProjectDir)..\gen-build-date.bat $(ProjectDir)</Command>
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <PreBuildEvent>
-      <Command>call $(ProjectDir)..\gen-lex-parse.bat $(ProjectDir)
-call $(ProjectDir)..\gen-build-date.bat $(ProjectDir)</Command>
+      <Command>call $(ProjectDir)..\genfiles.bat $(ProjectDir)</Command>
     </PreBuildEvent>
     <PreBuildEvent>
       <Message>source generation: lex &amp; yacc &amp; build date</Message>
@@ -130,8 +131,7 @@ call $(ProjectDir)..\gen-build-date.bat $(ProjectDir)</Command>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PreBuildEvent>
-      <Command>call $(ProjectDir)..\gen-lex-parse.bat $(ProjectDir)
-call $(ProjectDir)..\gen-build-date.bat $(ProjectDir)</Command>
+      <Command>call $(ProjectDir)..\genfiles.bat $(ProjectDir)</Command>
     </PreBuildEvent>
     <PreBuildEvent>
       <Message>source generation: lex &amp; yacc &amp; build date</Message>
@@ -150,8 +150,7 @@ call $(ProjectDir)..\gen-build-date.bat $(ProjectDir)</Command>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PreBuildEvent>
-      <Command>call $(ProjectDir)..\gen-lex-parse.bat $(ProjectDir)
-call $(ProjectDir)..\gen-build-date.bat $(ProjectDir)</Command>
+      <Command>call $(ProjectDir)..\genfiles.bat $(ProjectDir)</Command>
     </PreBuildEvent>
     <PreBuildEvent>
       <Message>source generation: lex &amp; yacc &amp; build date</Message>

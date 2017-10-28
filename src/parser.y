@@ -1,9 +1,9 @@
 %{
 
-#include "node.h"
-#include "context.h"
-#include "console.h"
-#include "logger.h"
+#include "../src/node.h"
+#include "../src/context.h"
+#include "../src/console.h"
+#include "../src/logger.h"
 
 int yylex(void);
 

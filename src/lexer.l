@@ -2,10 +2,10 @@
 
 %{
 #include <stdlib.h>
-#include "node.h"
+#include "../src/node.h"
 #include "y.tab.h"
-#include "logger.h"
-#include "lexer.h"
+#include "../src/logger.h"
+#include "../src/lexer.h"
 
 extern int __line__;
 
