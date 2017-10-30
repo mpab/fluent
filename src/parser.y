@@ -32,16 +32,16 @@ int yylex(void);
 %type <node> expr
 %type <node> stmt_list
 
+%token T_CLOSURE
 %type <node> closure
-
 %type <node> symbols
-%type <node> symbol
 
 %left T_GE T_LE T_EQ T_NE '>' '<'
 %left '+' '-'
 %left '*' '/'
 %left '^'
 %precedence T_NEG
+%precedence T_SYMBOLS
 
 %%
 
@@ -90,13 +90,9 @@ console:
         ;
 
 symbols:
-          symbol                                { logger::parser_info("symbols: symbol"); $$ = nop(); }
-        | symbols ',' symbol                    { logger::parser_info("symbols: symbols ',' symbol"); $$ = nop(); }
-        ;
-
-symbol:
-        %empty                                  { $$ = nop(); }
-        | T_SYMBOL                              { $$ = nop(); }
+          %empty                                { logger::parser_info("symbols: empty"); $$ = nop(); }
+        | T_SYMBOL                              { logger::parser_info("symbols: T_SYMBOL"); $$ = nop(); }
+        | symbols ',' T_SYMBOL                  { logger::parser_info("symbols: symbols, T_SYMBOL"); $$ = nop(); }
         ;
 
 closure:
@@ -109,8 +105,7 @@ stmt:
         | T_OUT expr ';'                        { $$ = addi(T_OUT, 1, $2); }
         | T_OUTL expr ';'                       { $$ = addi(T_OUTL, 1, $2); }
 
-        | T_SYMBOL '=' expr ';'                 { $$ = addi('=', 2, $1, $3); }
-        //| T_SYMBOL '=' expr ';'                 { $$ = nop(); }
+        | T_SYMBOL '=' expr ';'                 { $$ = addi('=', 2, $1, $3); } // also binds closures
 
         | T_WHILE '(' expr ')' stmt             { $$ = addi(T_WHILE, 2, $3, $5); }
         | T_COND '(' expr ')' stmt %prec T_CONDX{ $$ = addi(T_COND, 2, $3, $5); }
@@ -124,10 +119,10 @@ stmt_list:
         ;
 
 expr:
-          T_STRING                              { $$ = $1; }
+          closure                               { $$ = addi(T_CLOSURE, 1, $1); } // allows anon closures
+        | T_STRING                              { $$ = $1; }
         | T_NUMERIC                             { $$ = $1; }
         | T_SYMBOL                              { $$ = $1; }
-        | closure                               { $$ = nop(); }
         | '-' expr %prec T_NEG                  { $$ = addi(T_NEG, 1, $2); }
         | expr '+' expr                         { $$ = addi('+', 2, $1, $3); }
         | expr '-' expr                         { $$ = addi('-', 2, $1, $3); }
