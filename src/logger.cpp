@@ -169,6 +169,11 @@ namespace logger {
         info() << s << endl;
     }
 
+    void parser_info(const char* s) {
+        if (!s) return;
+        info() << s << " (" << _src_filename << ", line: " << __line__ << ")" << endl;
+    }
+
     void msg(const char* s, std::ostream& o, bool inspect_and_exit) {
         if (!s) return;
         

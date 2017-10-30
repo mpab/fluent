@@ -42,6 +42,7 @@ namespace logger {
 
     std::ostream& info();
     void info(const char *s);
+    void parser_info(const char *s);
 
     std::ostream& warn();
     void warn(const char *s);
