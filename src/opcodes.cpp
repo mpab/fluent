@@ -7,7 +7,7 @@
 namespace context {
     using namespace node;
     Variable* eval(Node* n);
-    Node* assign(Node* k, Node* v);
+    Node* bind(Node* k, Node* v);
 }
 
 namespace opcodes {
@@ -39,7 +39,7 @@ namespace opcodes {
 
         switch(n->opcode) {
             case '=':
-            return context::assign(n->operands[0], n->operands[1]);
+            return context::bind(n->operands[0], n->operands[1]);
 
             case '+':
             return op::add(context::eval(n->operands[0]), context::eval(n->operands[1]));

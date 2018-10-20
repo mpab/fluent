@@ -187,7 +187,7 @@ namespace context {
         return n;
     }
 
-    Node* get_symbolic_node(string symbol_name) {
+    Node* get_binding(string symbol_name) {
         auto v = symbols.find(symbol_name);
 
         if (v == symbols.end()) {
@@ -225,7 +225,7 @@ namespace context {
         logger::debug("eval: trying symbol");
         auto symbol = dynamic_cast<Symbol*>(n);
         if (symbol) {
-            auto node = get_symbolic_node(symbol->name);
+            auto node = get_binding(symbol->name);
             variable = var_copy_cast(node);
             if (variable) {
                 return variable;
@@ -245,12 +245,12 @@ namespace context {
         return nullptr;
     }
 
-    Node* assign(Symbol* k, Variable* v) {
+    Node* bind(Symbol* k, Variable* v) {
         
-        logger::debug() << "Node* assign(Symbol*, Variable*) " << (void*)k << " " << (void*)v << endl;
+        logger::debug() << "Node* bind(Symbol*, Variable*) " << (void*)k << " " << (void*)v << endl;
 
         if (!k || !v) {
-            logger::warn("assign(s, v): bad symbol or rval");
+            logger::warn("bind(s, v): bad symbol or rval");
             return nullptr;
         }
 
@@ -258,15 +258,15 @@ namespace context {
         return v;
     }
 
-    Node* assign(Node* k, Node* v) {
+    Node* bind(Node* k, Node* v) {
         
-        logger::debug() << "Node* assign(Node*, Node*) " << (void*)k << " " << (void*)v << endl;
+        logger::debug() << "Node* bind(Node*, Node*) " << (void*)k << " " << (void*)v << endl;
 
         if (!k || !v) {
-            logger::warn("assign (k, v): bad lval or rval");
+            logger::warn("bind (k, v): bad lval or rval");
             return nullptr;
         }
-        return assign(dynamic_cast<Symbol*>(k), eval(v));
+        return bind(dynamic_cast<Symbol*>(k), eval(v));
     }
 
     void free_all_nodes() {
@@ -279,7 +279,7 @@ namespace context {
         auto unused_nodes = tracked_nodes;
 
         for (auto it : symbols) {    
-            auto n = get_symbolic_node(it.first);
+            auto n = get_binding(it.first);
             logger::debug() << "free_unused_nodes() - keeping: " << (void*)n << endl;
             unused_nodes.remove(n);
         }
@@ -309,7 +309,7 @@ namespace context {
         OUT << "Symbols: " << context::symbols.size() << endl;
 
         for (auto it : context::symbols) {
-            auto n = context::get_symbolic_node(it.first);
+            auto n = context::get_binding(it.first);
             OUT << it.first << " [" << NodeInfo(n) << "]" << endl;
         }
 

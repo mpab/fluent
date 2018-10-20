@@ -36,7 +36,7 @@ namespace context {
 
     Node* add_instruction(int opcode, int count, Node* n1, Node* n2 = nullptr, Node* n3 = nullptr);
 
-    Node* get_symbolic_node(string symbol_name);
+    Node* get_binding(string symbol_name);
     void free_unused_nodes();
     void free_all_nodes();
 
