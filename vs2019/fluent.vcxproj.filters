@@ -1,0 +1,455 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\build_date.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\console.h" />
+    <ClCompile Include="..\src\context.h" />
+    <ClCompile Include="..\src\lexer.h" />
+    <ClCompile Include="..\src\logger.h" />
+    <ClCompile Include="..\src\node.h" />
+    <ClCompile Include="..\src\opcodes.h" />
+    <ClCompile Include="..\src\opcode_templates.h" />
+    <ClCompile Include="..\src\y.tab.h" />
+    <ClCompile Include="..\src\build_date.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\console.h" />
+    <ClCompile Include="..\src\context.h" />
+    <ClCompile Include="..\src\lexer.h" />
+    <ClCompile Include="..\src\logger.h" />
+    <ClCompile Include="..\src\node.h" />
+    <ClCompile Include="..\src\opcodes.h" />
+    <ClCompile Include="..\src\opcode_templates.h" />
+    <ClCompile Include="..\src\y.tab.h" />
+    <ClCompile Include="..\src\build_date.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\console.h" />
+    <ClCompile Include="..\src\context.h" />
+    <ClCompile Include="..\src\lexer.h" />
+    <ClCompile Include="..\src\logger.h" />
+    <ClCompile Include="..\src\node.h" />
+    <ClCompile Include="..\src\opcodes.h" />
+    <ClCompile Include="..\src\opcode_templates.h" />
+    <ClCompile Include="..\src\y.tab.h" />
+    <ClCompile Include="..\src\build_date.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\console.h" />
+    <ClCompile Include="..\src\context.h" />
+    <ClCompile Include="..\src\lexer.h" />
+    <ClCompile Include="..\src\logger.h" />
+    <ClCompile Include="..\src\node.h" />
+    <ClCompile Include="..\src\opcodes.h" />
+    <ClCompile Include="..\src\opcode_templates.h" />
+    <ClCompile Include="..\src\y.tab.h" />
+    <ClCompile Include="..\src\build_date.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\console.h" />
+    <ClCompile Include="..\src\context.h" />
+    <ClCompile Include="..\src\lexer.h" />
+    <ClCompile Include="..\src\logger.h" />
+    <ClCompile Include="..\src\node.h" />
+    <ClCompile Include="..\src\opcodes.h" />
+    <ClCompile Include="..\src\opcode_templates.h" />
+    <ClCompile Include="..\src\y.tab.h" />
+    <ClCompile Include="..\src\build_date.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\console.h" />
+    <ClCompile Include="..\src\context.h" />
+    <ClCompile Include="..\src\lexer.h" />
+    <ClCompile Include="..\src\logger.h" />
+    <ClCompile Include="..\src\node.h" />
+    <ClCompile Include="..\src\opcodes.h" />
+    <ClCompile Include="..\src\opcode_templates.h" />
+    <ClCompile Include="..\src\y.tab.h" />
+    <ClCompile Include="..\src\build_date.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\console.h" />
+    <ClCompile Include="..\src\context.h" />
+    <ClCompile Include="..\src\lexer.h" />
+    <ClCompile Include="..\src\logger.h" />
+    <ClCompile Include="..\src\node.h" />
+    <ClCompile Include="..\src\opcodes.h" />
+    <ClCompile Include="..\src\opcode_templates.h" />
+    <ClCompile Include="..\src\y.tab.h" />
+    <ClCompile Include="..\src\console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\context.cpp" />
+    <ClCompile Include="..\src\lex.yy.cpp" />
+    <ClCompile Include="..\src\logger.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\node.cpp" />
+    <ClCompile Include="..\src\opcodes.cpp" />
+    <ClCompile Include="..\src\opcode_map.cpp" />
+    <ClCompile Include="..\src\opcode_tests.cpp" />
+    <ClCompile Include="..\src\y.tab.cpp" />
+    <ClCompile Include="..\src\console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\context.cpp" />
+    <ClCompile Include="..\src\lex.yy.cpp" />
+    <ClCompile Include="..\src\logger.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\node.cpp" />
+    <ClCompile Include="..\src\opcodes.cpp" />
+    <ClCompile Include="..\src\opcode_map.cpp" />
+    <ClCompile Include="..\src\opcode_tests.cpp" />
+    <ClCompile Include="..\src\y.tab.cpp" />
+    <ClCompile Include="..\src\console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\context.cpp" />
+    <ClCompile Include="..\src\lex.yy.cpp" />
+    <ClCompile Include="..\src\logger.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\node.cpp" />
+    <ClCompile Include="..\src\opcodes.cpp" />
+    <ClCompile Include="..\src\opcode_map.cpp" />
+    <ClCompile Include="..\src\opcode_tests.cpp" />
+    <ClCompile Include="..\src\y.tab.cpp" />
+    <ClCompile Include="..\src\console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\context.cpp" />
+    <ClCompile Include="..\src\lex.yy.cpp" />
+    <ClCompile Include="..\src\logger.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\node.cpp" />
+    <ClCompile Include="..\src\opcodes.cpp" />
+    <ClCompile Include="..\src\opcode_map.cpp" />
+    <ClCompile Include="..\src\opcode_tests.cpp" />
+    <ClCompile Include="..\src\y.tab.cpp" />
+    <ClCompile Include="..\src\console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\context.cpp" />
+    <ClCompile Include="..\src\lex.yy.cpp" />
+    <ClCompile Include="..\src\logger.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\node.cpp" />
+    <ClCompile Include="..\src\opcodes.cpp" />
+    <ClCompile Include="..\src\opcode_map.cpp" />
+    <ClCompile Include="..\src\opcode_tests.cpp" />
+    <ClCompile Include="..\src\y.tab.cpp" />
+    <ClCompile Include="..\src\console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\context.cpp" />
+    <ClCompile Include="..\src\lex.yy.cpp" />
+    <ClCompile Include="..\src\logger.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\node.cpp" />
+    <ClCompile Include="..\src\opcodes.cpp" />
+    <ClCompile Include="..\src\opcode_map.cpp" />
+    <ClCompile Include="..\src\opcode_tests.cpp" />
+    <ClCompile Include="..\src\y.tab.cpp" />
+    <ClCompile Include="..\src\console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\context.cpp" />
+    <ClCompile Include="..\src\lex.yy.cpp" />
+    <ClCompile Include="..\src\logger.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\node.cpp" />
+    <ClCompile Include="..\src\opcodes.cpp" />
+    <ClCompile Include="..\src\opcode_map.cpp" />
+    <ClCompile Include="..\src\opcode_tests.cpp" />
+    <ClCompile Include="..\src\y.tab.cpp" />
+    <ClCompile Include="..\src\console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\context.cpp" />
+    <ClCompile Include="..\src\lex.yy.cpp" />
+    <ClCompile Include="..\src\logger.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\node.cpp" />
+    <ClCompile Include="..\src\opcodes.cpp" />
+    <ClCompile Include="..\src\opcode_map.cpp" />
+    <ClCompile Include="..\src\opcode_tests.cpp" />
+    <ClCompile Include="..\src\y.tab.cpp" />
+    <ClCompile Include="..\src\console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\context.cpp" />
+    <ClCompile Include="..\src\lex.yy.cpp" />
+    <ClCompile Include="..\src\logger.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\node.cpp" />
+    <ClCompile Include="..\src\opcodes.cpp" />
+    <ClCompile Include="..\src\opcode_map.cpp" />
+    <ClCompile Include="..\src\opcode_tests.cpp" />
+    <ClCompile Include="..\src\y.tab.cpp" />
+    <ClCompile Include="..\src\console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\context.cpp" />
+    <ClCompile Include="..\src\lex.yy.cpp" />
+    <ClCompile Include="..\src\logger.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\node.cpp" />
+    <ClCompile Include="..\src\opcodes.cpp" />
+    <ClCompile Include="..\src\opcode_map.cpp" />
+    <ClCompile Include="..\src\opcode_tests.cpp" />
+    <ClCompile Include="..\src\y.tab.cpp" />
+    <ClCompile Include="..\src\console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\context.cpp" />
+    <ClCompile Include="..\src\lex.yy.cpp" />
+    <ClCompile Include="..\src\logger.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\node.cpp" />
+    <ClCompile Include="..\src\opcodes.cpp" />
+    <ClCompile Include="..\src\opcode_map.cpp" />
+    <ClCompile Include="..\src\opcode_tests.cpp" />
+    <ClCompile Include="..\src\y.tab.cpp" />
+    <ClCompile Include="..\src\console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\context.cpp" />
+    <ClCompile Include="..\src\lex.yy.cpp" />
+    <ClCompile Include="..\src\logger.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\node.cpp" />
+    <ClCompile Include="..\src\opcodes.cpp" />
+    <ClCompile Include="..\src\opcode_map.cpp" />
+    <ClCompile Include="..\src\opcode_tests.cpp" />
+    <ClCompile Include="..\src\y.tab.cpp" />
+    <ClCompile Include="..\src\console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\context.cpp" />
+    <ClCompile Include="..\src\lex.yy.cpp" />
+    <ClCompile Include="..\src\logger.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\node.cpp" />
+    <ClCompile Include="..\src\opcodes.cpp" />
+    <ClCompile Include="..\src\opcode_map.cpp" />
+    <ClCompile Include="..\src\opcode_tests.cpp" />
+    <ClCompile Include="..\src\y.tab.cpp" />
+    <ClCompile Include="..\src\console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\context.cpp" />
+    <ClCompile Include="..\src\lex.yy.cpp" />
+    <ClCompile Include="..\src\logger.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\node.cpp" />
+    <ClCompile Include="..\src\opcodes.cpp" />
+    <ClCompile Include="..\src\opcode_map.cpp" />
+    <ClCompile Include="..\src\opcode_tests.cpp" />
+    <ClCompile Include="..\src\y.tab.cpp" />
+    <ClCompile Include="..\src\console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\context.cpp" />
+    <ClCompile Include="..\src\lex.yy.cpp" />
+    <ClCompile Include="..\src\logger.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\node.cpp" />
+    <ClCompile Include="..\src\opcodes.cpp" />
+    <ClCompile Include="..\src\opcode_map.cpp" />
+    <ClCompile Include="..\src\opcode_tests.cpp" />
+    <ClCompile Include="..\src\y.tab.cpp" />
+    <ClCompile Include="..\src\console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\context.cpp" />
+    <ClCompile Include="..\src\lex.yy.cpp" />
+    <ClCompile Include="..\src\logger.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\node.cpp" />
+    <ClCompile Include="..\src\opcodes.cpp" />
+    <ClCompile Include="..\src\opcode_map.cpp" />
+    <ClCompile Include="..\src\opcode_tests.cpp" />
+    <ClCompile Include="..\src\y.tab.cpp" />
+    <ClCompile Include="..\src\console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\context.cpp" />
+    <ClCompile Include="..\src\lex.yy.cpp" />
+    <ClCompile Include="..\src\logger.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\node.cpp" />
+    <ClCompile Include="..\src\opcodes.cpp" />
+    <ClCompile Include="..\src\opcode_map.cpp" />
+    <ClCompile Include="..\src\opcode_tests.cpp" />
+    <ClCompile Include="..\src\y.tab.cpp" />
+    <ClCompile Include="..\src\console.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\context.cpp" />
+    <ClCompile Include="..\src\lex.yy.cpp" />
+    <ClCompile Include="..\src\logger.cpp" />
+    <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\node.cpp" />
+    <ClCompile Include="..\src\opcodes.cpp" />
+    <ClCompile Include="..\src\opcode_map.cpp" />
+    <ClCompile Include="..\src\opcode_tests.cpp" />
+    <ClCompile Include="..\src\y.tab.cpp" />
+    <ClCompile Include="..\src\*.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\*.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\*.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\*.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\*.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\*.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\*.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\*.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\src\lexer.l">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\src\parser.y">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\build_date.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\console.h" />
+    <ClInclude Include="..\src\context.h" />
+    <ClInclude Include="..\src\lexer.h" />
+    <ClInclude Include="..\src\logger.h" />
+    <ClInclude Include="..\src\node.h" />
+    <ClInclude Include="..\src\opcodes.h" />
+    <ClInclude Include="..\src\opcode_templates.h" />
+    <ClInclude Include="..\src\y.tab.h" />
+    <ClInclude Include="..\src\build_date.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\console.h" />
+    <ClInclude Include="..\src\context.h" />
+    <ClInclude Include="..\src\lexer.h" />
+    <ClInclude Include="..\src\logger.h" />
+    <ClInclude Include="..\src\node.h" />
+    <ClInclude Include="..\src\opcodes.h" />
+    <ClInclude Include="..\src\opcode_templates.h" />
+    <ClInclude Include="..\src\y.tab.h" />
+    <ClInclude Include="..\src\build_date.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\console.h" />
+    <ClInclude Include="..\src\context.h" />
+    <ClInclude Include="..\src\lexer.h" />
+    <ClInclude Include="..\src\logger.h" />
+    <ClInclude Include="..\src\node.h" />
+    <ClInclude Include="..\src\opcodes.h" />
+    <ClInclude Include="..\src\opcode_templates.h" />
+    <ClInclude Include="..\src\y.tab.h" />
+    <ClInclude Include="..\src\build_date.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\console.h" />
+    <ClInclude Include="..\src\context.h" />
+    <ClInclude Include="..\src\lexer.h" />
+    <ClInclude Include="..\src\logger.h" />
+    <ClInclude Include="..\src\node.h" />
+    <ClInclude Include="..\src\opcodes.h" />
+    <ClInclude Include="..\src\opcode_templates.h" />
+    <ClInclude Include="..\src\y.tab.h" />
+    <ClInclude Include="..\src\build_date.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\console.h" />
+    <ClInclude Include="..\src\context.h" />
+    <ClInclude Include="..\src\lexer.h" />
+    <ClInclude Include="..\src\logger.h" />
+    <ClInclude Include="..\src\node.h" />
+    <ClInclude Include="..\src\opcodes.h" />
+    <ClInclude Include="..\src\opcode_templates.h" />
+    <ClInclude Include="..\src\y.tab.h" />
+    <ClInclude Include="..\src\build_date.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\console.h" />
+    <ClInclude Include="..\src\context.h" />
+    <ClInclude Include="..\src\lexer.h" />
+    <ClInclude Include="..\src\logger.h" />
+    <ClInclude Include="..\src\node.h" />
+    <ClInclude Include="..\src\opcodes.h" />
+    <ClInclude Include="..\src\opcode_templates.h" />
+    <ClInclude Include="..\src\y.tab.h" />
+    <ClInclude Include="..\src\build_date.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\console.h" />
+    <ClInclude Include="..\src\context.h" />
+    <ClInclude Include="..\src\lexer.h" />
+    <ClInclude Include="..\src\logger.h" />
+    <ClInclude Include="..\src\node.h" />
+    <ClInclude Include="..\src\opcodes.h" />
+    <ClInclude Include="..\src\opcode_templates.h" />
+    <ClInclude Include="..\src\y.tab.h" />
+    <ClInclude Include="..\src\build_date.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\console.h" />
+    <ClInclude Include="..\src\context.h" />
+    <ClInclude Include="..\src\lexer.h" />
+    <ClInclude Include="..\src\logger.h" />
+    <ClInclude Include="..\src\node.h" />
+    <ClInclude Include="..\src\opcodes.h" />
+    <ClInclude Include="..\src\opcode_templates.h" />
+    <ClInclude Include="..\src\y.tab.h" />
+    <ClInclude Include="..\src\*.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\*.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\*.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\*.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\*.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\*.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\*.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

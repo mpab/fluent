@@ -1,0 +1,8 @@
+#!/bin/bash
+fluent=vscode-fluentlang-0.0.1
+if [ -e ~/.vscode/extensions ]; then
+    rm -rf ~/.vscode/extensions/$fluent
+    cp -r $fluent ~/.vscode/extensions/.
+else
+    echo "not installing extension - vscode configuration not found"
+fi

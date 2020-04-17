@@ -1,0 +1,29 @@
+@echo off
+
+if "%WIN_FLEX_BISON_HOME%x" == "x" (
+    echo ERROR: WIN_FLEX_BISON_HOME is not set
+    goto :eof
+)
+
+if not exist "%WIN_FLEX_BISON_HOME%" (
+    echo ERROR: the "%WIN_FLEX_BISON_HOME%" folder does not exist
+    goto :eof
+)
+
+if "%1x" == "x" (
+    set src_path=%~dp0src
+    set gen_path=%~dp0gen
+) else  (
+    set src_path=%1..\src
+    set gen_path=%1..\gen
+)
+
+echo %0 - src = %src_path%, gen = %gen_path%
+
+rmdir /s /q %gen_path%
+mkdir %gen_path%
+
+start /B /D "%src_path%" /WAIT %WIN_FLEX_BISON_HOME%\win_bison.exe -v --output=%gen_path%\y.tab.cpp --defines=%gen_path%\y.tab.h parser.y
+start /B /D "%src_path%" /WAIT %WIN_FLEX_BISON_HOME%\win_flex.exe --outfile=%gen_path%\lex.yy.cpp --wincompat lexer.l
+
+echo const char build_date[] = ^"%date% %time%^"; > "%gen_path%\build_date.h"
