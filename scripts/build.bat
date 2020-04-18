@@ -17,10 +17,6 @@ if not exist "%install_dir%" (
     goto :eof
 )
 
-set WIN_FLEX_BISON_HOME=%APPS%\win_flex_bison-2.5.18
-
-set BOOST_HOME=%APPS%\boost_1_72_0
-
 if "%WIN_FLEX_BISON_HOME%x" == "x" (
     echo ERROR: WIN_FLEX_BISON_HOME is not set
     goto :eof
@@ -31,8 +27,18 @@ if not exist "%WIN_FLEX_BISON_HOME%" (
     goto :eof
 )
 
+if "%BOOST_HOME%x" == "x" (
+    echo ERROR: BOOST_HOME is not set
+    goto :eof
+)
+
+if not exist "%BOOST_HOME%" (
+    echo ERROR: the "%BOOST_HOME%" folder does not exist
+    goto :eof
+)
+
 SETLOCAL EnableDelayedExpansion
-call vsenv.bat 64
+call env-vs 64
 
 pushd vs2019
 
