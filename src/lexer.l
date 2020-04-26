@@ -1,112 +1,123 @@
-%option noyywrap
-
 %{
-#include <stdlib.h>
-#include "../src/node.h"
-#include "y.tab.h"
-#include "../src/logger.h"
-#include "../src/lexer.h"
 
-extern int __line__;
+/* This should suppress the macro redefinition warnings in stdint.h... but it doesn't */
+#define YY_NO_UNISTD_H
+
+/* Implementation of yyFlexScanner */ 
+#include "scanner.hpp"
+
+#undef  YY_DECL
+#define YY_DECL int CMD::Scanner::yylex( CMD::Parser::semantic_type * const lval, CMD::Parser::location_type *loc )
+
+/* typedef to make the returns for the tokens shorter */
+using tok = CMD::Parser::token_type;
+
+/* define yyterminate as this instead of NULL */
+#define yyterminate() return( tok::END )
+
+/* update location on matching */
+#define YY_USEr_aCTION loc->step(); loc->columns(yyleng);
 
 %}
 
-E_DIGIT             [0-9]
+%option debug
+%option nodefault
+%option yyclass="CMD::Scanner"
+%option noyywrap
+%option c++
 
-E_INTEGER           {E_DIGIT}+
-E_REAL_1            {E_DIGIT}+"f"
-E_REAL_2            {E_DIGIT}+\.?{E_DIGIT}+"f"?
-E_BAD_REAL_1        {E_DIGIT}+\.
-E_BAD_REAL_2        \.{E_DIGIT}+
-E_QSTRING           (\"(\\.|[^"])*\"|\'(\\.|[^'])*\')
+DIGIT             [0-9]
+INTEGER           {DIGIT}+
+REAL_1            {DIGIT}+"f"
+REAL_2            {DIGIT}+\.?{DIGIT}+"f"?
+BAD_REAL_1        {DIGIT}+\.
+BAD_REAL_2        \.{DIGIT}+
+QSTRING           (\"(\\.|[^"])*\"|\'(\\.|[^'])*\')
 
-E_SYMBOL            [_a-zA-Z][_a-zA-Z0-9]*
-E_BAD_SYMBOL        [0-9][_a-zA-Z][_a-zA-Z0-9]
-
-%%
-
-"::help\n"    {++__line__; return T_CONSOLE_HELP;}
-"::h\n"       {++__line__; return T_CONSOLE_HELP;}
-"::quit\n"    {++__line__; return T_CONSOLE_QUIT;}
-"::q\n"       {++__line__; return T_CONSOLE_QUIT;}
-"::inspect\n" {++__line__; return T_CONSOLE_INSPECT;}
-"::i\n"       {++__line__; return T_CONSOLE_INSPECT;}
-"::clean\n"   {++__line__; return T_CONSOLE_CLEAN;}
-"::c\n"       {++__line__; return T_CONSOLE_CLEAN;}
-"::free\n"    {++__line__; return T_CONSOLE_FREE;}
-"::f\n"       {++__line__; return T_CONSOLE_FREE;}
-"::bon\n"     {++__line__; return T_CONSOLE_EXEC_BUFFERED;}
-"::boff\n"    {++__line__; return T_CONSOLE_EXEC_IMMEDIATE;}
-"::run\n"     {++__line__; return T_CONSOLE_EXECUTE;}
-"::r\n"       {++__line__; return T_CONSOLE_EXECUTE;}
-"::lon\n"     {++__line__; return T_CONSOLE_LOGGING_ON;}
-"::loff\n"    {++__line__; return T_CONSOLE_LOGGING_OFF;}
-"::".*\n      {logger::warn("unrecognised command"); ++__line__;}
-
-[ \t] ; /* skip whitespace */ 
-
-\n {
-    ++__line__;
-}
-
-"//".*\n {
-    logger::debug("COMMENT");
-    ++__line__;
-}
-
-"..." {
-    RET(T_ELLIPSIS);
-}
-
-[-()<>=+*/;{}.,^] { // operators
-    RET(*yytext);
-}
-
-">="            RET(T_GE);
-"<="            RET(T_LE);
-"=="            RET(T_EQ);
-"!="            RET(T_NE);
-"while"         RET(T_WHILE);
-"if"            RET(T_COND);
-"else"          RET(T_ELSE);
-"outl"          RET(T_OUTL);
-"out"           RET(T_OUT);
-
-{E_SYMBOL} { 
-    SET(T_SYMBOL, symbol);
-}
-
-{E_INTEGER} {
-    SET(T_NUMERIC, integer);
-}
-
-{E_REAL_1} {
-    SET(T_NUMERIC, real);
-}
-
-{E_REAL_2} {
-    SET(T_NUMERIC, real);
-}
-
-{E_QSTRING} {
-    SET(T_STRING, quoted_string);
-}
-       
-{E_BAD_REAL_1} {
-    logger::error("invalid floating point formatting - use: 123f or 1.234 or 0.123");
-}
-
-{E_BAD_REAL_2} {
-    logger::error("invalid floating point formatting - use: 123f or 1.234 or 0.123");
-}
-
-{E_BAD_SYMBOL} {
-    logger::error("badly formed identifier");
-}
-
-. { /* anything else is an error */
-    logger::error("invalid input");
-}
+SYMBOL            [_a-zA-Z][_a-zA-Z0-9]*
+BAD_SYMBOL        [0-9][_a-zA-Z][_a-zA-Z0-9]
 
 %%
 
+%{          /** Code executed at the beginning of yylex **/
+            yylval = lval;
+%}
+
+[a-zA-Z]+   {
+               /**
+                * Section 10.1.5.1 of the 3.0.2 Bison Manual says the 
+                * following should work:
+                * yylval.build( yytext ;
+                * but it doesn't.
+                * ref: http://goo.gl/KLn0w2
+                */
+               yylval->build<std::string>(yytext);
+               return tok::TEXT;
+            }
+
+[-()<>=+*/;{}.,^]   {
+                        yylval->build<std::string>(yytext);
+                        return tok::OPERATOR;
+                    }
+
+{SYMBOL}            { 
+                        yylval->build<std::string>(yytext);
+                        return tok::SYMBOL;
+                    }
+
+{BAD_SYMBOL}        { 
+                        yylval->build<std::string>(yytext);
+                        return tok::BAD_SYMBOL;
+                    }
+
+{INTEGER}           { 
+                        yylval->build<std::string>(yytext);
+                        return tok::INTEGER;
+                    }
+
+{REAL_1}            { 
+                        yylval->build<std::string>(yytext);
+                        return tok::REAL;
+                    }
+
+{REAL_2}            { 
+                        yylval->build<std::string>(yytext);
+                        return tok::REAL;
+                    }
+
+{BAD_REAL_1}        { 
+                        yylval->build<std::string>(yytext);
+                        return tok::BAD_REAL;
+                    }
+
+{BAD_REAL_2}        { 
+                        yylval->build<std::string>(yytext);
+                        return tok::BAD_REAL;
+                    }
+
+{QSTRING}           { 
+                        yylval->build<std::string>(yytext);
+                        return tok::QSTRING;
+                    }
+      
+"::abort\n" return tok::ABORT;
+"::quit\n"  return tok::ABORT;
+"::q\n"     return tok::ABORT;
+"::exit\n"  return tok::ABORT;
+
+">="        return tok::GEQ;
+"<="        return tok::LEQ;
+"=="        return tok::ISEQ;
+"!="        return tok::NEQ;
+
+"while"     return tok::WHILE;
+"case"      return tok::CASE;
+"out"       return tok::OUT;
+            
+"\/\/".*\n  return tok::COMMENT;
+
+\n          return tok::NL;
+[[:space:]] return tok::SPC;
+.           return tok::INVALID;
+
+%%

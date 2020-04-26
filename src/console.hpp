@@ -1,18 +1,15 @@
-//
-// Created by mick on 11.10.17.
-//
-
 #ifndef FLUENT_CONSOLE_H_INCLUDED
 #define FLUENT_CONSOLE_H_INCLUDED
 
-#include "node.h"
+//
+// mpab 11.10.17.
+//
+
+#include "node.hpp"
 
 namespace console {
-    using namespace node;
-
     bool repl();
-
-    void echo(Node* p);
+    void echo(node::Node* p);
     void help();
     void quit();
     void copyright();

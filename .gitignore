@@ -57,3 +57,5 @@ sublime_text
 CMakeLists.txt
 *.sublime-workspace
 *.sublime-project
+build
+*.user 

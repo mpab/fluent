@@ -1,5 +1,5 @@
 //
-// Created by mick on 13.10.17.
+// mpab 13.10.17.
 //
 
 #ifndef FLUENT_PARSER_NODE_H_INCLUDED
@@ -14,7 +14,7 @@ namespace node {
     using namespace boost;
 
     using Value = variant <long, double, std::string>;
-    enum Type {INSTRUCTION, SYMBOL, VARIABLE}; 
+    enum Type { INSTRUCTION, SYMBOL, VARIABLE };
 
     struct Node {
         const Type type;
@@ -41,10 +41,10 @@ namespace node {
         Variable(const Value* v) : Node(VARIABLE), value(*v) {}
 
         string chars() const { return get<string>(value); }
-        
+
         long integer() const { return get<long>(value); }
         void integer(long n) { value = n; }
-        
+
         double real() const { return get<double>(value); }
         void real(double d) { value = d; }
     };
@@ -55,7 +55,7 @@ namespace node {
     };
 
     const char* type_name(Type t);
-    
+
     // for lexer
     Symbol* create_symbol(const char* s);
     Variable* create_integer(const char* s);
@@ -65,10 +65,10 @@ namespace node {
     // for copying
     Variable* create_integer(long i);
     Variable* create_real(double r);
-  
+
     ostream& operator << (ostream& o, const Node& n);
     ostream& operator << (ostream& o, const Node* n);
-    
+
     struct NodeInfo {
         const Node* n;
         NodeInfo(const Node* n) : n(n) {}

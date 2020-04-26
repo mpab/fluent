@@ -1,45 +1,65 @@
-#include "node.h"
 #include "../gen/y.tab.h"
+#include "node.h"
 
-const char* opcode_name(int id) {
-    
-    switch(id) {
-        case T_CLOSURE: return "(){}";
-        case T_WHILE:   return "while";
+const char* opcode_name(int id)
+{
 
-        case T_COND:    return "if";
+    switch (id) {
+    case T_CLOSURE:
+        return "(){}";
+    case T_WHILE:
+        return "while";
 
-        case T_OUT:     return "out";
-        
-        case T_OUTL:    return "outl";
+    case T_COND:
+        return "if";
 
-        case ';':       return ";";
+    case T_OUT:
+        return "out";
 
-        case '=':       return "=";
+    case T_OUTL:
+        return "outl";
 
-        case T_NEG:     return "(-)";
+    case ';':
+        return ";";
 
-        case '+':       return "+";
+    case '=':
+        return "=";
 
-        case '-':       return "-";
+    case T_NEG:
+        return "(-)";
 
-        case '*':       return "*";
+    case '+':
+        return "+";
 
-        case '/':       return "/";
+    case '-':
+        return "-";
 
-        case '<':       return "<";
+    case '*':
+        return "*";
 
-        case '>':       return ">";
+    case '/':
+        return "/";
 
-        case T_GE:      return ">=";
+    case '<':
+        return "<";
 
-        case T_LE:      return "<=";
+    case '>':
+        return ">";
 
-        case T_NE:      return "!=";
+    case T_GE:
+        return ">=";
 
-        case T_EQ:      return "==";
+    case T_LE:
+        return "<=";
 
-        case '^':       return "^";
+    case T_NE:
+        return "!=";
+
+    case T_EQ:
+        return "==";
+
+    case '^':
+        return "^";
     }
 
     return ("{UNKNOWN}");

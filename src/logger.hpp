@@ -14,9 +14,9 @@
 #define FMT24 std::left << std::setw(20) << std::setfill(' ')
 
 struct console_fg_col {
-    enum col{ RESET, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN };
+    enum col { RESET, RED, GREEN, YELLOW, BLUE, MAGENTA, CYAN };
     const col c;
-    console_fg_col(const col c) : c(c){}
+    console_fg_col(const col c) : c(c) {}
 };
 
 std::ostream& operator << (std::ostream&, const console_fg_col&);
@@ -29,28 +29,28 @@ std::ostream& operator << (std::ostream&, const console_fg_col&);
 #define ANSI_COLOR_CYAN    console_fg_col(console_fg_col::CYAN)
 #define ANSI_COLOR_RESET   console_fg_col(console_fg_col::RESET)
 
-void yyerror(const char *s);
+void yyerror(const char* s);
 const char* opcode_name(int id);
 
 namespace logger {
     void on(); // TODO - use level filter
     void off();
-    
+
     std::ostream& debug();
-    void debug(const char *s);
-    void debug_if(bool b, const char *s);
+    void debug(const char* s);
+    void debug_if(bool b, const char* s);
 
     std::ostream& info();
-    void info(const char *s);
-    void parser_info(const char *s);
+    void info(const char* s);
+    void parser_info(const char* s);
 
     std::ostream& warn();
-    void warn(const char *s);
-    void warn_if(bool b, const char *s);
-    
+    void warn(const char* s);
+    void warn_if(bool b, const char* s);
+
     std::ostream& error();
-    void error(const char *s);
-    void error_if(bool b, const char *s);
+    void error(const char* s);
+    void error_if(bool b, const char* s);
 }
 
 #endif //FLUENT_LOGGING_H_INCLUDED

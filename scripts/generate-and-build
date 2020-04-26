@@ -1,0 +1,31 @@
+#!/bin/bash
+
+if [ "$1x" == "x" ]; then
+    echo usage $0 project
+    exit 1
+fi
+
+if [ ! -d $1 ]; then
+    echo ERROR: folder $1 not found
+    exit 1
+fi
+
+if [ ! -f $1/CMakelists.txt ]; then
+    echo ERROR: $1/CMakelists.txt not found
+    exit 1
+fi
+
+if [ "$2x" == "newx" ]; then
+    rm -rf $1-build
+    mkdir -p $1-build
+fi
+
+if [ ! -d $1-build ]; then
+    echo ERROR: folder $1-build not found, use $0 $1 new to create 
+    exit 1
+fi
+
+pushd $1-build
+cmake ../$1
+make
+popd

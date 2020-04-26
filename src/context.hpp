@@ -1,12 +1,12 @@
 //
-// Created by mick on 11.10.17.
+// mpab 11.10.17.
 //
 
 #ifndef FLUENT_CONTEXT_H_INCLUDED
 #define FLUENT_CONTEXT_H_INCLUDED
 
 #include <string>
-#include "node.h"
+#include "node.hpp"
 
 #ifndef PARSER_USES_VOID_NODE_DEFINITION
 void exec(node::Node* n);

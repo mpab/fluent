@@ -20,8 +20,8 @@
 
 extern char* _src_filename;
 
-int main() {
-
+int main()
+{
 }
 
 #endif

@@ -1,5 +1,5 @@
 //
-// Created by mick on 11.10.17.
+// mpab 11.10.17.
 //
 
 #ifndef FLUENT_OPERATION_TEMPLATES_H_INCLUDED
@@ -8,8 +8,8 @@
 #include <algorithm>
 #include <cmath>
 #include "boost/variant.hpp"
-#include "node.h"
-#include "logger.h"
+#include "node.hpp"
+#include "logger.hpp"
 
 namespace op {
     using namespace boost;
@@ -18,15 +18,15 @@ namespace op {
     ///////////////////////////////////////////////////////////////////////////
 
     template <typename T, typename O> struct op_vis_1
-    : public boost::static_visitor<T> {
+        : public boost::static_visitor<T> {
         T operator() (long& a) const {
             return O().operator()(a);
         }
-        
+
         T operator() (double& a) const {
             return O().operator()(a);
         }
-    
+
         T operator() (string& a) const {
             return O().operator()(a);
         }
@@ -42,42 +42,42 @@ namespace op {
     };
 
     ///////////////////////////////////////////////////////////////////////////
-    
+
     template <typename T, typename O> struct op_vis_2
-    : public boost::static_visitor<T> {
-    
+        : public boost::static_visitor<T> {
+
         T operator() (long& a, long& b) const {
             return O().operator()(a, b);
         }
-    
+
         T operator() (long& a, double& b) const {
             return O().operator()(a, b);
         }
-    
+
         T operator() (long& a, string& b) const {
             return O().operator()(a, b);
         }
-    
+
         T operator() (double& a, double& b) const {
             return O().operator()(a, b);
         }
-    
+
         T operator() (double& a, long& b) const {
             return O().operator()(a, b);
         }
-    
+
         T operator() (double& a, string& b) const {
             return O().operator()(a, b);
         }
-    
+
         T operator() (string& a, string& b) const {
             return O().operator()(a, b);
         }
-    
+
         T operator() (string& a, long& b) const {
             return O().operator()(a, b);
         }
-    
+
         T operator() (string& a, double& b) const {
             return O().operator()(a, b);
         }
@@ -113,7 +113,7 @@ namespace op {
     using negate_v = op_vis_1 <Value, negate_op<Value> >;
 
     Variable* (&xnegate)(const char*, Variable*) = op<negate_v>;
-    #define negate(a) xnegate("negate:", a)
+#define negate(a) xnegate("negate:", a)
 
     ///////////////////////////////////////////////////////////////////////////
 
@@ -127,51 +127,51 @@ namespace op {
         }
 
         bool operator() (string& a) const {
-            return !a.empty(); 
+            return !a.empty();
         }
     };
 
     using conditional_v = op_vis_1 <bool, conditional_op >;
-    
+
     bool conditional(Variable* a) {
         return apply_visitor(conditional_v(), a->value);
     };
 
     ///////////////////////////////////////////////////////////////////////////
-    
+
     template <typename T> struct add_op {
         T operator() (long& a, long& b) const {
             return T(a + b);
         }
-    
+
         T operator() (long& a, double& b) const {
             return T(a + b);
         }
-    
+
         T operator() (long& a, string& b) const {
             return T();
         }
-    
+
         T operator() (double& a, double& b) const {
             return T(a + b);
         }
-    
+
         T operator() (double& a, long& b) const {
             return T(a + b);
         }
-    
+
         T operator() (double& a, string& b) const {
             return T();
         }
-    
+
         T operator() (string& a, string& b) const {
             return T(a + b);
         }
-    
+
         T operator() (string& a, long& b) const {
             return T();
         }
-    
+
         T operator() (string& a, double& b) const {
             return T();
         }
@@ -179,7 +179,7 @@ namespace op {
     using add_v = op_vis_2 <Value, add_op<Value> >;
 
     Variable* (&xadd)(const char*, Variable*, Variable*) = op<add_v>;
-    #define add(a,b) xadd("add:",a,b)
+#define add(a,b) xadd("add:",a,b)
 
     ///////////////////////////////////////////////////////////////////////////
 
@@ -187,35 +187,35 @@ namespace op {
         T operator() (long& a, long& b) const {
             return T(a - b);
         }
-    
+
         T operator() (long& a, double& b) const {
             return T(a - b);
         }
-    
+
         T operator() (long& a, string& b) const {
             return T();
         }
-    
+
         T operator() (double& a, double& b) const {
             return T(a - b);
         }
-    
+
         T operator() (double& a, long& b) const {
             return T(a - b);
         }
-    
+
         T operator() (double& a, string& b) const {
             return T();
         }
-    
+
         T operator() (string& a, string& b) const {
             return T();
         }
-    
+
         T operator() (string& a, long& b) const {
             return T();
         }
-    
+
         T operator() (string& a, double& b) const {
             return T();
         }
@@ -223,7 +223,7 @@ namespace op {
     using sub_v = op_vis_2 <Value, sub_op<Value> >;
 
     Variable* (&xsub)(const char*, Variable*, Variable*) = op<sub_v>;
-    #define sub(a,b) xsub("sub:",a,b)
+#define sub(a,b) xsub("sub:",a,b)
 
     ///////////////////////////////////////////////////////////////////////////
 
@@ -231,35 +231,35 @@ namespace op {
         T operator() (long& a, long& b) const {
             return T(a * b);
         }
-    
+
         T operator() (long& a, double& b) const {
             return T(a * b);
         }
-    
+
         T operator() (long& a, string& b) const {
             return T();
         }
-    
+
         T operator() (double& a, double& b) const {
             return T(a * b);
         }
-    
+
         T operator() (double& a, long& b) const {
             return T(a * b);
         }
-    
+
         T operator() (double& a, string& b) const {
             return T();
         }
-    
+
         T operator() (string& a, string& b) const {
             return T();
         }
-    
+
         T operator() (string& a, long& b) const {
             return T();
         }
-    
+
         T operator() (string& a, double& b) const {
             return T();
         }
@@ -267,7 +267,7 @@ namespace op {
     using mul_v = op_vis_2 <Value, mul_op<Value> >;
 
     Variable* (&xmul)(const char*, Variable*, Variable*) = op<mul_v>;
-    #define mul(a,b) xmul("mul:",a,b)
+#define mul(a,b) xmul("mul:",a,b)
 
     ///////////////////////////////////////////////////////////////////////////
 
@@ -275,35 +275,35 @@ namespace op {
         T operator() (long& a, long& b) const {
             return T(a / b);
         }
-    
+
         T operator() (long& a, double& b) const {
             return T(a / b);
         }
-    
+
         T operator() (long& a, string& b) const {
             return T();
         }
-    
+
         T operator() (double& a, double& b) const {
             return T(a / b);
         }
-    
+
         T operator() (double& a, long& b) const {
             return T(a / b);
         }
-    
+
         T operator() (double& a, string& b) const {
             return T();
         }
-    
+
         T operator() (string& a, string& b) const {
             return T();
         }
-    
+
         T operator() (string& a, long& b) const {
             return T();
         }
-    
+
         T operator() (string& a, double& b) const {
             return T();
         }
@@ -311,7 +311,7 @@ namespace op {
     using div_v = op_vis_2 <Value, div_op<Value> >;
 
     Variable* (&xdiv)(const char*, Variable*, Variable*) = op<div_v>;
-    #define div(a,b) xdiv("div:",a,b)
+#define div(a,b) xdiv("div:",a,b)
 
     ///////////////////////////////////////////////////////////////////////////
 
@@ -319,35 +319,35 @@ namespace op {
         T operator() (long& a, long& b) const {
             return T((long)(a > b));
         }
-    
+
         T operator() (long& a, double& b) const {
             return T((long)(a > b));
         }
-    
+
         T operator() (long& a, string& b) const {
             return T();
         }
-    
+
         T operator() (double& a, double& b) const {
             return T((double)(a > b));
         }
-    
+
         T operator() (double& a, long& b) const {
             return T((double)(a > b));
         }
-    
+
         T operator() (double& a, string& b) const {
             return T();
         }
-    
+
         T operator() (string& a, string& b) const {
             return T();
         }
-    
+
         T operator() (string& a, long& b) const {
             return T();
         }
-    
+
         T operator() (string& a, double& b) const {
             return T();
         }
@@ -355,7 +355,7 @@ namespace op {
     using gt_v = op_vis_2 <Value, gt_op<Value> >;
 
     Variable* (&xgt)(const char*, Variable*, Variable*) = op<gt_v>;
-    #define gt(a,b) xgt("gt:",a,b)
+#define gt(a,b) xgt("gt:",a,b)
 
     ///////////////////////////////////////////////////////////////////////////
 
@@ -363,35 +363,35 @@ namespace op {
         T operator() (long& a, long& b) const {
             return T((long)(a >= b));
         }
-    
+
         T operator() (long& a, double& b) const {
             return T((long)(a >= b));
         }
-    
+
         T operator() (long& a, string& b) const {
             return T();
         }
-    
+
         T operator() (double& a, double& b) const {
             return T((double)(a >= b));
         }
-    
+
         T operator() (double& a, long& b) const {
             return T((double)(a >= b));
         }
-    
+
         T operator() (double& a, string& b) const {
             return T();
         }
-    
+
         T operator() (string& a, string& b) const {
             return T();
         }
-    
+
         T operator() (string& a, long& b) const {
             return T();
         }
-    
+
         T operator() (string& a, double& b) const {
             return T();
         }
@@ -399,43 +399,43 @@ namespace op {
     using ge_v = op_vis_2 <Value, ge_op<Value> >;
 
     Variable* (&xge)(const char*, Variable*, Variable*) = op<ge_v>;
-    #define ge(a,b) xge("ge:",a,b)
+#define ge(a,b) xge("ge:",a,b)
 
     ///////////////////////////////////////////////////////////////////////////
-  
+
     template <typename T> struct lt_op {
         T operator() (long& a, long& b) const {
             return T((long)(a < b));
         }
-    
+
         T operator() (long& a, double& b) const {
             return T((long)(a < b));
         }
-    
+
         T operator() (long& a, string& b) const {
             return T();
         }
-    
+
         T operator() (double& a, double& b) const {
             return T((double)(a < b));
         }
-    
+
         T operator() (double& a, long& b) const {
             return T((double)(a < b));
         }
-    
+
         T operator() (double& a, string& b) const {
             return T();
         }
-    
+
         T operator() (string& a, string& b) const {
             return T();
         }
-    
+
         T operator() (string& a, long& b) const {
             return T();
         }
-    
+
         T operator() (string& a, double& b) const {
             return T();
         }
@@ -443,43 +443,43 @@ namespace op {
     using lt_v = op_vis_2 <Value, lt_op<Value> >;
 
     Variable* (&xlt)(const char*, Variable*, Variable*) = op<lt_v>;
-    #define lt(a,b) xlt("lt:",a,b)
+#define lt(a,b) xlt("lt:",a,b)
 
     ///////////////////////////////////////////////////////////////////////////
-  
+
     template <typename T> struct le_op {
         T operator() (long& a, long& b) const {
             return T((long)(a <= b));
         }
-    
+
         T operator() (long& a, double& b) const {
             return T((long)(a <= b));
         }
-    
+
         T operator() (long& a, string& b) const {
             return T();
         }
-    
+
         T operator() (double& a, double& b) const {
             return T((double)(a <= b));
         }
-    
+
         T operator() (double& a, long& b) const {
             return T((double)(a <= b));
         }
-    
+
         T operator() (double& a, string& b) const {
             return T();
         }
-    
+
         T operator() (string& a, string& b) const {
             return T();
         }
-    
+
         T operator() (string& a, long& b) const {
             return T();
         }
-    
+
         T operator() (string& a, double& b) const {
             return T();
         }
@@ -487,7 +487,7 @@ namespace op {
     using le_v = op_vis_2 <Value, le_op<Value> >;
 
     Variable* (&xle)(const char*, Variable*, Variable*) = op<le_v>;
-    #define le(a,b) xle("le:",a,b)
+#define le(a,b) xle("le:",a,b)
 
     ///////////////////////////////////////////////////////////////////////////
 
@@ -495,35 +495,35 @@ namespace op {
         T operator() (long& a, long& b) const {
             return T((long)(a == b));
         }
-    
+
         T operator() (long& a, double& b) const {
             return T((long)(a == b));
         }
-    
+
         T operator() (long& a, string& b) const {
             return T();
         }
-    
+
         T operator() (double& a, double& b) const {
             return T((double)(a == b));
         }
-    
+
         T operator() (double& a, long& b) const {
             return T((double)(a == b));
         }
-    
+
         T operator() (double& a, string& b) const {
             return T();
         }
-    
+
         T operator() (string& a, string& b) const {
             return T(long(a == b));
         }
-    
+
         T operator() (string& a, long& b) const {
             return T();
         }
-    
+
         T operator() (string& a, double& b) const {
             return T();
         }
@@ -531,7 +531,7 @@ namespace op {
     using eq_v = op_vis_2 <Value, eq_op<Value> >;
 
     Variable* (&xeq)(const char*, Variable*, Variable*) = op<eq_v>;
-    #define is_eq(a,b) xeq("eq:",a,b)
+#define is_eq(a,b) xeq("eq:",a,b)
 
     ///////////////////////////////////////////////////////////////////////////
 
@@ -539,35 +539,35 @@ namespace op {
         T operator() (long& a, long& b) const {
             return T((long)(a != b));
         }
-    
+
         T operator() (long& a, double& b) const {
             return T((long)(a != b));
         }
-    
+
         T operator() (long& a, string& b) const {
             return T();
         }
-    
+
         T operator() (double& a, double& b) const {
             return T((double)(a != b));
         }
-    
+
         T operator() (double& a, long& b) const {
             return T((double)(a != b));
         }
-    
+
         T operator() (double& a, string& b) const {
             return T();
         }
-    
+
         T operator() (string& a, string& b) const {
             return T(long(a != b));
         }
-    
+
         T operator() (string& a, long& b) const {
             return T();
         }
-    
+
         T operator() (string& a, double& b) const {
             return T();
         }
@@ -575,7 +575,7 @@ namespace op {
     using ne_v = op_vis_2 <Value, ne_op<Value> >;
 
     Variable* (&xne)(const char*, Variable*, Variable*) = op<ne_v>;
-    #define ne(a,b) xne("neq:",a,b)
+#define ne(a,b) xne("neq:",a,b)
 
     ///////////////////////////////////////////////////////////////////////////
 
@@ -583,35 +583,35 @@ namespace op {
         T operator() (long& a, long& b) const {
             return T(pow(a, b));
         }
-    
+
         T operator() (long& a, double& b) const {
             return T(pow(a, b));
         }
-    
+
         T operator() (long& a, string& b) const {
             return T();
         }
-    
+
         T operator() (double& a, double& b) const {
             return T(pow(a, b));
         }
-    
+
         T operator() (double& a, long& b) const {
             return T(pow(a, b));
         }
-    
+
         T operator() (double& a, string& b) const {
             return T();
         }
-    
+
         T operator() (string& a, string& b) const {
             return T();
         }
-    
+
         T operator() (string& a, long& b) const {
             return T();
         }
-    
+
         T operator() (string& a, double& b) const {
             return T();
         }
@@ -619,8 +619,8 @@ namespace op {
     using exp_v = op_vis_2 <Value, exp_op<Value> >;
 
     Variable* (&xexp)(const char*, Variable*, Variable*) = op<exp_v>;
-    #define exp(a,b) xexp("exp:",a,b)
-    
+#define exp(a,b) xexp("exp:",a,b)
+
 }
 
 #endif //FLUENT_OPERATION_TEMPLATES_H_INCLUDED

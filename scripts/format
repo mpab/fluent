@@ -1,0 +1,21 @@
+#!/bin/zsh
+
+formatcpp() {
+  pushd $1
+
+  for file in $(ls *.cpp); do
+    echo $file
+    clang-format -i style=webkit $file
+  done
+
+  for file in $(ls *.hpp); do
+    echo $file
+    clang-format -i style=webkit $file
+  done
+
+  popd
+}
+
+formatcpp lexparse
+
+formatcpp fluent
