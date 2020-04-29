@@ -13,7 +13,10 @@ echo %0 - src = %src_path%, gen = %gen_path%
 rmdir /s /q %gen_path%
 mkdir %gen_path%
 
-start /B /D "%src_path%" /WAIT win_bison.exe -v --output=%gen_path%\y.tab.cpp --defines=%gen_path%\y.tab.h parser.yy
-start /B /D "%src_path%" /WAIT win_flex.exe --outfile=%gen_path%\lex.yy.cpp --wincompat lexer.l
+rem start /B /D "%src_path%" /WAIT win_bison.exe -v --output=%gen_path%\parser.tab.cpp --defines=%gen_path%\parser.tab.hh parser.yy
+rem start /B /D "%src_path%" /WAIT win_flex.exe --outfile=%gen_path%\lexer.yy.cc --wincompat lexer.l
+
+start /B /D "%gen_path%" /WAIT win_bison.exe -v --defines %src_path%\parser.yy
+rem start /B /D "%src_path%" /WAIT win_flex.exe lexer.l
 
 echo const char build_date[] = ^"%date% %time%^"; > "%gen_path%\build_date.h"

@@ -7,9 +7,11 @@ C++11, boost, lex, yacc...
 fix the cmake project build to regenerate code from within Visual Studio
 
 ## General
-  - yacc (bison) should be > 3.x
+
+- yacc (bison) should be > 3.x
 
 ## Windows
+
 - boost: <https://www.boost.org/users/download/>
   - BOOST_HOME=%APPS%\boost_1_72_0
 - (f)lex, yacc (bison): <https://sourceforge.net/projects/winflexbison/>
@@ -19,8 +21,8 @@ fix the cmake project build to regenerate code from within Visual Studio
   - CMAKE_HOME=%APPS%\cmake-3.17.1-win64-x64
   - PATH=%PATH%;%CMAKE_HOME%\bin
 
-
 ## OS X
+
 Google is your friend (for the purposes of search...)
 OS X uses an older, incompatible version of yacc, use homebrew to get the latest, and update your path settings accordingly.
 

@@ -1,5 +1,5 @@
 %skeleton "lalr1.cc"
-%require  "3.2"
+%require  "3.3"
 %language "c++"
 
 %debug 
@@ -44,10 +44,18 @@
 %define api.value.type variant
 %define parse.assert
 
-%token END    0     "end of file"
-%token NL
-%token SPC
-%token ABORT
+%token
+END    0     "end of file"
+NL
+SPC
+ABORT
+
+GEQ
+LEQ
+ISEQ
+NEQ
+
+;
 
 %token <std::string> TEXT
 %token <std::string> REAL
@@ -68,10 +76,7 @@
 %token INTEGER
 %token BAD_REAL
 
-%token GEQ
-%token LEQ
-%token ISEQ
-%token NEQ
+
 
 %left GEQ LEQ ISEQ NEQ '>' '<'
 %left '+' '-'
