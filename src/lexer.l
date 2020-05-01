@@ -43,6 +43,10 @@ BAD_SYMBOL        [0-9][_a-zA-Z][_a-zA-Z0-9]
             yylval = lval;
 %}
 
+"while"     return tok::WHILE;
+"case"      return tok::CASE;
+"out"       return tok::OUT;
+
 [a-zA-Z]+   {
                /**
                 * Section 10.1.5.1 of the 3.0.2 Bison Manual says the 
@@ -99,7 +103,9 @@ BAD_SYMBOL        [0-9][_a-zA-Z][_a-zA-Z0-9]
                         yylval->build<std::string>(yytext);
                         return tok::QSTRING;
                     }
-      
+
+
+
 "::abort\n" return tok::ABORT;
 "::quit\n"  return tok::ABORT;
 "::q\n"     return tok::ABORT;
@@ -109,11 +115,7 @@ BAD_SYMBOL        [0-9][_a-zA-Z][_a-zA-Z0-9]
 "<="        return tok::LEQ;
 "=="        return tok::ISEQ;
 "!="        return tok::NEQ;
-
-"while"     return tok::WHILE;
-"case"      return tok::CASE;
-"out"       return tok::OUT;
-            
+          
 "\/\/".*\n  return tok::COMMENT;
 
 \n          return tok::NL;

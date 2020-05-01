@@ -1,14 +1,17 @@
-#!/bin/zsh
+#!/bin/bash
 
-export src_path=./src
-export gen_path=./gen
+export src_path=src
+export gen_path=gen
 
 echo $0 - src=$src_path, gen=$gen_path
 
 rm -rf $gen_path
 mkdir $gen_path
 
-bison -v --output=$gen_path/parser.cc --defines=$gen_path/y.tab.h $src_path/parser.yy
-# flex --outfile=$gen_path/lex.yy.cpp $src_path/lexer.l
+echo "const char build_date[] = \"$(date)\";" > $gen_path/build_date.hpp
 
-echo "const char build_date[] = \"$(date)\";" > gen/build_date.h
+pushd $gen_path
+flex ../$src_path/lexer.l
+# bison -v --output=$gen_path/parser.cc --defines=$gen_path/y.tab.h $src_path/parser.yy
+popd
+

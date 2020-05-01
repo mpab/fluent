@@ -1,4 +1,10 @@
-# TODO Language
+# TODO
+
+## Project
+
+Create stand alone lexer for testing
+
+## Language
 
 functions/objects
 
