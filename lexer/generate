@@ -1,0 +1,5 @@
+#!/bin/bash
+
+pushd src
+flex lexer.l
+popd
