@@ -1,0 +1,9 @@
+
+D:\dev\fluent\lexer>build\Debug\lexer.exe -f tests\input-01.txt 
+keyword: while
+keyword: case
+keyword: out
+integer: 123456
+real: 1.23456
+string: "a string"
+operator: /operator: /-- --unhandleda-- --unhandledcunhandledounhandledmunhandledmunhandledeunhandlednunhandledt

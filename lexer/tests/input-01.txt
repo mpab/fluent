@@ -5,3 +5,5 @@ out
 1.23456
 "a string"
 // a comment
+
+"a string" // a comment

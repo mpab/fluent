@@ -31,7 +31,7 @@ OPERATOR            [-()<>=+*/;{}.,^]
 
 %%
 
-"\/\/".*\n          SCAN_COMMENT();
+"//".*\n            SCAN_COMMENT();
 
 "while"             SCAN_KEYWORD();
 "case"              SCAN_KEYWORD();
