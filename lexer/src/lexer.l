@@ -1,125 +1,68 @@
+%option noyywrap
+%option nounistd
+%option header-file="lexer.hh"
+%option outfile="lexer.cc"
+%option yylineno
+
 %{
-
-/* This should suppress the macro redefinition warnings in stdint.h... but it doesn't */
-#define YY_NO_UNISTD_H
-
-/* Implementation of yyFlexScanner */ 
-#include "scanner.hpp"
-
-#undef  YY_DECL
-#define YY_DECL int CMD::Scanner::yylex( CMD::Parser::semantic_type * const lval, CMD::Parser::location_type *loc )
-
-/* typedef to make the returns for the tokens shorter */
-using tok = CMD::Parser::token_type;
-
-/* define yyterminate as this instead of NULL */
-#define yyterminate() return( tok::END )
-
-/* update location on matching */
-#define YY_USEr_aCTION loc->step(); loc->columns(yyleng);
-
+#include "lexer_macros.hpp"
 %}
 
-%option debug
-%option nodefault
-%option yyclass="CMD::Scanner"
-%option noyywrap
-%option c++
+alpha               [a-zA-Z]
+num                 [0-9]
+alphanum            {alpha}|{num}
 
-DIGIT             [0-9]
-INTEGER           {DIGIT}+
-REAL_1            {DIGIT}+"f"
-REAL_2            {DIGIT}+\.?{DIGIT}+"f"?
-BAD_REAL_1        {DIGIT}+\.
-BAD_REAL_2        \.{DIGIT}+
-QSTRING           (\"(\\.|[^"])*\"|\'(\\.|[^'])*\')
+SYMBOL              [_]|alphanum*
+BAD_SYMBOL          [0-9]SYMBOL
 
-SYMBOL            [_a-zA-Z][_a-zA-Z0-9]*
-BAD_SYMBOL        [0-9][_a-zA-Z][_a-zA-Z0-9]
+INT                 {num}+
+
+REAL                {REAL_1}|{REAL_2}
+REAL_1              {num}+"f"
+REAL_2              {num}+\.?{num}+"f"?
+
+BAD_REAL            {BAD_REAL_1}|{BAD_REAL_2}
+BAD_REAL_1          {num}+\.
+BAD_REAL_2          \.{num}+
+
+QSTRING             (\"(\\.|[^"])*\"|\'(\\.|[^'])*\')
+
+OPERATOR            [-()<>=+*/;{}.,^]
 
 %%
 
-%{          /** Code executed at the beginning of yylex **/
-            yylval = lval;
-%}
+"\/\/".*\n          SCAN_COMMENT();
 
-"while"     return tok::WHILE;
-"case"      return tok::CASE;
-"out"       return tok::OUT;
+"while"             SCAN_KEYWORD();
+"case"              SCAN_KEYWORD();
+"out"               SCAN_KEYWORD();
 
-[a-zA-Z]+   {
-               /**
-                * Section 10.1.5.1 of the 3.0.2 Bison Manual says the 
-                * following should work:
-                * yylval.build( yytext ;
-                * but it doesn't.
-                * ref: http://goo.gl/KLn0w2
-                */
-               yylval->build<std::string>(yytext);
-               return tok::TEXT;
-            }
+{OPERATOR}          SCAN_OPERATOR();
 
-[-()<>=+*/;{}.,^]   {
-                        yylval->build<std::string>(yytext);
-                        return tok::OPERATOR;
-                    }
+{SYMBOL}            SCAN_SYMBOL();
 
-{SYMBOL}            { 
-                        yylval->build<std::string>(yytext);
-                        return tok::SYMBOL;
-                    }
+{BAD_SYMBOL}        SCAN_ERROR();
 
-{BAD_SYMBOL}        { 
-                        yylval->build<std::string>(yytext);
-                        return tok::BAD_SYMBOL;
-                    }
+{INT}               SCAN_INT();
 
-{INTEGER}           { 
-                        yylval->build<std::string>(yytext);
-                        return tok::INTEGER;
-                    }
+{REAL}              SCAN_REAL();
 
-{REAL_1}            { 
-                        yylval->build<std::string>(yytext);
-                        return tok::REAL;
-                    }
+{BAD_REAL}          SCAN_ERROR();
 
-{REAL_2}            { 
-                        yylval->build<std::string>(yytext);
-                        return tok::REAL;
-                    }
+{QSTRING}           SCAN_QSTRING();
 
-{BAD_REAL_1}        { 
-                        yylval->build<std::string>(yytext);
-                        return tok::BAD_REAL;
-                    }
+"::abort\n"         SCAN_MODE(ABORT);
+"::quit\n"          SCAN_MODE(ABORT);
+"::q\n"             SCAN_MODE(ABORT);
+"::exit\n"          SCAN_MODE(ABORT);
 
-{BAD_REAL_2}        { 
-                        yylval->build<std::string>(yytext);
-                        return tok::BAD_REAL;
-                    }
-
-{QSTRING}           { 
-                        yylval->build<std::string>(yytext);
-                        return tok::QSTRING;
-                    }
-
-
-
-"::abort\n" return tok::ABORT;
-"::quit\n"  return tok::ABORT;
-"::q\n"     return tok::ABORT;
-"::exit\n"  return tok::ABORT;
-
-">="        return tok::GEQ;
-"<="        return tok::LEQ;
-"=="        return tok::ISEQ;
-"!="        return tok::NEQ;
+">="                SCAN_OPERATOR();
+"<="                SCAN_OPERATOR();
+"=="                SCAN_OPERATOR();
+"!="                SCAN_OPERATOR();
           
-"\/\/".*\n  return tok::COMMENT;
-
-\n          return tok::NL;
-[[:space:]] return tok::SPC;
-.           return tok::INVALID;
+\n                  SCAN_NEWLINE();
+[[:space:]]         SCAN_IGNORE();
+.                   SCAN_UNHANDLED();
 
 %%

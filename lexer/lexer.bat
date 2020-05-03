@@ -1,0 +1,1 @@
+build\Debug\lexer.exe %*

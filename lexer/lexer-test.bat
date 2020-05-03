@@ -1,0 +1,1 @@
+call lexer.bat -f tests\input-%1.txt > tests\output.%1.txt
