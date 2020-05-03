@@ -22,9 +22,9 @@ int parse_console() {
 
 int main(const int argc, const char** argv) {
 
-    if (argc >= 2 && strncmp(argv[1], "-f", 2) == 0) {
-        assert(argv[2] != nullptr);
-        return parse_file(argv[2]);
+    if (argc > 1) {
+        assert(argv[1] != nullptr);
+        return parse_file(argv[1]);
     }
 
     return parse_console();

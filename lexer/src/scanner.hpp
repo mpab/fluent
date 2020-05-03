@@ -10,7 +10,7 @@ public:
     Scanner(std::string filename);
 
     void TokenizeUntilEof();
-    void Tokenize();
+    int Tokenize();
 
 //   //Scanner(std::istream *in, std::ostream *out) : yyFlexLexer(in){};
 //   virtual ~Scanner(){};

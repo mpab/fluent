@@ -1,9 +1,7 @@
-while
-case
-out
-123456
-1.23456
-"a string"
-// a comment
+1           // integer 1
+111         // integer 111
+1.1         // real 1.1
 
-"a string" // a comment
+""          // string ""
+"s"         // string "s"
+"s1""s2"    // string "s1" string "s2"

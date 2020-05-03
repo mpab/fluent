@@ -2,15 +2,13 @@
 #include <FlexLexer.h>
 #endif
 
-#include "Scanner.hpp"
 #include <exception>
 #include <cassert>
 #include <cctype>
 #include <fstream>
+#include "lexer.hh"
 
-extern FILE* yyin;
-extern char* _src_filename;
-extern int yylex();
+#include "Scanner.hpp"
 
 namespace lexer {
 
@@ -33,13 +31,14 @@ namespace lexer {
     };
 
     void Scanner::TokenizeUntilEof() {
+        int keep_scanning;
         do {
-            Tokenize();
-        } while (!feof(yyin));
+            keep_scanning = Tokenize();
+        } while (keep_scanning && !feof(yyin));
     }
 
-    void Scanner::Tokenize()
+    int Scanner::Tokenize()
     {
-        yylex();
+        return yylex();
     }
 }

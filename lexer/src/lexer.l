@@ -8,12 +8,8 @@
 #include "lexer_macros.hpp"
 %}
 
-alpha               [a-zA-Z]
-num                 [0-9]
-alphanum            {alpha}|{num}
-
-SYMBOL              [_]|alphanum*
-BAD_SYMBOL          [0-9]SYMBOL
+BAD_SYMBOL          {num}SYMBOL
+SYMBOL              {symbol_start}{symbol_item}*
 
 INT                 {num}+
 
@@ -28,6 +24,12 @@ BAD_REAL_2          \.{num}+
 QSTRING             (\"(\\.|[^"])*\"|\'(\\.|[^'])*\')
 
 OPERATOR            [-()<>=+*/;{}.,^]
+
+symbol_start        {alpha}|_
+symbol_item         {alphanum}|_
+alphanum            {alpha}|{num}
+alpha               [a-zA-Z]
+num                 [0-9]
 
 %%
 
@@ -51,10 +53,10 @@ OPERATOR            [-()<>=+*/;{}.,^]
 
 {QSTRING}           SCAN_QSTRING();
 
-"::abort\n"         SCAN_MODE(ABORT);
-"::quit\n"          SCAN_MODE(ABORT);
-"::q\n"             SCAN_MODE(ABORT);
-"::exit\n"          SCAN_MODE(ABORT);
+"::abort\n"         SCAN_MODE_ABORT();
+"::quit\n"          SCAN_MODE_ABORT();
+"::q\n"             SCAN_MODE_ABORT();
+"::exit\n"          SCAN_MODE_ABORT();
 
 ">="                SCAN_OPERATOR();
 "<="                SCAN_OPERATOR();
