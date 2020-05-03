@@ -1,6 +1,9 @@
 1           // integer 1
 111         // integer 111
 1.1         // real 1.1
+-1          // integer -1
+-111        // integer -111
+-1.1        // real -1.1
 
 ""          // string ""
 "s"         // string "s"

@@ -8,18 +8,12 @@
 #include "lexer_macros.hpp"
 %}
 
-BAD_SYMBOL          {num}SYMBOL
+INT                 [+-]?{num}+
+BAD_REAL            [+-]?{num}+\.{num}+{alpha}
+REAL                [+-]?{num}+\.{num}+
+
+BAD_SYMBOL          {num}{SYMBOL}
 SYMBOL              {symbol_start}{symbol_item}*
-
-INT                 {num}+
-
-REAL                {REAL_1}|{REAL_2}
-REAL_1              {num}+"f"
-REAL_2              {num}+\.?{num}+"f"?
-
-BAD_REAL            {BAD_REAL_1}|{BAD_REAL_2}
-BAD_REAL_1          {num}+\.
-BAD_REAL_2          \.{num}+
 
 QSTRING             (\"(\\.|[^"])*\"|\'(\\.|[^'])*\')
 
@@ -42,14 +36,12 @@ num                 [0-9]
 {OPERATOR}          SCAN_OPERATOR();
 
 {SYMBOL}            SCAN_SYMBOL();
-
-{BAD_SYMBOL}        SCAN_ERROR();
+{BAD_SYMBOL}        SCAN_ERROR(symbol);
 
 {INT}               SCAN_INT();
 
 {REAL}              SCAN_REAL();
-
-{BAD_REAL}          SCAN_ERROR();
+{BAD_REAL}          SCAN_ERROR(real);
 
 {QSTRING}           SCAN_QSTRING();
 

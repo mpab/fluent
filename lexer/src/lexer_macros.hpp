@@ -21,20 +21,21 @@ extern int __line__;
 
 // utility macros to simplify the actions
 
-#define yytextspc yytext << std::endl;
+#define yytexteof yytext << std::endl;
+#define valeof val << std::endl;
 
-#define SCAN_INT()				{ auto val = std::atoi(yytext); std::cout << "integer " << val << " "; }
-#define SCAN_REAL()				{ auto val = std::atof(yytext); std::cout << "real " << val << " "; }
-#define SCAN_QSTRING()			{ auto val = std::string(yytext, yyleng); std::cout << "string " << val << " "; }
+#define SCAN_INT()				{ auto val = std::atoi(yytext); std::cout << "integer " << valeof; }
+#define SCAN_REAL()				{ auto val = std::atof(yytext); std::cout << "real " << valeof; }
+#define SCAN_QSTRING()			{ auto val = std::string(yytext, yyleng); std::cout << "string " << valeof; }
 
-#define SCAN_SYMBOL()			{ std::cout << "symbol " << yytextspc; }
-#define SCAN_KEYWORD()			{ std::cout << "keyword " << yytextspc; }
+#define SCAN_SYMBOL()			{ std::cout << "symbol " << yytexteof; }
+#define SCAN_KEYWORD()			{ std::cout << "keyword " << yytexteof; }
 #define SCAN_MODE_ABORT()		{ yyterminate(); }
-#define SCAN_OPERATOR()			{ std::cout << "operator " << yytextspc; }
-#define SCAN_COMMENT()			{ std::cout << "comment " << yytextspc; }
+#define SCAN_OPERATOR()			{ std::cout << "operator " << yytexteof; }
+#define SCAN_COMMENT()			{ std::cout << "comment " << yytexteof; }
 
-#define SCAN_ERROR()			{ std::cout << "error " << yytextspc; }
-#define SCAN_UNHANDLED()        { std::cout << "unhandled" << yytextspc; }
+#define SCAN_ERROR(msg)			{ std::cout << #msg##" error " << yytexteof; }
+#define SCAN_UNHANDLED()        { std::cout << "unhandled" << yytexteof; }
 
 #define SCAN_IGNORE()			{} /*{ std::cout << "."; }*/
 
