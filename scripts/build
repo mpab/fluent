@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/bin/sh
+
 if [ ! -z $1 ]; then
     cd $1
     echo "building in '$1'..."
@@ -6,7 +7,7 @@ else
     echo "building in" $PWD"."
 fi
 
-./genfiles
+./scripts/genfiles
 
 rm -rf out
 mkdir out

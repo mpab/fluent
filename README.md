@@ -42,7 +42,16 @@ C++11, boost, lex, yacc...
   - boost: <https://www.boost.org/users/download/>
   - The VS project expects to find boost in %BOOST_HOME% e.g. BOOST_HOME=%APPS%\boost_1_72_0
   - lex, yacc For Windows use this port: <https://sourceforge.net/projects/winflexbison/>
-  - ...and define %WIN_FLEX_BISON_HOME% as the installation folder in build.bat.
+  - define WIN_FLEX_BISON_HOME as the installation folder in build.bat.
+  - add %WIN_FLEX_BISON_HOME% to path
+  - add wrapper scripts
+    - lex -> win_flex $*
+    - yacc -> win_bison $*
+
+- Windows/Mingw + GitBash
+  - yacc (bison): pacman -S bison; cp exe to path, change yacc wrapper to call bison
+  - lex (flex): pacman -S flex; cp exe to path
+  - it's probably not worth doing this
 
 - OSX and Linux
   - google is your friend (for the purposes of search...)
