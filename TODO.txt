@@ -1,5 +1,8 @@
 TODO
 ------------------------------------------------
+editor syntax highlighting (textmate, vscode)
+    - example at https://github.com/Draco-lang/Compiler/tree/main/src
+
 functions/objects
     - define function syntax & implement in parser.y
     - implement function model in node/context
