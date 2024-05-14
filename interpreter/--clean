@@ -1,0 +1,25 @@
+#!/usr/bin/env sh
+
+export BUILD_OUT="build"
+
+perr () { 
+    printf "\e[1m\e[31mERR: $1\e[0m\n"
+}
+
+pwrn () { 
+    printf "\e[1m\e[33mWRN: $1\e[0m\n"
+}
+
+pok () {
+    printf "\e[1m\e[32m$1\e[0m\n"
+}
+
+pinf () {
+	printf "\e[1m\e[30m$1\e[0m\n"
+}
+
+PROJ_DIR="$(dirname $0)"
+PROJ="${PROJ_DIR#./}"
+[ -z "$PROJ" ] && perr "run $0 from the enclosing directory" && exit
+[ "." = "$PROJ" ] && perr "run $0 from the enclosing directory" && exit
+rm -rf "$BUILD_OUT/$PROJ/"

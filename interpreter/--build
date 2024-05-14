@@ -1,0 +1,46 @@
+#!/usr/bin/env sh
+
+export BUILD_OUT="build"
+
+perr () { 
+    printf "\e[1m\e[31mERR: $1\e[0m\n"
+}
+
+pwrn () { 
+    printf "\e[1m\e[33mWRN: $1\e[0m\n"
+}
+
+pok () {
+    printf "\e[1m\e[32m$1\e[0m\n"
+}
+
+pinf () {
+	printf "\e[1m\e[30m$1\e[0m\n"
+}
+
+build_project () {
+    [ ! -d "$1" ] &&  perr "folder $1 not found" && exit
+    [ ! -f "$1/CMakelists.txt" ] && perr "$1/CMakelists.txt not found" && exit 1
+    WORK_DIR="$(pwd)"
+    mkdir -p "$BUILD_OUT/$1"
+    cd "$BUILD_OUT/$1"
+    cmake -DTARGET_NAME:STRING="$1" "../../$1"
+    cmake --build .
+    # ensure clangd can find the compilation DB 
+    cd "$WORK_DIR"
+    mkdir -p "$1/build"
+    cp "$BUILD_OUT/$1/compile_commands.json" "$1/build/."
+}
+
+# check build dependencies
+[ -z "$BOOST_HOME" ] && perr "BOOST_HOME not defined" && exit
+[ ! -d "$BOOST_HOME" ] && perr "BOOST_HOME $BOOST_HOME is not a directory" && exit
+
+[ -z "$FLEX_INCLUDE_DIR" ] && perr "FLEX_INCLUDE_DIR not defined" && exit
+[ ! -d "$FLEX_INCLUDE_DIR" ] && perr "FLEX_INCLUDE_DIR $FLEX_INCLUDE_DIR is not a directory" && exit
+
+PROJ_DIR="$(dirname $0)"
+PROJ="${PROJ_DIR#./}"
+[ -z "$PROJ" ] && perr "run $0 from the enclosing directory" && exit
+[ "." = "$PROJ" ] && perr "run $0 from the enclosing directory" && exit
+build_project "$PROJ"

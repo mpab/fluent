@@ -1,9 +1,0 @@
-cd src
-rm y.*
-rm parser.tab.c
-rm lex.*
-rm build_date.h
-rm *.7z
-fname=`date +%Y-%m-%d_%H-%M-%S`
-7z a src *
-mv src.7z ../src-$fname.7z

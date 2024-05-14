@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+
+[ -z "$1" ] && echo "usage: $0 {extension}" && exit
+unset EXT_NAME
+[ ! -d "$1" ] && echo "ERROR: invalid extension directory: $1" && exit
+
+unset VSCODE_HOME
+[ -d "$HOME/.vscode" ] && VSCODE_HOME="$HOME/.vscode"
+[ -d "$HOME/.vscode-oss" ] && VSCODE_HOME="$HOME/.vscode-oss"
+[ -z "$VSCODE_HOME" ] && echo "ERROR: can't find vscode installation folder" && exit
+
+[ ! -z "$VSCODE_HOME" ] && echo "found a vscode variant in $VSCODE_HOME"
+EXT_INSTALL_NAME="mpab.$1-0.0.1-universal"
+echo "(re)-installing $EXT_INSTALL_NAME..."
+rm -rf "$VSCODE_HOME/extensions/$EXT_INSTALL_NAME"
+cp -R "$1" "$VSCODE_HOME/extensions/$EXT_INSTALL_NAME"
+code --list-extensions

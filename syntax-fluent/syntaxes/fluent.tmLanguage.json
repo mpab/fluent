@@ -1,0 +1,66 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "fluent",
+  "patterns": [
+    {
+      "include": "#keywords"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#comments"
+    }
+    ,
+    {
+      "include": "#constants"
+    }
+  ],
+  "repository": {
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.fluent",
+          "match": "\\b(if|while|for|out)\\b"
+        }
+      ]
+    },
+    "strings": {
+      "name": "string.quoted.double.fluent",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.fluent",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "constants": {
+      "patterns": [
+        {
+          "name": "constant.character.fluent",
+          "match": "\\b\\w+"
+        },
+        {
+          "name": "constant.numeric",
+          "match": "[0-9]"
+        }
+      ]
+    },
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.block.fluent",
+          "begin": "/\\*",
+          "end": "\\*/"
+        },
+        {
+          "name": "comment.line.fluent",
+          "match": "(//).*$\\n?"
+        }
+      ]
+    }
+  },
+  "scopeName": "source.fluent"
+}

@@ -1,0 +1,25 @@
+{
+  "name": "syntax-fluent",
+  "displayName": "syntax-fluent",
+  "description": "syntax highlighting for the fluent language",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.89.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "fluent",
+      "aliases": ["fluent", "fluent"],
+      "extensions": [".fl",".fluent"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "fluent",
+      "scopeName": "source.fluent",
+      "path": "./syntaxes/fluent.tmLanguage.json"
+    }]
+  }
+}

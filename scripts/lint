@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+REQUIREMENTS_TXT="$(dirname $0)/requirements.txt"
+. activate
+pip install -q -r "$REQUIREMENTS_TXT"
+pre-commit run --all-files

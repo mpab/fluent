@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+FORMAT_STYLE=Google  
+        
+format_cpp () {
+    find $1 -type f -iname "*.cpp" -exec clang-format -i -style="$FORMAT_STYLE" {} \;
+    find $1 -type f -iname "*.hpp" -exec clang-format -i -style="$FORMAT_STYLE" {} \;
+}
+
+format_cpp interpreter
