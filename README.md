@@ -37,7 +37,7 @@ interpreter/--build
 
 - Build notes - the output is in ./build/interpreter
 
-## Editor syntax-highlighing support
+## Editor syntax-highlighting support
 
 ```sh
 ./scripts/extension-install syntax-fluent
@@ -63,12 +63,13 @@ sudo apt-get install libboost-all-dev
 
 ## Windows
 
-Windows build not yet revivified, watch this space...
+install the pre-requisites as described below
 
-~~On Windows: use build.bat or load the solution in the vs2015 folder.~~
-
-- ~~For a command line build make sure VS tools are available (hint: use vsvars32).~~
-- ~~Build weirdness: the build script copies the output executables to C:\Apps\bin - comment this out in the build script or add the folder as required.~~
+```dos
+interpreter\--clean.bat
+interpreter\--build.bat
+interpreter\--run.bat
+```
 
 ## Build prerequisites
 
@@ -79,13 +80,18 @@ C++20, cmake, boost, flex, bison...
   - #define FLEX_INCLUDE_DIR and BOOST_HOME
 - Windows
   - boost: <https://www.boost.org/users/download/>
-  - The project expects to find boost in %BOOST_HOME% e.g. BOOST_HOME=%APPS%\boost_1_72_0
-  - lex, yacc For Windows use this port: <https://sourceforge.net/projects/winflexbison/>
+  - The project expects to find boost in %BOOST_HOME% e.g. BOOST_HOME=%APPS%\boost_1_72_0 
+  - lex, yacc For Windows use this port: <https://github.com/lexxmark/winflexbison/releases>
   - define WIN_FLEX_BISON_HOME as the installation folder in build.bat.
   - add %WIN_FLEX_BISON_HOME% to path
-  - if required, add wrapper scripts
-    - lex -> win_flex $*
-    - yacc -> win_bison $*
+  - cmake - install via winget
+  - build chain - install via winget
+
+```dos
+winget install Microsoft.VisualStudio.2022.Community --silent --override "--wait --quiet --add Microsoft.VisualStudio.Workload.NativeDesktop --includeRecommended"
+
+winget install -e --id Kitware.CMake
+```
 
 - Windows/Mingw64
   - yacc (bison): pacman -S bison

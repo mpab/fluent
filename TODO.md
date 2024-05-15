@@ -3,6 +3,7 @@
 ## Done
 
 2024.05
+now supports Windows, Mingw64 and Ubuntu builds
 hacked-in shebang support  
 fixed quoted string parsing regression  
 added modulo operator (%) - can now implement fizzbuzz  

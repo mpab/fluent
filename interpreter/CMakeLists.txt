@@ -7,17 +7,20 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 SET(TARGET_NAME "target_name" CACHE STRING "target name")
 message(STATUS "Using TARGET_NAME=${TARGET_NAME}")
 message(STATUS "CMAKE_CURRENT_BINARY_DIR=${CMAKE_CURRENT_BINARY_DIR}")
+message(STATUS "CMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}")
 
 # set the project name and version
 project(${TARGET_NAME} CXX)
 
 if (MSVC)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 /EHsc /SUBSYSTEM:CONSOLE")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4 /EHsc")
 else()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 endif()
 
+#set(CMAKE_FIND_DEBUG_MODE TRUE)
 find_package(BISON REQUIRED)
+#set(CMAKE_FIND_DEBUG_MODE FALSE)
 BISON_TARGET(${TARGET_NAME}
              ./src/parser.y
              ${CMAKE_CURRENT_BINARY_DIR}/parser.tab.cc
@@ -56,5 +59,5 @@ set_property(
 )
 
 target_include_directories(
-    ${TARGET_NAME} PRIVATE ./src ${CMAKE_CURRENT_BINARY_DIR} $ENV{FLEX_INCLUDE_DIR} $ENV{BOOST_HOME}
+    ${TARGET_NAME} PRIVATE ./src ${CMAKE_CURRENT_BINARY_DIR} $ENV{FLEX_INCLUDE_DIR} $ENV{BOOST_HOME} $ENV{INC_EXT}
 )

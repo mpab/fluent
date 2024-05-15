@@ -8,6 +8,10 @@
 #include "logger.hpp"
 #include "node.hpp"
 
+#define NO_WARN_RET_T \
+  (void)a;            \
+  (void)b;            \
+  return T()
 namespace op {
 
 ///////////////////////////////////////////////////////////////////////////
@@ -113,19 +117,19 @@ struct add_op {
 
   T operator()(int64_t& a, double& b) const { return T(a + b); }
 
-  T operator()(int64_t& a, std::string& b) const { return T(); }
+  T operator()(int64_t& a, std::string& b) const { NO_WARN_RET_T; }
 
   T operator()(double& a, double& b) const { return T(a + b); }
 
   T operator()(double& a, int64_t& b) const { return T(a + b); }
 
-  T operator()(double& a, std::string& b) const { return T(); }
+  T operator()(double& a, std::string& b) const { NO_WARN_RET_T; }
 
   T operator()(std::string& a, std::string& b) const { return T(a + b); }
 
-  T operator()(std::string& a, int64_t& b) const { return T(); }
+  T operator()(std::string& a, int64_t& b) const { NO_WARN_RET_T; }
 
-  T operator()(std::string& a, double& b) const { return T(); }
+  T operator()(std::string& a, double& b) const { NO_WARN_RET_T; }
 };
 using add_v = op_vis_2<node::Value, add_op<node::Value> >;
 
@@ -141,19 +145,19 @@ struct sub_op {
 
   T operator()(int64_t& a, double& b) const { return T(a - b); }
 
-  T operator()(int64_t& a, std::string& b) const { return T(); }
+  T operator()(int64_t& a, std::string& b) const { NO_WARN_RET_T; }
 
   T operator()(double& a, double& b) const { return T(a - b); }
 
   T operator()(double& a, int64_t& b) const { return T(a - b); }
 
-  T operator()(double& a, std::string& b) const { return T(); }
+  T operator()(double& a, std::string& b) const { NO_WARN_RET_T; }
 
-  T operator()(std::string& a, std::string& b) const { return T(); }
+  T operator()(std::string& a, std::string& b) const { NO_WARN_RET_T; }
 
-  T operator()(std::string& a, int64_t& b) const { return T(); }
+  T operator()(std::string& a, int64_t& b) const { NO_WARN_RET_T; }
 
-  T operator()(std::string& a, double& b) const { return T(); }
+  T operator()(std::string& a, double& b) const { NO_WARN_RET_T; }
 };
 using sub_v = op_vis_2<node::Value, sub_op<node::Value> >;
 
@@ -169,19 +173,19 @@ struct mul_op {
 
   T operator()(int64_t& a, double& b) const { return T(a * b); }
 
-  T operator()(int64_t& a, std::string& b) const { return T(); }
+  T operator()(int64_t& a, std::string& b) const { NO_WARN_RET_T; }
 
   T operator()(double& a, double& b) const { return T(a * b); }
 
   T operator()(double& a, int64_t& b) const { return T(a * b); }
 
-  T operator()(double& a, std::string& b) const { return T(); }
+  T operator()(double& a, std::string& b) const { NO_WARN_RET_T; }
 
-  T operator()(std::string& a, std::string& b) const { return T(); }
+  T operator()(std::string& a, std::string& b) const { NO_WARN_RET_T; }
 
-  T operator()(std::string& a, int64_t& b) const { return T(); }
+  T operator()(std::string& a, int64_t& b) const { NO_WARN_RET_T; }
 
-  T operator()(std::string& a, double& b) const { return T(); }
+  T operator()(std::string& a, double& b) const { NO_WARN_RET_T; }
 };
 using mul_v = op_vis_2<node::Value, mul_op<node::Value> >;
 
@@ -197,19 +201,19 @@ struct div_op {
 
   T operator()(int64_t& a, double& b) const { return T(a / b); }
 
-  T operator()(int64_t& a, std::string& b) const { return T(); }
+  T operator()(int64_t& a, std::string& b) const { NO_WARN_RET_T; }
 
   T operator()(double& a, double& b) const { return T(a / b); }
 
   T operator()(double& a, int64_t& b) const { return T(a / b); }
 
-  T operator()(double& a, std::string& b) const { return T(); }
+  T operator()(double& a, std::string& b) const { NO_WARN_RET_T; }
 
-  T operator()(std::string& a, std::string& b) const { return T(); }
+  T operator()(std::string& a, std::string& b) const { NO_WARN_RET_T; }
 
-  T operator()(std::string& a, int64_t& b) const { return T(); }
+  T operator()(std::string& a, int64_t& b) const { NO_WARN_RET_T; }
 
-  T operator()(std::string& a, double& b) const { return T(); }
+  T operator()(std::string& a, double& b) const { NO_WARN_RET_T; }
 };
 using div_v = op_vis_2<node::Value, div_op<node::Value> >;
 
@@ -225,19 +229,19 @@ struct gt_op {
 
   T operator()(int64_t& a, double& b) const { return T((int64_t)(a > b)); }
 
-  T operator()(int64_t& a, std::string& b) const { return T(); }
+  T operator()(int64_t& a, std::string& b) const { NO_WARN_RET_T; }
 
   T operator()(double& a, double& b) const { return T((double)(a > b)); }
 
   T operator()(double& a, int64_t& b) const { return T((double)(a > b)); }
 
-  T operator()(double& a, std::string& b) const { return T(); }
+  T operator()(double& a, std::string& b) const { NO_WARN_RET_T; }
 
-  T operator()(std::string& a, std::string& b) const { return T(); }
+  T operator()(std::string& a, std::string& b) const { NO_WARN_RET_T; }
 
-  T operator()(std::string& a, int64_t& b) const { return T(); }
+  T operator()(std::string& a, int64_t& b) const { NO_WARN_RET_T; }
 
-  T operator()(std::string& a, double& b) const { return T(); }
+  T operator()(std::string& a, double& b) const { NO_WARN_RET_T; }
 };
 using gt_v = op_vis_2<node::Value, gt_op<node::Value> >;
 
@@ -253,19 +257,19 @@ struct ge_op {
 
   T operator()(int64_t& a, double& b) const { return T((int64_t)(a >= b)); }
 
-  T operator()(int64_t& a, std::string& b) const { return T(); }
+  T operator()(int64_t& a, std::string& b) const { NO_WARN_RET_T; }
 
   T operator()(double& a, double& b) const { return T((double)(a >= b)); }
 
   T operator()(double& a, int64_t& b) const { return T((double)(a >= b)); }
 
-  T operator()(double& a, std::string& b) const { return T(); }
+  T operator()(double& a, std::string& b) const { NO_WARN_RET_T; }
 
-  T operator()(std::string& a, std::string& b) const { return T(); }
+  T operator()(std::string& a, std::string& b) const { NO_WARN_RET_T; }
 
-  T operator()(std::string& a, int64_t& b) const { return T(); }
+  T operator()(std::string& a, int64_t& b) const { NO_WARN_RET_T; }
 
-  T operator()(std::string& a, double& b) const { return T(); }
+  T operator()(std::string& a, double& b) const { NO_WARN_RET_T; }
 };
 using ge_v = op_vis_2<node::Value, ge_op<node::Value> >;
 
@@ -281,19 +285,19 @@ struct lt_op {
 
   T operator()(int64_t& a, double& b) const { return T((int64_t)(a < b)); }
 
-  T operator()(int64_t& a, std::string& b) const { return T(); }
+  T operator()(int64_t& a, std::string& b) const { NO_WARN_RET_T; }
 
   T operator()(double& a, double& b) const { return T((double)(a < b)); }
 
   T operator()(double& a, int64_t& b) const { return T((double)(a < b)); }
 
-  T operator()(double& a, std::string& b) const { return T(); }
+  T operator()(double& a, std::string& b) const { NO_WARN_RET_T; }
 
-  T operator()(std::string& a, std::string& b) const { return T(); }
+  T operator()(std::string& a, std::string& b) const { NO_WARN_RET_T; }
 
-  T operator()(std::string& a, int64_t& b) const { return T(); }
+  T operator()(std::string& a, int64_t& b) const { NO_WARN_RET_T; }
 
-  T operator()(std::string& a, double& b) const { return T(); }
+  T operator()(std::string& a, double& b) const { NO_WARN_RET_T; }
 };
 using lt_v = op_vis_2<node::Value, lt_op<node::Value> >;
 
@@ -309,19 +313,19 @@ struct le_op {
 
   T operator()(int64_t& a, double& b) const { return T((int64_t)(a <= b)); }
 
-  T operator()(int64_t& a, std::string& b) const { return T(); }
+  T operator()(int64_t& a, std::string& b) const { NO_WARN_RET_T; }
 
   T operator()(double& a, double& b) const { return T((double)(a <= b)); }
 
   T operator()(double& a, int64_t& b) const { return T((double)(a <= b)); }
 
-  T operator()(double& a, std::string& b) const { return T(); }
+  T operator()(double& a, std::string& b) const { NO_WARN_RET_T; }
 
-  T operator()(std::string& a, std::string& b) const { return T(); }
+  T operator()(std::string& a, std::string& b) const { NO_WARN_RET_T; }
 
-  T operator()(std::string& a, int64_t& b) const { return T(); }
+  T operator()(std::string& a, int64_t& b) const { NO_WARN_RET_T; }
 
-  T operator()(std::string& a, double& b) const { return T(); }
+  T operator()(std::string& a, double& b) const { NO_WARN_RET_T; }
 };
 using le_v = op_vis_2<node::Value, le_op<node::Value> >;
 
@@ -337,21 +341,21 @@ struct eq_op {
 
   T operator()(int64_t& a, double& b) const { return T((int64_t)(a == b)); }
 
-  T operator()(int64_t& a, std::string& b) const { return T(); }
+  T operator()(int64_t& a, std::string& b) const { NO_WARN_RET_T; }
 
   T operator()(double& a, double& b) const { return T((double)(a == b)); }
 
   T operator()(double& a, int64_t& b) const { return T((double)(a == b)); }
 
-  T operator()(double& a, std::string& b) const { return T(); }
+  T operator()(double& a, std::string& b) const { NO_WARN_RET_T; }
 
   T operator()(std::string& a, std::string& b) const {
     return T(int64_t(a == b));
   }
 
-  T operator()(std::string& a, int64_t& b) const { return T(); }
+  T operator()(std::string& a, int64_t& b) const { NO_WARN_RET_T; }
 
-  T operator()(std::string& a, double& b) const { return T(); }
+  T operator()(std::string& a, double& b) const { NO_WARN_RET_T; }
 };
 using eq_v = op_vis_2<node::Value, eq_op<node::Value> >;
 
@@ -367,21 +371,21 @@ struct ne_op {
 
   T operator()(int64_t& a, double& b) const { return T((int64_t)(a != b)); }
 
-  T operator()(int64_t& a, std::string& b) const { return T(); }
+  T operator()(int64_t& a, std::string& b) const { NO_WARN_RET_T; }
 
   T operator()(double& a, double& b) const { return T((double)(a != b)); }
 
   T operator()(double& a, int64_t& b) const { return T((double)(a != b)); }
 
-  T operator()(double& a, std::string& b) const { return T(); }
+  T operator()(double& a, std::string& b) const { NO_WARN_RET_T; }
 
   T operator()(std::string& a, std::string& b) const {
     return T(int64_t(a != b));
   }
 
-  T operator()(std::string& a, int64_t& b) const { return T(); }
+  T operator()(std::string& a, int64_t& b) const { NO_WARN_RET_T; }
 
-  T operator()(std::string& a, double& b) const { return T(); }
+  T operator()(std::string& a, double& b) const { NO_WARN_RET_T; }
 };
 using ne_v = op_vis_2<node::Value, ne_op<node::Value> >;
 
@@ -397,19 +401,19 @@ struct exp_op {
 
   T operator()(int64_t& a, double& b) const { return T(pow(a, b)); }
 
-  T operator()(int64_t& a, std::string& b) const { return T(); }
+  T operator()(int64_t& a, std::string& b) const { NO_WARN_RET_T; }
 
   T operator()(double& a, double& b) const { return T(pow(a, b)); }
 
   T operator()(double& a, int64_t& b) const { return T(pow(a, b)); }
 
-  T operator()(double& a, std::string& b) const { return T(); }
+  T operator()(double& a, std::string& b) const { NO_WARN_RET_T; }
 
-  T operator()(std::string& a, std::string& b) const { return T(); }
+  T operator()(std::string& a, std::string& b) const { NO_WARN_RET_T; }
 
-  T operator()(std::string& a, int64_t& b) const { return T(); }
+  T operator()(std::string& a, int64_t& b) const { NO_WARN_RET_T; }
 
-  T operator()(std::string& a, double& b) const { return T(); }
+  T operator()(std::string& a, double& b) const { NO_WARN_RET_T; }
 };
 using exp_v = op_vis_2<node::Value, exp_op<node::Value> >;
 
@@ -423,21 +427,21 @@ template <typename T>
 struct mod_op {
   T operator()(int64_t& a, int64_t& b) const { return T(a % b); }
 
-  T operator()(int64_t& a, double& b) const { return T(); }
+  T operator()(int64_t& a, double& b) const { NO_WARN_RET_T; }
 
-  T operator()(int64_t& a, std::string& b) const { return T(); }
+  T operator()(int64_t& a, std::string& b) const { NO_WARN_RET_T; }
 
-  T operator()(double& a, double& b) const { return T(); }
+  T operator()(double& a, double& b) const { NO_WARN_RET_T; }
 
-  T operator()(double& a, int64_t& b) const { return T(); }
+  T operator()(double& a, int64_t& b) const { NO_WARN_RET_T; }
 
-  T operator()(double& a, std::string& b) const { return T(); }
+  T operator()(double& a, std::string& b) const { NO_WARN_RET_T; }
 
-  T operator()(std::string& a, std::string& b) const { return T(); }
+  T operator()(std::string& a, std::string& b) const { NO_WARN_RET_T; }
 
-  T operator()(std::string& a, int64_t& b) const { return T(); }
+  T operator()(std::string& a, int64_t& b) const { NO_WARN_RET_T; }
 
-  T operator()(std::string& a, double& b) const { return T(); }
+  T operator()(std::string& a, double& b) const { NO_WARN_RET_T; }
 };
 using mod_v = op_vis_2<node::Value, mod_op<node::Value> >;
 

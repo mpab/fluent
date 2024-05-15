@@ -26,6 +26,8 @@ std::stringstream nullstream;
 
 #ifdef _MSC_VER
 
+// https://developercommunity.visualstudio.com/t/error-c2872-byte-ambiguous-symbol/93889
+#define byte BYTE
 #include <windows.h>
 
 struct WinConsole {
