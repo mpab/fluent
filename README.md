@@ -46,7 +46,7 @@ interpreter/--build
 ## Scripts - more or less self-explanatory
 
 ```sh
-./interpreter--*
+./interpreter/--*
 # and everything in
 ./scripts
 # note that ./scripts/lint uses the alias 'activate' to create a virtual environment
