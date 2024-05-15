@@ -38,7 +38,7 @@ int yylex(void);
 %type <node> symbols
 
 %left T_GE T_LE T_EQ T_NE '>' '<'
-%left '+' '-'
+%left '+' '-' '%'
 %left '*' '/'
 %left '^'
 %precedence T_NEG
@@ -136,6 +136,7 @@ expr:
         | expr T_NE expr                        { $$ = addi(T_NE, 2, $1, $3); }
         | expr T_EQ expr                        { $$ = addi(T_EQ, 2, $1, $3); }
         | expr '^' expr                         { $$ = addi('^', 2, $1, $3); }
+        | expr '%' expr                         { $$ = addi('%', 2, $1, $3); }
         | '(' expr ')'                          { $$ = $2; }
         ;
 

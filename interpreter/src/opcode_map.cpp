@@ -60,6 +60,9 @@ const char* opcode_name(int id) {
 
     case '^':
       return "^";
+
+    case '%':
+      return "%";
   }
 
   return ("{UNKNOWN}");

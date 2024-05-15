@@ -1,0 +1,13 @@
+a = 1;
+while (a != 100) {
+    if (a % 15 == 0) {
+        outl "fizzbuzz";
+    } else if (a % 5 == 0) {
+        outl "buzz";
+    } else if (a % 3 == 0) {
+        outl "fizz";
+    } else {
+        outl a;
+    }
+    a = a + 1;
+}

@@ -120,6 +120,10 @@ Node* execute(Instruction* n) {
       return op::exp(context::eval(n->operands[0]),
                      context::eval(n->operands[1]));
 
+    case '%':
+      return op::mod(context::eval(n->operands[0]),
+                     context::eval(n->operands[1]));
+
     default:
       break;
   }

@@ -70,7 +70,7 @@ E_BAD_SYMBOL        [0-9][_a-zA-Z][_a-zA-Z0-9]
     RET(T_ELLIPSIS);
 }
 
-[-()<>=+*/;{}.,^] { // operators
+[-()<>=+*/;{}.,^%] { // operators
     RET(*yytext);
 }
 

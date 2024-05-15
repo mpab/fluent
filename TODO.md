@@ -2,7 +2,8 @@
 
 ## Done
 
-2024.05  
+2024.05
+added modulo operator (%) - can now implement fizzbuzz
 Dusted off and cleaned-up
 
 2017.10  

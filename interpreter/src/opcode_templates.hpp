@@ -417,4 +417,32 @@ node::Variable* (&xexp)(const char*, node::Variable*,
                         node::Variable*) = op<exp_v>;
 #define exp(a, b) xexp("exp:", a, b)
 
+///////////////////////////////////////////////////////////////////////////
+
+template <typename T>
+struct mod_op {
+  T operator()(int64_t& a, int64_t& b) const { return T(a % b); }
+
+  T operator()(int64_t& a, double& b) const { return T(); }
+
+  T operator()(int64_t& a, std::string& b) const { return T(); }
+
+  T operator()(double& a, double& b) const { return T(); }
+
+  T operator()(double& a, int64_t& b) const { return T(); }
+
+  T operator()(double& a, std::string& b) const { return T(); }
+
+  T operator()(std::string& a, std::string& b) const { return T(); }
+
+  T operator()(std::string& a, int64_t& b) const { return T(); }
+
+  T operator()(std::string& a, double& b) const { return T(); }
+};
+using mod_v = op_vis_2<node::Value, mod_op<node::Value> >;
+
+node::Variable* (&xmod)(const char*, node::Variable*,
+                        node::Variable*) = op<mod_v>;
+#define mod(a, b) xmod("exp:", a, b)
+
 }  // namespace op
