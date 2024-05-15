@@ -3,12 +3,14 @@
 ## Done
 
 2024.05
-added modulo operator (%) - can now implement fizzbuzz
+hacked-in shebang support  
+fixed quoted string parsing regression  
+added modulo operator (%) - can now implement fizzbuzz  
 Dusted off and cleaned-up
 
 2017.10  
-FIXED:
-parser.y
+FIXED:  
+parser.y  
 arithmetic: evaluation of {symbol} - NUMERIC: syntax error, unexpected '-', expecting TOK_ENDL
 works in brackets
 works with assignment - e.g. n=n-1, r=r-1.0

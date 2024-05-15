@@ -58,6 +58,10 @@
         {
           "name": "comment.line.fluent",
           "match": "(//).*$\\n?"
+        },
+        {
+          "name": "comment.line.fluent",
+          "match": "(#!/).*$\\n?"
         }
       ]
     }

@@ -66,6 +66,11 @@ E_BAD_SYMBOL        [0-9][_a-zA-Z][_a-zA-Z0-9]
     ++__line__;
 }
 
+"#!/".*\n {
+    logger::debug("SHEBANG");
+    ++__line__;
+}
+
 "..." {
     RET(T_ELLIPSIS);
 }

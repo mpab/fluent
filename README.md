@@ -3,11 +3,23 @@
 ...a simple, intuitive programming language (and it's cross-platform).  
 dusted off after a brief hiatus and now uses cmake for the build process
 
+supports shebang #!/... execution of fluent scripts on *nix
+
 ## Run
 
 ```sh
 ./interpreter/--build
 ./interpreter/--run {source file}
+```
+
+## Install
+
+looks for $HOME/bin and copies the executable there  
+(if it's not on your path, it won't work...)
+
+```sh
+./interpreter/--build
+./interpreter/--install {source file}
 ```
 
 ## Examples
@@ -25,13 +37,13 @@ interpreter/--build
 
 - Build notes - the output is in ./build/interpreter
 
-### Editor syntax-highlighing support
+## Editor syntax-highlighing support
 
 ```sh
 ./scripts/extension-install syntax-fluent
 ```
 
-### Scripts - more or less self-explanatory
+## Scripts - more or less self-explanatory
 
 ```sh
 ./interpreter--*
@@ -41,7 +53,7 @@ interpreter/--build
 # this 'activate' utility is not included with this project  
 ```
 
-### Linux
+## Linux
 
 ```sh
 sudo apt install flex
@@ -49,7 +61,7 @@ sudo apt install bison
 sudo apt-get install libboost-all-dev
 ```
 
-### Windows
+## Windows
 
 Windows build not yet revivified, watch this space...
 
@@ -58,7 +70,7 @@ Windows build not yet revivified, watch this space...
 - ~~For a command line build make sure VS tools are available (hint: use vsvars32).~~
 - ~~Build weirdness: the build script copies the output executables to C:\Apps\bin - comment this out in the build script or add the folder as required.~~
 
-### Build prerequisites
+## Build prerequisites
 
 C++20, cmake, boost, flex, bison...
 
@@ -106,11 +118,11 @@ export FLEX_INCLUDE_DIR="$(brew --prefix flex)/include"
 ### Variables
 
 Integer, floating point and string variables can be used.
-Valid names start with a letter or underscore '_'.
+Valid names start with a letter or an underscore '_'.
 
 ### Arithmetic operations
 
-'*' '/' '-' '+' '^' operations are supported with numeric types.
+'*' '/' '-' '+' '^' '%' operations are supported with numeric types.
 Some operations are also valid with string types.
 
 ### Logic operations
