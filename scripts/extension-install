@@ -13,5 +13,6 @@ unset VSCODE_HOME
 EXT_INSTALL_NAME="mpab.$1-0.0.1-universal"
 echo "(re)-installing $EXT_INSTALL_NAME..."
 rm -rf "$VSCODE_HOME/extensions/$EXT_INSTALL_NAME"
+rm -r "$VSCODE_HOME/extensions/extensions.json"
 cp -R "$1" "$VSCODE_HOME/extensions/$EXT_INSTALL_NAME"
 code --list-extensions

@@ -15,11 +15,12 @@ node::Node* bind(node::Node* k, node::Node* v);
 }  // namespace context
 
 namespace opcodes {
+using namespace std;
 using namespace node;
 
-Node* execute(Node* n);
+node::Node* execute(node::Node* n);
 
-Node* print(Node* n) {
+node::Node* print(node::Node* n) {
   cout << context::eval(n);
   return nullptr;
 }
@@ -127,7 +128,7 @@ Node* execute(Instruction* n) {
   return nullptr;
 }
 
-Node* execute(Node* n) {
+node::Node* execute(node::Node* n) {
   logger::debug() << "execute(Node*)" << NodeInfo(n) << endl;
 
   auto f = dynamic_cast<Instruction*>(n);

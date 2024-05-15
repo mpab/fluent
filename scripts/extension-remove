@@ -11,4 +11,5 @@ unset VSCODE_HOME
 EXT_INSTALL_NAME="mpab.$1-0.0.1-universal"
 echo "removing $EXT_INSTALL_NAME..."
 rm -rf "$VSCODE_HOME/extensions/$EXT_INSTALL_NAME"
-echo "done"
+rm -r "$VSCODE_HOME/extensions/extensions.json"
+code --list-extensions

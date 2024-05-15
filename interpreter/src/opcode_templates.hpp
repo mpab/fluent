@@ -5,13 +5,10 @@
 #include <algorithm>
 #include <cmath>
 
-#include "boost/variant.hpp"
 #include "logger.hpp"
 #include "node.hpp"
 
 namespace op {
-using namespace boost;
-using namespace node;
 
 ///////////////////////////////////////////////////////////////////////////
 
@@ -21,13 +18,13 @@ struct op_vis_1 : public boost::static_visitor<T> {
 
   T operator()(double& a) const { return O().operator()(a); }
 
-  T operator()(string& a) const { return O().operator()(a); }
+  T operator()(std::string& a) const { return O().operator()(a); }
 };
 
 template <typename O, typename T>
 T* op(const char* fn, T* a) {
   if (!a) {
-    logger::error() << fn << " bad val" << endl;
+    logger::error() << fn << " bad val" << std::endl;
     return nullptr;
   }
   auto r = apply_visitor(O(), a->value);
@@ -42,26 +39,32 @@ struct op_vis_2 : public boost::static_visitor<T> {
 
   T operator()(int64_t& a, double& b) const { return O().operator()(a, b); }
 
-  T operator()(int64_t& a, string& b) const { return O().operator()(a, b); }
+  T operator()(int64_t& a, std::string& b) const {
+    return O().operator()(a, b);
+  }
 
   T operator()(double& a, double& b) const { return O().operator()(a, b); }
 
   T operator()(double& a, int64_t& b) const { return O().operator()(a, b); }
 
-  T operator()(double& a, string& b) const { return O().operator()(a, b); }
+  T operator()(double& a, std::string& b) const { return O().operator()(a, b); }
 
-  T operator()(string& a, string& b) const { return O().operator()(a, b); }
+  T operator()(std::string& a, std::string& b) const {
+    return O().operator()(a, b);
+  }
 
-  T operator()(string& a, int64_t& b) const { return O().operator()(a, b); }
+  T operator()(std::string& a, int64_t& b) const {
+    return O().operator()(a, b);
+  }
 
-  T operator()(string& a, double& b) const { return O().operator()(a, b); }
+  T operator()(std::string& a, double& b) const { return O().operator()(a, b); }
 };
 
 template <typename O, typename T>
 T* op(const char* fn, T* a, T* b) {
   if (!a || !b) {
-    if (!a) logger::warn() << fn << " bad lval" << endl;
-    if (!b) logger::warn() << fn << " bad rval" << endl;
+    if (!a) logger::warn() << fn << " bad lval" << std::endl;
+    if (!b) logger::warn() << fn << " bad rval" << std::endl;
     return nullptr;
   }
   auto r = apply_visitor(O(), a->value, b->value);
@@ -76,15 +79,15 @@ struct negate_op {
 
   T operator()(double& a) const { return T(-a); }
 
-  T operator()(string& a) const {
+  T operator()(std::string& a) const {
     auto copy(a);
     reverse(copy.begin(), copy.end());
     return T(copy);
   }
 };
-using negate_v = op_vis_1<Value, negate_op<Value> >;
+using negate_v = op_vis_1<node::Value, negate_op<node::Value> >;
 
-Variable* (&xnegate)(const char*, Variable*) = op<negate_v>;
+node::Variable* (&xnegate)(const char*, node::Variable*) = op<negate_v>;
 #define negate(a) xnegate("negate:", a)
 
 ///////////////////////////////////////////////////////////////////////////
@@ -94,12 +97,12 @@ struct conditional_op {
 
   bool operator()(double& a) const { return a != 0; }
 
-  bool operator()(string& a) const { return !a.empty(); }
+  bool operator()(std::string& a) const { return !a.empty(); }
 };
 
 using conditional_v = op_vis_1<bool, conditional_op>;
 
-bool conditional(Variable* a) {
+bool conditional(node::Variable* a) {
   return apply_visitor(conditional_v(), a->value);
 }
 ///////////////////////////////////////////////////////////////////////////
@@ -110,23 +113,24 @@ struct add_op {
 
   T operator()(int64_t& a, double& b) const { return T(a + b); }
 
-  T operator()(int64_t& a, string& b) const { return T(); }
+  T operator()(int64_t& a, std::string& b) const { return T(); }
 
   T operator()(double& a, double& b) const { return T(a + b); }
 
   T operator()(double& a, int64_t& b) const { return T(a + b); }
 
-  T operator()(double& a, string& b) const { return T(); }
+  T operator()(double& a, std::string& b) const { return T(); }
 
-  T operator()(string& a, string& b) const { return T(a + b); }
+  T operator()(std::string& a, std::string& b) const { return T(a + b); }
 
-  T operator()(string& a, int64_t& b) const { return T(); }
+  T operator()(std::string& a, int64_t& b) const { return T(); }
 
-  T operator()(string& a, double& b) const { return T(); }
+  T operator()(std::string& a, double& b) const { return T(); }
 };
-using add_v = op_vis_2<Value, add_op<Value> >;
+using add_v = op_vis_2<node::Value, add_op<node::Value> >;
 
-Variable* (&xadd)(const char*, Variable*, Variable*) = op<add_v>;
+node::Variable* (&xadd)(const char*, node::Variable*,
+                        node::Variable*) = op<add_v>;
 #define add(a, b) xadd("add:", a, b)
 
 ///////////////////////////////////////////////////////////////////////////
@@ -137,23 +141,24 @@ struct sub_op {
 
   T operator()(int64_t& a, double& b) const { return T(a - b); }
 
-  T operator()(int64_t& a, string& b) const { return T(); }
+  T operator()(int64_t& a, std::string& b) const { return T(); }
 
   T operator()(double& a, double& b) const { return T(a - b); }
 
   T operator()(double& a, int64_t& b) const { return T(a - b); }
 
-  T operator()(double& a, string& b) const { return T(); }
+  T operator()(double& a, std::string& b) const { return T(); }
 
-  T operator()(string& a, string& b) const { return T(); }
+  T operator()(std::string& a, std::string& b) const { return T(); }
 
-  T operator()(string& a, int64_t& b) const { return T(); }
+  T operator()(std::string& a, int64_t& b) const { return T(); }
 
-  T operator()(string& a, double& b) const { return T(); }
+  T operator()(std::string& a, double& b) const { return T(); }
 };
-using sub_v = op_vis_2<Value, sub_op<Value> >;
+using sub_v = op_vis_2<node::Value, sub_op<node::Value> >;
 
-Variable* (&xsub)(const char*, Variable*, Variable*) = op<sub_v>;
+node::Variable* (&xsub)(const char*, node::Variable*,
+                        node::Variable*) = op<sub_v>;
 #define sub(a, b) xsub("sub:", a, b)
 
 ///////////////////////////////////////////////////////////////////////////
@@ -164,23 +169,24 @@ struct mul_op {
 
   T operator()(int64_t& a, double& b) const { return T(a * b); }
 
-  T operator()(int64_t& a, string& b) const { return T(); }
+  T operator()(int64_t& a, std::string& b) const { return T(); }
 
   T operator()(double& a, double& b) const { return T(a * b); }
 
   T operator()(double& a, int64_t& b) const { return T(a * b); }
 
-  T operator()(double& a, string& b) const { return T(); }
+  T operator()(double& a, std::string& b) const { return T(); }
 
-  T operator()(string& a, string& b) const { return T(); }
+  T operator()(std::string& a, std::string& b) const { return T(); }
 
-  T operator()(string& a, int64_t& b) const { return T(); }
+  T operator()(std::string& a, int64_t& b) const { return T(); }
 
-  T operator()(string& a, double& b) const { return T(); }
+  T operator()(std::string& a, double& b) const { return T(); }
 };
-using mul_v = op_vis_2<Value, mul_op<Value> >;
+using mul_v = op_vis_2<node::Value, mul_op<node::Value> >;
 
-Variable* (&xmul)(const char*, Variable*, Variable*) = op<mul_v>;
+node::Variable* (&xmul)(const char*, node::Variable*,
+                        node::Variable*) = op<mul_v>;
 #define mul(a, b) xmul("mul:", a, b)
 
 ///////////////////////////////////////////////////////////////////////////
@@ -191,23 +197,24 @@ struct div_op {
 
   T operator()(int64_t& a, double& b) const { return T(a / b); }
 
-  T operator()(int64_t& a, string& b) const { return T(); }
+  T operator()(int64_t& a, std::string& b) const { return T(); }
 
   T operator()(double& a, double& b) const { return T(a / b); }
 
   T operator()(double& a, int64_t& b) const { return T(a / b); }
 
-  T operator()(double& a, string& b) const { return T(); }
+  T operator()(double& a, std::string& b) const { return T(); }
 
-  T operator()(string& a, string& b) const { return T(); }
+  T operator()(std::string& a, std::string& b) const { return T(); }
 
-  T operator()(string& a, int64_t& b) const { return T(); }
+  T operator()(std::string& a, int64_t& b) const { return T(); }
 
-  T operator()(string& a, double& b) const { return T(); }
+  T operator()(std::string& a, double& b) const { return T(); }
 };
-using div_v = op_vis_2<Value, div_op<Value> >;
+using div_v = op_vis_2<node::Value, div_op<node::Value> >;
 
-Variable* (&xdiv)(const char*, Variable*, Variable*) = op<div_v>;
+node::Variable* (&xdiv)(const char*, node::Variable*,
+                        node::Variable*) = op<div_v>;
 #define div(a, b) xdiv("div:", a, b)
 
 ///////////////////////////////////////////////////////////////////////////
@@ -218,23 +225,24 @@ struct gt_op {
 
   T operator()(int64_t& a, double& b) const { return T((int64_t)(a > b)); }
 
-  T operator()(int64_t& a, string& b) const { return T(); }
+  T operator()(int64_t& a, std::string& b) const { return T(); }
 
   T operator()(double& a, double& b) const { return T((double)(a > b)); }
 
   T operator()(double& a, int64_t& b) const { return T((double)(a > b)); }
 
-  T operator()(double& a, string& b) const { return T(); }
+  T operator()(double& a, std::string& b) const { return T(); }
 
-  T operator()(string& a, string& b) const { return T(); }
+  T operator()(std::string& a, std::string& b) const { return T(); }
 
-  T operator()(string& a, int64_t& b) const { return T(); }
+  T operator()(std::string& a, int64_t& b) const { return T(); }
 
-  T operator()(string& a, double& b) const { return T(); }
+  T operator()(std::string& a, double& b) const { return T(); }
 };
-using gt_v = op_vis_2<Value, gt_op<Value> >;
+using gt_v = op_vis_2<node::Value, gt_op<node::Value> >;
 
-Variable* (&xgt)(const char*, Variable*, Variable*) = op<gt_v>;
+node::Variable* (&xgt)(const char*, node::Variable*,
+                       node::Variable*) = op<gt_v>;
 #define gt(a, b) xgt("gt:", a, b)
 
 ///////////////////////////////////////////////////////////////////////////
@@ -245,23 +253,24 @@ struct ge_op {
 
   T operator()(int64_t& a, double& b) const { return T((int64_t)(a >= b)); }
 
-  T operator()(int64_t& a, string& b) const { return T(); }
+  T operator()(int64_t& a, std::string& b) const { return T(); }
 
   T operator()(double& a, double& b) const { return T((double)(a >= b)); }
 
   T operator()(double& a, int64_t& b) const { return T((double)(a >= b)); }
 
-  T operator()(double& a, string& b) const { return T(); }
+  T operator()(double& a, std::string& b) const { return T(); }
 
-  T operator()(string& a, string& b) const { return T(); }
+  T operator()(std::string& a, std::string& b) const { return T(); }
 
-  T operator()(string& a, int64_t& b) const { return T(); }
+  T operator()(std::string& a, int64_t& b) const { return T(); }
 
-  T operator()(string& a, double& b) const { return T(); }
+  T operator()(std::string& a, double& b) const { return T(); }
 };
-using ge_v = op_vis_2<Value, ge_op<Value> >;
+using ge_v = op_vis_2<node::Value, ge_op<node::Value> >;
 
-Variable* (&xge)(const char*, Variable*, Variable*) = op<ge_v>;
+node::Variable* (&xge)(const char*, node::Variable*,
+                       node::Variable*) = op<ge_v>;
 #define ge(a, b) xge("ge:", a, b)
 
 ///////////////////////////////////////////////////////////////////////////
@@ -272,23 +281,24 @@ struct lt_op {
 
   T operator()(int64_t& a, double& b) const { return T((int64_t)(a < b)); }
 
-  T operator()(int64_t& a, string& b) const { return T(); }
+  T operator()(int64_t& a, std::string& b) const { return T(); }
 
   T operator()(double& a, double& b) const { return T((double)(a < b)); }
 
   T operator()(double& a, int64_t& b) const { return T((double)(a < b)); }
 
-  T operator()(double& a, string& b) const { return T(); }
+  T operator()(double& a, std::string& b) const { return T(); }
 
-  T operator()(string& a, string& b) const { return T(); }
+  T operator()(std::string& a, std::string& b) const { return T(); }
 
-  T operator()(string& a, int64_t& b) const { return T(); }
+  T operator()(std::string& a, int64_t& b) const { return T(); }
 
-  T operator()(string& a, double& b) const { return T(); }
+  T operator()(std::string& a, double& b) const { return T(); }
 };
-using lt_v = op_vis_2<Value, lt_op<Value> >;
+using lt_v = op_vis_2<node::Value, lt_op<node::Value> >;
 
-Variable* (&xlt)(const char*, Variable*, Variable*) = op<lt_v>;
+node::Variable* (&xlt)(const char*, node::Variable*,
+                       node::Variable*) = op<lt_v>;
 #define lt(a, b) xlt("lt:", a, b)
 
 ///////////////////////////////////////////////////////////////////////////
@@ -299,23 +309,24 @@ struct le_op {
 
   T operator()(int64_t& a, double& b) const { return T((int64_t)(a <= b)); }
 
-  T operator()(int64_t& a, string& b) const { return T(); }
+  T operator()(int64_t& a, std::string& b) const { return T(); }
 
   T operator()(double& a, double& b) const { return T((double)(a <= b)); }
 
   T operator()(double& a, int64_t& b) const { return T((double)(a <= b)); }
 
-  T operator()(double& a, string& b) const { return T(); }
+  T operator()(double& a, std::string& b) const { return T(); }
 
-  T operator()(string& a, string& b) const { return T(); }
+  T operator()(std::string& a, std::string& b) const { return T(); }
 
-  T operator()(string& a, int64_t& b) const { return T(); }
+  T operator()(std::string& a, int64_t& b) const { return T(); }
 
-  T operator()(string& a, double& b) const { return T(); }
+  T operator()(std::string& a, double& b) const { return T(); }
 };
-using le_v = op_vis_2<Value, le_op<Value> >;
+using le_v = op_vis_2<node::Value, le_op<node::Value> >;
 
-Variable* (&xle)(const char*, Variable*, Variable*) = op<le_v>;
+node::Variable* (&xle)(const char*, node::Variable*,
+                       node::Variable*) = op<le_v>;
 #define le(a, b) xle("le:", a, b)
 
 ///////////////////////////////////////////////////////////////////////////
@@ -326,23 +337,26 @@ struct eq_op {
 
   T operator()(int64_t& a, double& b) const { return T((int64_t)(a == b)); }
 
-  T operator()(int64_t& a, string& b) const { return T(); }
+  T operator()(int64_t& a, std::string& b) const { return T(); }
 
   T operator()(double& a, double& b) const { return T((double)(a == b)); }
 
   T operator()(double& a, int64_t& b) const { return T((double)(a == b)); }
 
-  T operator()(double& a, string& b) const { return T(); }
+  T operator()(double& a, std::string& b) const { return T(); }
 
-  T operator()(string& a, string& b) const { return T(int64_t(a == b)); }
+  T operator()(std::string& a, std::string& b) const {
+    return T(int64_t(a == b));
+  }
 
-  T operator()(string& a, int64_t& b) const { return T(); }
+  T operator()(std::string& a, int64_t& b) const { return T(); }
 
-  T operator()(string& a, double& b) const { return T(); }
+  T operator()(std::string& a, double& b) const { return T(); }
 };
-using eq_v = op_vis_2<Value, eq_op<Value> >;
+using eq_v = op_vis_2<node::Value, eq_op<node::Value> >;
 
-Variable* (&xeq)(const char*, Variable*, Variable*) = op<eq_v>;
+node::Variable* (&xeq)(const char*, node::Variable*,
+                       node::Variable*) = op<eq_v>;
 #define is_eq(a, b) xeq("eq:", a, b)
 
 ///////////////////////////////////////////////////////////////////////////
@@ -353,23 +367,26 @@ struct ne_op {
 
   T operator()(int64_t& a, double& b) const { return T((int64_t)(a != b)); }
 
-  T operator()(int64_t& a, string& b) const { return T(); }
+  T operator()(int64_t& a, std::string& b) const { return T(); }
 
   T operator()(double& a, double& b) const { return T((double)(a != b)); }
 
   T operator()(double& a, int64_t& b) const { return T((double)(a != b)); }
 
-  T operator()(double& a, string& b) const { return T(); }
+  T operator()(double& a, std::string& b) const { return T(); }
 
-  T operator()(string& a, string& b) const { return T(int64_t(a != b)); }
+  T operator()(std::string& a, std::string& b) const {
+    return T(int64_t(a != b));
+  }
 
-  T operator()(string& a, int64_t& b) const { return T(); }
+  T operator()(std::string& a, int64_t& b) const { return T(); }
 
-  T operator()(string& a, double& b) const { return T(); }
+  T operator()(std::string& a, double& b) const { return T(); }
 };
-using ne_v = op_vis_2<Value, ne_op<Value> >;
+using ne_v = op_vis_2<node::Value, ne_op<node::Value> >;
 
-Variable* (&xne)(const char*, Variable*, Variable*) = op<ne_v>;
+node::Variable* (&xne)(const char*, node::Variable*,
+                       node::Variable*) = op<ne_v>;
 #define ne(a, b) xne("neq:", a, b)
 
 ///////////////////////////////////////////////////////////////////////////
@@ -380,23 +397,24 @@ struct exp_op {
 
   T operator()(int64_t& a, double& b) const { return T(pow(a, b)); }
 
-  T operator()(int64_t& a, string& b) const { return T(); }
+  T operator()(int64_t& a, std::string& b) const { return T(); }
 
   T operator()(double& a, double& b) const { return T(pow(a, b)); }
 
   T operator()(double& a, int64_t& b) const { return T(pow(a, b)); }
 
-  T operator()(double& a, string& b) const { return T(); }
+  T operator()(double& a, std::string& b) const { return T(); }
 
-  T operator()(string& a, string& b) const { return T(); }
+  T operator()(std::string& a, std::string& b) const { return T(); }
 
-  T operator()(string& a, int64_t& b) const { return T(); }
+  T operator()(std::string& a, int64_t& b) const { return T(); }
 
-  T operator()(string& a, double& b) const { return T(); }
+  T operator()(std::string& a, double& b) const { return T(); }
 };
-using exp_v = op_vis_2<Value, exp_op<Value> >;
+using exp_v = op_vis_2<node::Value, exp_op<node::Value> >;
 
-Variable* (&xexp)(const char*, Variable*, Variable*) = op<exp_v>;
+node::Variable* (&xexp)(const char*, node::Variable*,
+                        node::Variable*) = op<exp_v>;
 #define exp(a, b) xexp("exp:", a, b)
 
 }  // namespace op
