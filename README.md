@@ -86,6 +86,21 @@ C++20, cmake, boost, flex, bison...
   - google is your friend (for the purposes of search...)
   - xcode uses an older, incompatible version of yacc, use homebrew to get the latest, and update your path settings accordingly.
 
+```sh
+brew install boost
+brew install flex
+brew install bison
+```
+
+```sh
+# $HOME/.zshrc
+# flex and bison
+export PATH="$(brew --prefix flex)/bin:$(brew --prefix bison)/bin:$PATH"
+# boost & flex for dev
+export BOOST_HOME="$(brew --prefix boost)/include"
+export FLEX_INCLUDE_DIR="$(brew --prefix flex)/include"
+```
+
 ## Language Notes
 
 ### Variables

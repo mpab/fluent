@@ -10,7 +10,7 @@ namespace node {
 using namespace std;
 using namespace boost;
 
-using Value = variant<int64_t, double, std::string>;
+using Value = boost::variant<int64_t, double, std::string>;
 enum Type { INSTRUCTION, SYMBOL, VARIABLE };
 
 struct Node {
