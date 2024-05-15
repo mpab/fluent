@@ -44,7 +44,11 @@ Variable* create_real(const char* s) {
 
 Variable* create_string(const char* s) { return new Variable(s); }
 
-Variable* create_quoted_string(const char* s) { return create_string(s); }
+Variable* create_quoted_string(const char* s) {
+  std::string qs(s);
+  auto str = qs.substr(1, qs.length() - 2);
+  return create_string(str.c_str());
+}
 
 Variable* create_integer(int64_t i) { return new Variable(i); }
 
