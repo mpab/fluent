@@ -1,0 +1,40 @@
+#!/usr/bin/env fluent 
+fib_index = 92;
+loop = 0;
+fib = 0;
+fib_1 = 1;
+fib_2 = 0;
+
+range_error = 0;
+
+if (fib_index > 92) {
+    range_error = 1;
+}
+if (fib_index < 0) {
+    range_error = 1;
+}
+
+if (range_error == 0) {
+    if (fib_index <= 1) {
+        fib = fib_index;
+    } else {
+        while (loop <= fib_index) {
+            if (loop > 1) {
+                fib = fib_1 + fib_2;
+                fib_2 = fib_1;
+                fib_1 = fib;
+            }
+            loop = loop + 1;
+        }
+    }
+
+    out "fibonacci(";
+    out fib_index;
+    out  ") = ";
+    outl fib;
+} else {
+    out "fibonacci(";
+    out fib_index;
+    out  ") = ";
+    outl "range error";
+}
