@@ -34,8 +34,7 @@ FLEX_TARGET(${TARGET_NAME}
 ADD_FLEX_BISON_DEPENDENCY(${TARGET_NAME} ${TARGET_NAME})
 
 execute_process(COMMAND date OUTPUT_VARIABLE the_date)
-message("the_date='${the_date}'")
-file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/build_date.h" "const char build_date[]=R\"(${the_date})\";")
+ßfile(WRITE "${CMAKE_CURRENT_BINARY_DIR}/build_date.h" "const char build_date[]=R\"(${the_date})\";")
 
 add_executable(
     ${TARGET_NAME}
