@@ -49,9 +49,9 @@ void help() {
   IOUT
       << "Arithmetic:    + / - + ^ operations are supported with numeric types."
       << endl;
-  IOUT << "Examples:      You can also check IOUT the samples folder." << endl;
+  IOUT << "Examples:      You can also look at the examples folder." << endl;
   IOUT << "               Press ctrl+d if you want to leave fluent." << endl;
-  IOUT << ":: commands:" << endl;
+  IOUT << "Commands:" << endl;
   IOUT << "               ::q/::quit      - exit Fluent." << endl;
   IOUT << "               ::h/::help      - help." << endl;
   IOUT << "               ::i/::inspect   - inspect environment." << endl;
@@ -80,14 +80,13 @@ void quit() {
   if (!repl()) {
     return;
   }
-
   exit(0);
 }
 
 void copyright() {
-  IOUT << "Fluent v0.0.3, (c) 2017- Michael Alderson-Bythell" << endl;
+  IOUT << "Fluent v0.0.4, (c) 2017- Michael Alderson-Bythell" << endl;
   IOUT << "built: " << build_date << endl;
-  IOUT << "type ::help if you need it" << endl;
+  IOUT << "::help is available" << endl;
 }
 
 }  // namespace console

@@ -11,5 +11,5 @@ FOR /F "delims=|" %%A IN ("%PTH%") DO (
     SET PROJ=%%~nxA
 )
 
-"%BUILD_OUT%\%PROJ%\debug\%PROJ%" "%*"
+"%BUILD_OUT%\%PROJ%\debug\%PROJ%" %*
 endlocal

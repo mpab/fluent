@@ -33,8 +33,8 @@ FLEX_TARGET(${TARGET_NAME}
 
 ADD_FLEX_BISON_DEPENDENCY(${TARGET_NAME} ${TARGET_NAME})
 
-execute_process(COMMAND date OUTPUT_VARIABLE the_date)
-ßfile(WRITE "${CMAKE_CURRENT_BINARY_DIR}/build_date.h" "const char build_date[]=R\"(${the_date})\";")
+message(STATUS "BUILD_DATE=$ENV{BUILD_DATE}")
+file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/build_date.h" "const char build_date[]=R\"($ENV{BUILD_DATE})\";")
 
 add_executable(
     ${TARGET_NAME}
@@ -55,5 +55,5 @@ set_property(
 )
 
 target_include_directories(
-    ${TARGET_NAME} PRIVATE ./src ${CMAKE_CURRENT_BINARY_DIR} $ENV{FLEX_INCLUDE_DIR} $ENV{BOOST_HOME} $ENV{INC_EXT}
+    ${TARGET_NAME} PRIVATE ./src ${CMAKE_CURRENT_BINARY_DIR} $ENV{FLEX_INCLUDE_DIR} $ENV{BOOST_HOME}
 )

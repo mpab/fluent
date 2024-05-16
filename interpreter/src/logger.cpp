@@ -50,7 +50,7 @@ struct WinConsole {
 
   ~WinConsole() { reset_col(); }
 
-  void set_fg_col(int c) {
+  void set_fg_col(WORD c) {
     c &= 0x0F;
     c += orig_col & 0xF0;
     SetConsoleTextAttribute(hout, c);

@@ -1,4 +1,8 @@
 %{
+#if _MSC_VER
+#pragma warning(disable: 4505)  // 'yysymbol_name': unreferenced function with internal linkage has been removed
+#pragma warning(disable: 4702)  // unreachable code
+#endif
 
 #include "node.hpp"
 #include "context.hpp"
@@ -34,8 +38,8 @@ int yylex(void);
 %type <node> stmt_list
 
 %token T_CLOSURE
-%type <node> closure
-%type <node> symbols
+//%type <node> closure
+//%type <node> symbols
 
 %left T_GE T_LE T_EQ T_NE '>' '<'
 %left '+' '-' '%'
@@ -90,15 +94,15 @@ console:
         }
         ;
 
-symbols:
-          %empty                                { logger::parser_info("symbols: empty"); $$ = nop(); }
-        | T_SYMBOL                              { logger::parser_info("symbols: T_SYMBOL"); $$ = nop(); }
-        | symbols ',' T_SYMBOL                  { logger::parser_info("symbols: symbols, T_SYMBOL"); $$ = nop(); }
-        ;
+// symbols:
+//           %empty                                { logger::parser_info("symbols: empty"); $$ = nop(); }
+//         | T_SYMBOL                              { logger::parser_info("symbols: T_SYMBOL"); $$ = nop(); }
+//         | symbols ',' T_SYMBOL                  { logger::parser_info("symbols: symbols, T_SYMBOL"); $$ = nop(); }
+//         ;
 
-closure:
-          '(' symbols ')' '{' stmt_list '}'     { logger::parser_info("(...)closure"); $$ = nop(); }
-        ;
+// closure:
+//           '(' symbols ')' '{' stmt_list '}'     { logger::parser_info("(...)closure"); $$ = nop(); }
+//         ;
 
 stmt:
           ';'                                   { $$ = addi(';', 2, 0, 0); }
@@ -120,8 +124,8 @@ stmt_list:
         ;
 
 expr:
-          closure                               { $$ = addi(T_CLOSURE, 1, $1); } // allows anon closures
-        | T_STRING                              { $$ = $1; }
+          //closure                               { $$ = addi(T_CLOSURE, 1, $1); } // allows anon closures
+          T_STRING                              { $$ = $1; }
         | T_NUMERIC                             { $$ = $1; }
         | T_SYMBOL                              { $$ = $1; }
         | '-' expr %prec T_NEG                  { $$ = addi(T_NEG, 1, $2); }

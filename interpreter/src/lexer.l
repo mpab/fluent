@@ -2,6 +2,16 @@
 %option header-file="lexer.hh"
 %option nounput
 
+%top{
+#include <stdint.h>             // squish type macro redefinition warnings
+#if _MSC_VER
+#pragma warning(disable: 4996)  // 'isatty': The POSIX name for this item is deprecated
+#define YY_NO_UNISTD_H
+#include <io.h>
+#endif
+
+}
+
 %{
 #include <stdlib.h>
 #include "node.hpp"

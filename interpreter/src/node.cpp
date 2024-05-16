@@ -97,10 +97,10 @@ ostream& operator<<(ostream& o, const NodeInfo& n) {
 
   if (i) {
     o << "[";
-    std::vector<node::Node*>::size_type n = 0;
+    std::vector<node::Node*>::size_type sz = 0;
     for (auto operand : i->operands) {
       o << reinterpret_cast<void*>(operand);
-      if (++n != i->operands.size()) {
+      if (++sz != i->operands.size()) {
         o << ", ";
       }
     }

@@ -21,9 +21,9 @@ if "%BOOST_HOME%x"=="x" (
     goto :EOF
 ) 
 
-set INC_EXT=.\inc_win
 md "%BUILD_OUT%\%PROJ%"
 pushd "%BUILD_OUT%\%PROJ%"
+set BUILD_DATE=%DATE% %TIME%
 call cmake -DCMAKE_PREFIX_PATH="%WIN_FLEX_BISON_HOME%" -DTARGET_NAME:STRING="%PROJ%" "..\..\%PROJ%"
 cmake --build .
 popd

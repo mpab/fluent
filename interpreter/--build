@@ -24,6 +24,7 @@ build_project () {
     WORK_DIR="$(pwd)"
     mkdir -p "$BUILD_OUT/$1"
     cd "$BUILD_OUT/$1"
+    export BUILD_DATE=$(date)
     cmake -DTARGET_NAME:STRING="$1" "../../$1"
     cmake --build .
     # ensure clangd can find the compilation DB 
