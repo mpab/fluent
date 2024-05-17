@@ -1,4 +1,3 @@
-%option noyywrap
 %option header-file="lexer.hh"
 %option noinput
 %option nounput

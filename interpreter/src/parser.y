@@ -124,7 +124,7 @@ stmt_list:
         ;
 
 expr:
-          //closure                               { $$ = addi(T_CLOSURE, 1, $1); } // allows anon closures
+          //closure                             { $$ = addi(T_CLOSURE, 1, $1); } // allows anon closures
           T_STRING                              { $$ = $1; }
         | T_NUMERIC                             { $$ = $1; }
         | T_SYMBOL                              { $$ = $1; }

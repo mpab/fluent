@@ -1,5 +1,5 @@
 #!/usr/bin/env fluent 
-fib_index = 92;
+fib_index = args_1;
 loop = 0;
 fib = 0;
 fib_1 = 1;
