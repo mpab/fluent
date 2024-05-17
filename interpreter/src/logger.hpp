@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <iomanip>  // IWYU pragma: export.
 #include <ostream>
 
 #define FMT8 std::left << std::setw(8) << std::setfill(' ')

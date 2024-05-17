@@ -19,7 +19,7 @@ const char *args_file = "args.fl";
 void create_args_file(const char *file, int argc, char **argv) {
   FILE *fh;
 #ifdef _MSC_VER
-  fopen_s(&args, file, "w");
+  fopen_s(&fh, file, "w");
 #else
   fh = fopen(file, "w");
 #endif
