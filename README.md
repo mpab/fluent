@@ -53,7 +53,12 @@ interpreter/--build
 # this 'activate' utility is not included with this project  
 ```
 
-## Linux
+## Toolchain and Dependencies
+
+C++20, cmake, boost, flex, bison...  
+yacc (bison) should be > 3.x
+
+### Linux
 
 ```sh
 sudo apt install flex
@@ -61,7 +66,7 @@ sudo apt install bison
 sudo apt-get install libboost-all-dev
 ```
 
-## Windows
+### Windows
 
 install the pre-requisites as described below
 
@@ -69,6 +74,38 @@ install the pre-requisites as described below
 interpreter\--clean.bat
 interpreter\--build.bat
 interpreter\--run.bat
+```
+
+### macOS/OS X
+
+```sh
+brew install cmake
+brew install boost
+brew install flex
+brew install bison
+#optional if xcode m4 is not available
+brew install m4
+```
+
+```sh
+# $HOME/.zshrc
+
+# ----------------------------------------------------------
+# flex and bison - m4 installed via xcode
+# export PATH="$(brew --prefix flex)/bin:$(brew --prefix bison)/bin:$PATH"
+
+# flex and bison - optional fix for m4 if installed via brew
+export PATH="$(brew --prefix flex)/bin:$(brew --prefix bison)/bin:$(brew --prefix m4)/bin:$PATH"
+
+# ----------------------------------------------------------
+# boost & flex for dev
+export BOOST_HOME="$(brew --prefix boost)/include"
+export FLEX_INCLUDE_DIR="$(brew --prefix flex)/include"
+```
+#### macOS/OS X - linting & formatting
+
+```sh
+brew install clang-format
 ```
 
 ## Build prerequisites
@@ -100,24 +137,9 @@ winget install -e --id Kitware.CMake
   - Mingw64 installs the headers to /usr/include
     - so define FLEX_INCLUDE_DIR to point to them
 
-- OSX and Linux
-  - google is your friend (for the purposes of search...)
-  - xcode uses an older, incompatible version of yacc, use homebrew to get the latest, and update your path settings accordingly.
+---
 
-```sh
-brew install boost
-brew install flex
-brew install bison
-```
 
-```sh
-# $HOME/.zshrc
-# flex and bison
-export PATH="$(brew --prefix flex)/bin:$(brew --prefix bison)/bin:$PATH"
-# boost & flex for dev
-export BOOST_HOME="$(brew --prefix boost)/include"
-export FLEX_INCLUDE_DIR="$(brew --prefix flex)/include"
-```
 
 ## Language Notes
 
