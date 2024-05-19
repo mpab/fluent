@@ -114,7 +114,7 @@ console:
 stmt:
           ';'                                   { $$ = addi(';', 1, 0, 0); }
         | expr ';'                              { $$ = $1; }
-        | T_EXIT ';'                           { $$ = addi(T_EXIT, 1, 0, 0); }
+        | T_EXIT ';'                            { $$ = addi(T_EXIT, 1, 0, 0); }
         | T_OUT expr ';'                        { $$ = addi(T_OUT, 1, $2); }
         | T_OUTL expr ';'                       { $$ = addi(T_OUTL, 1, $2); }
 
