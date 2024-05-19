@@ -163,9 +163,18 @@ Node* add_instruction(int opcode, int count, Node* n1, Node* n2, Node* n3) {
     case T_IF:
       v.push_back(n1);
       v.push_back(n2);
-      if (count > 2) {
-        v.push_back(n3);
-      }
+      break;
+
+    case TOK_IF_EXPLICIT_ELSE:
+      v.push_back(n1);
+      v.push_back(n2);
+      v.push_back(n3);
+      break;
+
+    case TOK_IF_IMPLIED_ELSE:
+      v.push_back(n1);
+      v.push_back(n2);
+      v.push_back(n3);
       break;
 
     case T_IFNDEF:

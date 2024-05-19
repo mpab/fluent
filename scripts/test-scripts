@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-find ./examples/ -iname "test_cond*.fl" -exec sh -c '
+find ./examples/ -iname "test*.fl" -exec sh -c '
 echo "$1"
 ./interpreter/--run "$1"
 echo

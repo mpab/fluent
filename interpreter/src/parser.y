@@ -35,7 +35,7 @@ int yylex(void);
 
 %token T_OUT T_OUTL
 %token T_ENDL T_EOF T_ELLIPSIS
-%token T_WHILE T_IF
+%token T_WHILE T_IF TOK_IF_EXPLICIT_ELSE TOK_IF_IMPLIED_ELSE
 %nonassoc T_IFX
 %nonassoc T_ELSE
 
@@ -100,26 +100,28 @@ console:
         }
         ;
 
-stmt:
-          ';'                                   { $$ = addi(';', 1, 0, 0); }
+stmt:     ';'                                   { $$ = addi(';', 1, 0, 0); }
         | expr ';'                              { $$ = $1; }
         | conds                                 { $$ = $1; }
         | loops                                 { $$ = $1; }
         | T_EXIT ';'                            { $$ = addi(T_EXIT, 1, 0, 0); }
         | T_OUT expr ';'                        { $$ = addi(T_OUT, 1, $2); }
         | T_OUTL expr ';'                       { $$ = addi(T_OUTL, 1, $2); }
-
         | T_SYMBOL '=' expr ';'                 { $$ = addi('=', 2, $1, $3); }
-        | '{' stmts '}'                         { $$ = $2; }
+        | '{' stmts '}'                          { $$ = $2; }
         ;
 
 stmts:    stmt                                  { $$ = $1; }
         | stmts stmt                            { $$ = addi(';', 2, $1, $2); }
         ;
 
+// greedy-evaluate the conditional types
 conds:    T_COND                                { $$ = $1; }
+        | T_IF '(' expr ')' stmt T_ELSE stmt    { $$ = addi(TOK_IF_EXPLICIT_ELSE, 3, $3, $5, $7); }
+        //| T_IF '(' expr ')' stmt %prec T_IFX stmt  { $$ = addi(TOK_IF_IMPLIED_ELSE, 3, $3, $5); }
         | T_IF '(' expr ')' stmt %prec T_IFX    { $$ = addi(T_IF, 2, $3, $5); }
-        | T_IF '(' expr ')' stmt T_ELSE stmt    { $$ = addi(T_IF, 3, $3, $5, $7); }
+
+
         | T_IF '(' T_UNDEFINED '(' T_SYMBOL ')' ')' stmt %prec T_IFX {
                                                   $$ = addi(T_IFNDEF, 2, $5, $8); }
         | T_IF '(' T_UNDEFINED '(' T_SYMBOL ')' ')' stmt T_ELSE stmt  {
@@ -130,8 +132,7 @@ loops:    T_LOOP                                { $$ = $1; }
         | T_WHILE '(' expr ')' stmt             { $$ = addi(T_WHILE, 2, $3, $5); }
         ;
 
-expr:
-          T_STRING                              { $$ = $1; }
+expr:     T_STRING                              { $$ = $1; }
         | T_NUMERIC                             { $$ = $1; }
         | T_SYMBOL                              { $$ = $1; }
         | '-' expr %prec T_NEG                  { $$ = addi(T_NEG, 1, $2); }

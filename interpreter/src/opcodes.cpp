@@ -99,7 +99,21 @@ Node* execute(Instruction* n) {
     case T_IF:
       if (eval_condition(n->operands[0])) {
         execute(n->operands[1]);
-      } else if (n->operands.size() > 2) {
+      }
+      return nullptr;
+
+    case TOK_IF_EXPLICIT_ELSE:
+      if (eval_condition(n->operands[0])) {
+        execute(n->operands[1]);
+      } else {
+        execute(n->operands[2]);
+      }
+      return nullptr;
+
+    case TOK_IF_IMPLIED_ELSE:
+      if (eval_condition(n->operands[0])) {
+        execute(n->operands[1]);
+      } else {
         execute(n->operands[2]);
       }
       return nullptr;
