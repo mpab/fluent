@@ -26,6 +26,8 @@ int yylex(void);
 %token <node> T_SYMBOL
 %token <node> T_NUMERIC
 %token <node> T_STRING
+%token <node> T_COND
+%token <node> T_LOOP
 
 %token T_CONSOLE_QUIT T_CONSOLE_HELP T_CONSOLE_INSPECT
 %token T_CONSOLE_CLEAN T_CONSOLE_FREE T_CONSOLE_EXECUTE
@@ -38,15 +40,12 @@ int yylex(void);
 %nonassoc T_ELSE
 
 %token  T_IFNDEF T_UNDEFINED T_EXIT
-//%token  T_STMT_TERM
 
 %type <node> stmt
 %type <node> expr
-%type <node> stmt_list
-
-//%token T_CLOSURE
-//%type <node> closure
-//%type <node> symbols
+%type <node> stmts
+%type <node> conds
+%type <node> loops
 
 %left T_GE T_LE T_EQ T_NE '>' '<'
 %left '+' '-' '%'
@@ -101,41 +100,37 @@ console:
         }
         ;
 
-// symbols:
-//           %empty                                { logger::parser_info("symbols: empty"); $$ = nop(); }
-//         | T_SYMBOL                              { logger::parser_info("symbols: T_SYMBOL"); $$ = nop(); }
-//         | symbols ',' T_SYMBOL                  { logger::parser_info("symbols: symbols, T_SYMBOL"); $$ = nop(); }
-//         ;
-
-// closure:
-//           '(' symbols ')' '{' stmt_list '}'     { logger::parser_info("(...)closure"); $$ = nop(); }
-//         ;
-
 stmt:
           ';'                                   { $$ = addi(';', 1, 0, 0); }
         | expr ';'                              { $$ = $1; }
+        | conds                                 { $$ = $1; }
+        | loops                                 { $$ = $1; }
         | T_EXIT ';'                            { $$ = addi(T_EXIT, 1, 0, 0); }
         | T_OUT expr ';'                        { $$ = addi(T_OUT, 1, $2); }
         | T_OUTL expr ';'                       { $$ = addi(T_OUTL, 1, $2); }
 
-        | T_SYMBOL '=' expr ';'                 { $$ = addi('=', 2, $1, $3); } // also binds closures
-        | T_WHILE '(' expr ')' stmt             { $$ = addi(T_WHILE, 2, $3, $5); }
+        | T_SYMBOL '=' expr ';'                 { $$ = addi('=', 2, $1, $3); }
+        | '{' stmts '}'                         { $$ = $2; }
+        ;
+
+stmts:    stmt                                  { $$ = $1; }
+        | stmts stmt                            { $$ = addi(';', 2, $1, $2); }
+        ;
+
+conds:    T_COND                                { $$ = $1; }
         | T_IF '(' expr ')' stmt %prec T_IFX    { $$ = addi(T_IF, 2, $3, $5); }
         | T_IF '(' expr ')' stmt T_ELSE stmt    { $$ = addi(T_IF, 3, $3, $5, $7); }
         | T_IF '(' T_UNDEFINED '(' T_SYMBOL ')' ')' stmt %prec T_IFX {
                                                   $$ = addi(T_IFNDEF, 2, $5, $8); }
         | T_IF '(' T_UNDEFINED '(' T_SYMBOL ')' ')' stmt T_ELSE stmt  {
                                                   $$ = addi(T_IFNDEF, 3, $5, $8, $10); }
-        | '{' stmt_list '}'                     { $$ = $2; }
         ;
 
-stmt_list:
-          stmt                                  { $$ = $1; }
-        | stmt_list stmt                        { $$ = addi(';', 2, $1, $2); }
+loops:    T_LOOP                                { $$ = $1; }
+        | T_WHILE '(' expr ')' stmt             { $$ = addi(T_WHILE, 2, $3, $5); }
         ;
 
 expr:
-          //closure                             { $$ = addi(T_CLOSURE, 1, $1); } // allows anon closures
           T_STRING                              { $$ = $1; }
         | T_NUMERIC                             { $$ = $1; }
         | T_SYMBOL                              { $$ = $1; }

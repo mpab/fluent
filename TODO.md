@@ -31,7 +31,7 @@ basic variable handling (integer, real, string, sequence)
 ## Doing
 
 editor syntax highlighting (textmate, vscode)  
-- example at <https://github.com/Draco-lang/Compiler/tree/main/src>
+example @ <https://github.com/Draco-lang/Compiler/tree/main/src>
 
 ## Todo
 

@@ -2,8 +2,10 @@ a=10;
 
 outl a;
 
-while (a)
+while (a) {
+    outl a;
     a = a - 1;
+}
 
 b=10;
 

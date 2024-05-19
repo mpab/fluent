@@ -1,6 +1,0 @@
-a=10;
-
-if (a)
-    outl "if (a)";
-; // this is a bug, explicit termination should not be required
-b=10;

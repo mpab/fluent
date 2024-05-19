@@ -1,8 +1,8 @@
-a=0;
-if (a)
+a=10;
+
+if (a) {
     outl "if (a)";
-else
-    outl "!if (a)";
+}; // bug, terminator should not be required
 
 b=10;
 

@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+find ./examples/ -iname "test_cond*.fl" -exec sh -c '
+echo "$1"
+./interpreter/--run "$1"
+echo
+' sh {} \;

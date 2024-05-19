@@ -88,10 +88,6 @@ Node* execute(Instruction* n) {
       exit(0);
       return nullptr;
 
-      // case T_CLOSURE:
-      //   // return a dummy var for now
-      //   return node::create_quoted_string(".dummy closure.");
-
     case T_IFNDEF:
       if (!eval_symbol(n->operands[0])) {
         execute(n->operands[1]);

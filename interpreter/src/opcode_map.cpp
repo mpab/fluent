@@ -4,8 +4,6 @@
 
 const char* opcode_name(int id) {
   switch (id) {
-    // case T_CLOSURE:
-    //   return "(){}";
     case T_WHILE:
       return "while";
 
@@ -24,8 +22,6 @@ const char* opcode_name(int id) {
     case T_EXIT:
       return "exit";
 
-    // case T_STMT_TERM:
-    //   return ";";
     case ';':
       return ";";
 

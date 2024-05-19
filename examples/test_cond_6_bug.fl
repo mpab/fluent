@@ -1,0 +1,6 @@
+a=10;
+
+if (a)
+    outl "if (a)";
+// bug, terminator should not be required
+b=10;
