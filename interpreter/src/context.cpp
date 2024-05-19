@@ -156,11 +156,11 @@ Node* add_instruction(int opcode, int count, Node* n1, Node* n2, Node* n3) {
     case T_OUTL:
     case T_NEG:
     case T_UNDEFINED:
-    case T_ABORT:
+    case T_EXIT:
       v.push_back(n1);
       break;
 
-    case T_COND:
+    case T_IF:
       v.push_back(n1);
       v.push_back(n2);
       if (count > 2) {
@@ -168,7 +168,7 @@ Node* add_instruction(int opcode, int count, Node* n1, Node* n2, Node* n3) {
       }
       break;
 
-    case T_COND_UNDEFINED:
+    case T_IFNDEF:
       v.push_back(n1);
       v.push_back(n2);
       if (count > 2) {
@@ -189,7 +189,7 @@ Node* add_instruction(int opcode, int count, Node* n1, Node* n2, Node* n3) {
   // logger::info() << "add_instruction:[" << opcode_name(opcode) << "](" <<
   // count << ")" << "[" << (void*)n1 << "][" << (void*)n2 << "][" << (void*)n3
   // << "]" << endl; logger::info() << NodeInfo(n) << endl; if (opcode ==
-  // T_COND) { console::inspect(true); }
+  // T_IF) { console::inspect(true); }
 #endif
 
   return n;

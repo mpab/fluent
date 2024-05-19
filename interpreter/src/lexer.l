@@ -42,12 +42,12 @@ E_BAD_SYMBOL        [0-9][_a-zA-Z][_a-zA-Z0-9]
 "=="            RET(T_EQ);
 "!="            RET(T_NE);
 "while"         RET(T_WHILE);
-"if"            RET(T_COND);
+"if"            RET(T_IF);
 "else"          RET(T_ELSE);
 "outl"          RET(T_OUTL);
 "out"           RET(T_OUT);
 "undefined"     RET(T_UNDEFINED);
-"abort"         RET(T_ABORT);
+"exit"          RET(T_EXIT);
 
 "::help\n"    {++__line__; return T_CONSOLE_HELP;}
 "::h\n"       {++__line__; return T_CONSOLE_HELP;}

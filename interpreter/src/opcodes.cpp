@@ -84,15 +84,15 @@ Node* execute(Instruction* n) {
     case T_OUTL:
       return println(n->operands[0]);
 
-    case T_ABORT:
+    case T_EXIT:
       exit(0);
       return nullptr;
 
-    case T_CLOSURE:
-      // return a dummy var for now
-      return node::create_quoted_string(".dummy closure.");
+      // case T_CLOSURE:
+      //   // return a dummy var for now
+      //   return node::create_quoted_string(".dummy closure.");
 
-    case T_COND_UNDEFINED:
+    case T_IFNDEF:
       if (!eval_symbol(n->operands[0])) {
         execute(n->operands[1]);
       } else if (n->operands.size() > 2) {
@@ -100,7 +100,7 @@ Node* execute(Instruction* n) {
       }
       return nullptr;
 
-    case T_COND:
+    case T_IF:
       if (eval_condition(n->operands[0])) {
         execute(n->operands[1]);
       } else if (n->operands.size() > 2) {

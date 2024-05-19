@@ -83,7 +83,7 @@ void quit() {
 }
 
 void copyright() {
-  IOUT << "Fluent v0.0.5, (c) 2017- Michael Alderson-Bythell" << endl;
+  IOUT << "Fluent v0.0.6, (c) 2017- Michael Alderson-Bythell" << endl;
   IOUT << "built: " << build_date << endl;
   IOUT << "::help is available" << endl;
 }

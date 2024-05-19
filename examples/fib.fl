@@ -5,8 +5,8 @@ if (undefined(args_1)) {
     out "usage: ";
     out args_0;
     outl " {number}";
-    abort;
-}; // this is a grammar bug, explicit termination should not be required
+    exit;
+}; // this is a bug, explicit termination should not be required
 
 fib_index = args_1;
 loop = 0;
@@ -27,7 +27,7 @@ if (range_error) {
     out fib_index;
     out  ") - ";
     outl "number not in acceptable range (0->92)";
-    abort;
+    exit;
 }
 
 if (fib_index <= 1) {

@@ -21,7 +21,7 @@
       "patterns": [
         {
           "name": "keyword.control.fluent",
-          "match": "\\b(if|else|while|%|out|outl|undefined|abort)\\b"
+          "match": "\\b(if|else|while|%|out|outl|undefined|exit)\\b"
         }
       ]
     },

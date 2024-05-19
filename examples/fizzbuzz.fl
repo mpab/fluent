@@ -1,13 +1,12 @@
 #!/usr/bin/env fluent
 
-if (1) outl 1;; // same bug
 b=10;
 if (undefined(args_1)) {
     out "usage: ";
     out args_0;
     outl " {number}";
-    abort;
-}; // this is a grammar bug, explicit termination should not be required
+    exit;
+}; // this is a bug, explicit termination should not be required
 
 num = 1;
 while (num != args_1) {
