@@ -3,6 +3,7 @@
 ## Done
 
 2024.05
+added undefined (for validating symbols) and abort keywords
 implemented args handling using a hacky work-around
 fix cross-platform build date; fix reduce conflict in grammar; squish msvc warnings; improve unistd.h fix
 now supports Windows, Mingw64 and Ubuntu builds

@@ -12,6 +12,7 @@
 namespace context {
 node::Variable* eval(node::Node* n);
 node::Node* bind(node::Node* k, node::Node* v);
+bool check_binding(std::string symbol_name);
 }  // namespace context
 
 namespace opcodes {
@@ -28,6 +29,19 @@ node::Node* print(node::Node* n) {
 Node* println(Node* n) {
   cout << context::eval(n) << endl;
   return nullptr;
+}
+
+bool eval_symbol(Node* n) {
+  auto symbol = dynamic_cast<Symbol*>(n);
+  if (symbol) {
+    // logger::info() << "eval_symbol n is a symbol" << endl;
+    if (context::check_binding(symbol->name)) {
+      // logger::info() << "eval_symbol true: " << symbol->name << endl;
+      return true;
+    }
+  }
+  // logger::info() << "eval_symbol false: " << symbol->name << endl;
+  return false;
 }
 
 bool eval_condition(Node* n) {
@@ -70,9 +84,21 @@ Node* execute(Instruction* n) {
     case T_OUTL:
       return println(n->operands[0]);
 
+    case T_ABORT:
+      exit(0);
+      return nullptr;
+
     case T_CLOSURE:
       // return a dummy var for now
       return node::create_quoted_string(".dummy closure.");
+
+    case T_COND_UNDEFINED:
+      if (!eval_symbol(n->operands[0])) {
+        execute(n->operands[1]);
+      } else if (n->operands.size() > 2) {
+        execute(n->operands[2]);
+      }
+      return nullptr;
 
     case T_COND:
       if (eval_condition(n->operands[0])) {

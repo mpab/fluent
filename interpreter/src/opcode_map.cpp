@@ -19,6 +19,12 @@ const char* opcode_name(int id) {
     case T_OUTL:
       return "outl";
 
+    case T_UNDEFINED:
+      return "undefined";
+
+    case T_ABORT:
+      return "abort";
+
     case ';':
       return ";";
 

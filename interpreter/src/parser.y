@@ -29,7 +29,7 @@ int yylex(void);
 %token T_CONSOLE_LOGGING_ON T_CONSOLE_LOGGING_OFF T_CONSOLE_EXEC_BUFFERED T_CONSOLE_EXEC_IMMEDIATE
 
 %token T_ENDL T_EOF T_ELLIPSIS
-%token T_WHILE T_COND T_OUT T_OUTL
+%token T_WHILE T_COND T_OUT T_OUTL T_COND_UNDEFINED T_UNDEFINED T_ABORT
 %nonassoc T_CONDX
 %nonassoc T_ELSE
 
@@ -105,16 +105,18 @@ console:
 //         ;
 
 stmt:
-          ';'                                   { $$ = addi(';', 2, 0, 0); }
+          ';'                                   { $$ = addi(';', 1, 0, 0); }
         | expr ';'                              { $$ = $1; }
+        | T_ABORT ';'                           { $$ = addi(T_ABORT, 1, 0, 0); }
         | T_OUT expr ';'                        { $$ = addi(T_OUT, 1, $2); }
         | T_OUTL expr ';'                       { $$ = addi(T_OUTL, 1, $2); }
 
         | T_SYMBOL '=' expr ';'                 { $$ = addi('=', 2, $1, $3); } // also binds closures
-
         | T_WHILE '(' expr ')' stmt             { $$ = addi(T_WHILE, 2, $3, $5); }
-        | T_COND '(' expr ')' stmt %prec T_CONDX{ $$ = addi(T_COND, 2, $3, $5); }
+        | T_COND '(' expr ')' stmt %prec T_CONDX { $$ = addi(T_COND, 2, $3, $5); }
         | T_COND '(' expr ')' stmt T_ELSE stmt  { $$ = addi(T_COND, 3, $3, $5, $7); }
+        | T_COND '(' T_UNDEFINED '(' T_SYMBOL ')' ')' stmt %prec T_CONDX{ $$ = addi(T_COND_UNDEFINED, 2, $5, $8); }
+        | T_COND '(' T_UNDEFINED '(' T_SYMBOL ')' ')' stmt T_ELSE stmt  { $$ = addi(T_COND_UNDEFINED, 3, $5, $8, $10); }
         | '{' stmt_list '}'                     { $$ = $2; }
         ;
 

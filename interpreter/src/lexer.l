@@ -46,6 +46,8 @@ E_BAD_SYMBOL        [0-9][_a-zA-Z][_a-zA-Z0-9]
 "else"          RET(T_ELSE);
 "outl"          RET(T_OUTL);
 "out"           RET(T_OUT);
+"undefined"     RET(T_UNDEFINED);
+"abort"         RET(T_ABORT);
 
 "::help\n"    {++__line__; return T_CONSOLE_HELP;}
 "::h\n"       {++__line__; return T_CONSOLE_HELP;}
@@ -126,4 +128,3 @@ E_BAD_SYMBOL        [0-9][_a-zA-Z][_a-zA-Z0-9]
 }
 
 %%
-

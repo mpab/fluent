@@ -1,15 +1,24 @@
-#!/usr/bin/env fluent 
+#!/usr/bin/env fluent
 
-a = 1;
-while (a != 100) {
-    if (a % 15 == 0) {
+if (1) outl 1;; // same bug
+b=10;
+if (undefined(args_1)) {
+    out "usage: ";
+    out args_0;
+    outl " {number}";
+    abort;
+}; // this is a grammar bug, explicit termination should not be required
+
+num = 1;
+while (num != args_1) {
+    if (num % 15 == 0) {
         outl "fizzbuzz";
-    } else if (a % 5 == 0) {
+    } else if (num % 5 == 0) {
         outl "buzz";
-    } else if (a % 3 == 0) {
+    } else if (num % 3 == 0) {
         outl "fizz";
     } else {
-        outl a;
+        outl num;
     }
-    a = a + 1;
+    num = num + 1;
 }

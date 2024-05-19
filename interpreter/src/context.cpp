@@ -155,10 +155,20 @@ Node* add_instruction(int opcode, int count, Node* n1, Node* n2, Node* n3) {
   switch (opcode) {
     case T_OUTL:
     case T_NEG:
+    case T_UNDEFINED:
+    case T_ABORT:
       v.push_back(n1);
       break;
 
     case T_COND:
+      v.push_back(n1);
+      v.push_back(n2);
+      if (count > 2) {
+        v.push_back(n3);
+      }
+      break;
+
+    case T_COND_UNDEFINED:
       v.push_back(n1);
       v.push_back(n2);
       if (count > 2) {
@@ -185,12 +195,20 @@ Node* add_instruction(int opcode, int count, Node* n1, Node* n2, Node* n3) {
   return n;
 }
 
+bool check_binding(string symbol_name) {
+  auto v = symbols.find(symbol_name);
+  if (v == symbols.end()) {
+    return false;
+  }
+  return true;
+}
+
 Node* get_binding(string symbol_name) {
   auto v = symbols.find(symbol_name);
 
   if (v == symbols.end()) {
     string warning = "symbol " + symbol_name + " is not defined";
-    logger::warn(warning.c_str());
+    logger::warn() << warning << endl;
     return nullptr;
   }
   return v->second;
@@ -249,7 +267,7 @@ Node* bind(Symbol* k, Variable* v) {
                   << reinterpret_cast<void*>(v) << endl;
 
   if (!k || !v) {
-    logger::warn("bind(s, v): bad symbol or rval");
+    logger::warn() << "bind(s, v): bad symbol or rval" << endl;
     return nullptr;
   }
 
