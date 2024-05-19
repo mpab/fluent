@@ -4,7 +4,6 @@
 #pragma warning(disable: 4702)  // unreachable code
 #endif
 
-#include "node.hpp"
 #include "context.hpp"
 #include "console.hpp"
 #include "logger.hpp"
@@ -15,6 +14,10 @@ int yylex(void);
 
 %define parse.error verbose
 %define api.header.include {"parser.tab.hh"}
+
+%code requires {
+#include "node.hpp" 
+}
 
 %union {
     node::Node* node;

@@ -1,6 +1,5 @@
 // copyright (c) 2017- mpab
 
-#include "node.hpp"
 #include "parser.tab.hh"
 
 const char* opcode_name(int id) {
