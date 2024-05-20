@@ -34,6 +34,7 @@ int yylex(void);
 %token T_CONSOLE_LOGGING_ON T_CONSOLE_LOGGING_OFF T_CONSOLE_EXEC_BUFFERED T_CONSOLE_EXEC_IMMEDIATE
 
 %token T_OUT T_OUTL
+//%token T_STREAMOP
 %token T_ENDL T_EOF T_ELLIPSIS
 %token T_WHILE T_IF TOK_IF_EXPLICIT_ELSE TOK_IF_IMPLIED_ELSE
 %nonassoc T_IFX
@@ -46,6 +47,7 @@ int yylex(void);
 %type <node> stmts
 %type <node> conds
 %type <node> loops
+//%type <node> prints
 
 %left T_GE T_LE T_EQ T_NE '>' '<'
 %left '+' '-' '%'
@@ -108,8 +110,12 @@ stmt:     ';'                                   { $$ = addi(';', 1, 0, 0); }
         | T_OUT expr ';'                        { $$ = addi(T_OUT, 1, $2); }
         | T_OUTL expr ';'                       { $$ = addi(T_OUTL, 1, $2); }
         | T_SYMBOL '=' expr ';'                 { $$ = addi('=', 2, $1, $3); }
-        | '{' stmts '}'                          { $$ = $2; }
+        | '{' stmts '}'                         { $$ = $2; }
         ;
+
+// prints:   expr                                 { $$ = $1; }
+//         | prints T_STREAMOP expr               { $$ = addi(';', 2, $1, $2); }
+//         ;
 
 stmts:    stmt                                  { $$ = $1; }
         | stmts stmt                            { $$ = addi(';', 2, $1, $2); }

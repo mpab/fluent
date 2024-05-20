@@ -1,0 +1,46 @@
+// a simple calculator example
+// type coercion
+
+outl "integer+integer";
+a = 10;
+b = 20;
+s = a + b;
+out "the sum of ";
+out a;
+out " and ";
+out b;
+out " equals ";
+outl s;
+
+outl "float+float";
+a = 2.1f;
+b = 33.3f;
+s = a + b;
+out "the sum of ";
+out a;
+out " and ";
+out b;
+out " equals ";
+outl s;
+
+outl "integer+float";
+a = 10;
+b = 7.1f;
+s = a + b;
+out "the sum of ";
+out a;
+out " and ";
+out b;
+out " equals ";
+outl s;
+
+outl "float+integer";
+a = 10.3;
+b = 20f;
+s = a + b;
+out "the sum of ";
+out a;
+out " and ";
+out b;
+out " equals ";
+outl s;
