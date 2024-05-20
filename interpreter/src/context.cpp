@@ -152,44 +152,9 @@ void execute_block(Node* n) {
 Node* add_instruction(int opcode, int count, Node* n1, Node* n2, Node* n3) {
   auto v = vector<Node*>();
 
-  switch (opcode) {
-    case T_OUTL:
-    case T_NEG:
-    case T_UNDEFINED:
-    case T_EXIT:
-      v.push_back(n1);
-      break;
-
-    case T_IF:
-      v.push_back(n1);
-      v.push_back(n2);
-      break;
-
-    case TOK_IF_EXPLICIT_ELSE:
-      v.push_back(n1);
-      v.push_back(n2);
-      v.push_back(n3);
-      break;
-
-    case TOK_IF_IMPLIED_ELSE:
-      v.push_back(n1);
-      v.push_back(n2);
-      v.push_back(n3);
-      break;
-
-    case T_IFNDEF:
-      v.push_back(n1);
-      v.push_back(n2);
-      if (count > 2) {
-        v.push_back(n3);
-      }
-      break;
-
-    default:
-      v.push_back(n1);
-      v.push_back(n2);
-      break;
-  }
+  if (count >= 1) v.push_back(n1);
+  if (count >= 2) v.push_back(n2);
+  if (count >= 3) v.push_back(n3);
 
   auto n = new Instruction(opcode, v);
   logger::debug() << NodeInfo(n) << endl;

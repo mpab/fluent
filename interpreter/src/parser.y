@@ -102,7 +102,7 @@ console:
         }
         ;
 
-stmt:     ';'                                   { $$ = addi(';', 1, 0, 0); }
+stmt:     ';'                                   { $$ = addi(';', 2, 0, 0); }
         | expr ';'                              { $$ = $1; }
         | conds                                 { $$ = $1; }
         | loops                                 { $$ = $1; }
@@ -127,6 +127,7 @@ conds:    T_COND                                { $$ = $1; }
 
 
         | T_IF '(' T_UNDEFINED '(' T_SYMBOL ')' ')' stmt %prec T_IFX {
+                                                  $$ = addi(T_IFNDEF, 2, $5, $8); }
         | T_IF '(' T_UNDEFINED '(' T_SYMBOL ')' ')' stmt T_ELSE stmt  {
                                                   $$ = addi(T_IFNDEF, 3, $5, $8, $10); }
         ;
