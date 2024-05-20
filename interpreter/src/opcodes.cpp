@@ -171,12 +171,17 @@ Node* execute(Instruction* n) {
 node::Node* execute(node::Node* n) {
   logger::debug() << "execute(Node*)" << NodeInfo(n) << endl;
 
-  auto f = dynamic_cast<Instruction*>(n);
-  if (f) {
-    return execute(f);
+  if (!n) {
+    logger::debug() << "execute: null node" << endl;
+    return nullptr;
   }
 
-  logger::error() << "execute: unhandled node type - " << n;
-  return nullptr;
+  auto f = dynamic_cast<Instruction*>(n);
+  if (!f) {
+    logger::error() << "execute: unhandled node type - " << n << endl;
+    return nullptr;
+  }
+
+  return execute(f);
 }
 }  // namespace opcodes

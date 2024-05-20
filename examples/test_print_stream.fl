@@ -1,0 +1,6 @@
+// not yet implemented
+a=10;
+b=20.123;
+c = "hello";
+out a << b;
+//outl a << ", " << b << ", " << c << ", " << a + b;
