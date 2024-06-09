@@ -30,14 +30,18 @@ void create_args_file(const char *file, int argc, char **argv) {
     strtol(argv[0], &err, 10);
     if (!*err) {
       fprintf(fh, "args_%d=%s;\n", idx++, argv[0]);
+      ++argv;
+      continue;
     }
 
     strtof(argv[0], &err);
     if (!*err) {
       fprintf(fh, "args_%d=%s;\n", idx++, argv[0]);
-    } else {
-      fprintf(fh, "args_%d='%s';\n", idx++, argv[0]);
+      ++argv;
+      continue;
     }
+
+    fprintf(fh, "args_%d='%s';\n", idx++, argv[0]);
     ++argv;
   }
   fclose(fh);
