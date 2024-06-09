@@ -5,6 +5,7 @@
 #include <iomanip>  // IWYU pragma: export.
 #include <ostream>
 
+#define FMTOFF std::setw(0)
 #define FMT8 std::left << std::setw(8) << std::setfill(' ')
 #define FMT12 std::left << std::setw(12) << std::setfill(' ')
 #define FMT16 std::left << std::setw(16) << std::setfill(' ')

@@ -149,6 +149,15 @@ void execute_block(Node* n) {
 #endif
 }
 
+void log_instruction(Instruction* i) {
+  logger::info() << "++log_instruction\n";
+  logger::info() << "OPCODE: '" << opcode_name(i->opcode) << "'\n";
+  for (auto& el : i->operands) {
+    logger::info() << el->type_name() << ": '" << el << "'\n";
+  }
+  logger::info() << "--log_instruction\n";
+}
+
 Node* add_instruction(int opcode, int count, Node* n1, Node* n2, Node* n3) {
   auto v = vector<Node*>();
 
@@ -157,7 +166,8 @@ Node* add_instruction(int opcode, int count, Node* n1, Node* n2, Node* n3) {
   if (count >= 3) v.push_back(n3);
 
   auto n = new Instruction(opcode, v);
-  logger::debug() << NodeInfo(n) << endl;
+
+  // logger::info() << NodeInfo(n) << endl;
 
 #ifdef DEBUG_BUILD
   // logger::info() << "add_instruction:[" << opcode_name(opcode) << "](" <<
